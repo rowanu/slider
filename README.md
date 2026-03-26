@@ -38,16 +38,20 @@ Re-run when AWS releases an updated icon pack.
 just icons lambda
 just icon-path "api gateway"
 
-# Start a new diagram
-just new-diagram my-architecture
-# edit diagrams/my-architecture.d2
+# Start a new deck
+just new-deck my-talk
+# edit decks/my-talk/slides.md
+
+# Add a diagram to a deck
+just new-diagram my-talk my-architecture
+# edit decks/my-talk/my-architecture.d2
 
 # Render while editing
-just watch-diagram my-architecture
+just watch-diagram my-talk my-architecture
 
-# Build + preview slides
+# Build + preview slides (auto-renders diagrams first)
 just slides my-talk
-# open output/slides/my-talk.html
+# open decks/my-talk/.output/slides.html
 
 # Or watch slides
 just watch my-talk
@@ -58,10 +62,10 @@ just build
 
 ## Referencing diagrams in MARP
 
-After `just diagram <name>` renders `output/diagrams/<name>.svg`:
+After `just diagram <deck> <name>` renders the SVG into `.output/`:
 
 ```markdown
-![diagram w:900](../output/diagrams/<name>.svg)
+![diagram w:900](.output/<name>.svg)
 ```
 
 `--allow-local-files` is passed automatically by the justfile recipes.
@@ -72,7 +76,7 @@ After `just diagram <name>` renders `output/diagrams/<name>.svg`:
 # AWS service node (just icon + label)
 lambda: "Lambda" {
   shape: image
-  icon: aws-icons/compute/aws-lambda.svg
+  icon: ../aws-icons/compute/aws-lambda.svg
 }
 
 # Container (VPC, account, subnet)
@@ -80,7 +84,7 @@ vpc: "My VPC" {
   style.stroke: "#232F3E"
   lambda: "Lambda" {
     shape: image
-    icon: aws-icons/compute/aws-lambda.svg
+    icon: ../aws-icons/compute/aws-lambda.svg
   }
 }
 
@@ -95,26 +99,29 @@ cloudtrail -> lambda { style.stroke-dash: 4 }
 direction: right   # or: down (default), left, up
 ```
 
+Icon paths use `../aws-icons/...` which resolves via a symlink at `decks/aws-icons → ../aws-icons` (auto-created by the justfile).
+
 ## Directory structure
 
 ```
 .
 ├── justfile
-├── aws-icons/          # imported icons (gitignore if large)
-│   ├── catalog.txt     # searchable index
-│   ├── compute/        # service + resource icons per category
+├── aws-icons/              # imported icons (gitignore if large)
+│   ├── catalog.txt         # searchable index
+│   ├── compute/            # service + resource icons per category
 │   │   ├── aws-lambda.svg
 │   │   └── amazon-ec2_instance.svg
-│   ├── groups/         # VPC, subnet, account boundaries
-│   └── categories/     # top-level category icons
-├── diagrams/
-│   ├── _template.d2    # scaffold for new diagrams
-│   └── *.d2
-├── slides/
-│   └── *.md            # MARP source
-└── output/
-    ├── diagrams/       # rendered SVGs
-    └── slides/         # final HTML / PDF
+│   ├── groups/             # VPC, subnet, account boundaries
+│   └── categories/         # top-level category icons
+├── templates/
+│   └── _template.d2        # scaffold for new diagrams
+├── decks/
+│   ├── aws-icons -> ../aws-icons   # symlink (auto-created)
+│   └── example/
+│       ├── slides.md        # MARP source
+│       ├── *.d2             # diagram sources
+│       └── .output/         # rendered SVGs + HTML/PDF (gitignored)
+└── .gitignore
 ```
 
 ## Tips
@@ -122,6 +129,8 @@ direction: right   # or: down (default), left, up
 - **LLM-assisted diagrams:** Paste your rough description + the relevant icon paths
   from `just icons` into Claude and ask it to write the D2 spec. Tweak from there.
 - **Icon path autocomplete:** `just icons <keyword>` + copy the path. `just icon-path`
-  prepends the `aws-icons/` prefix ready to paste.
+  prepends the `../aws-icons/` prefix ready to paste.
 - **Slide image sizing:** `w:900` in the alt text controls width. Adjust per slide.
   Use `w:700` for diagrams that need more white space around them.
+- **Auto diagram build:** `just slides <deck>` renders all diagrams before building
+  slides — no need to run them separately.

@@ -3,18 +3,17 @@
 # Requirements: d2, marp-cli
 #
 # Quick start:
-#   just check                        verify all tools present
-#   just import-icons <icon-pack-dir> one-time icon import from AWS ZIP
-#   just icons lambda                 find icon paths by keyword
-#   just new-diagram my-arch          scaffold a new diagram
-#   just build                        render all diagrams + slides
+#   just check                              verify all tools present
+#   just import-icons <icon-pack-dir>       one-time icon import from AWS ZIP
+#   just icons lambda                       find icon paths by keyword
+#   just new-deck my-talk                   scaffold a new deck
+#   just build                              render all decks
 # ─────────────────────────────────────────────────────────────────────────────
 
 icons_dir  := "aws-icons"
-diag_dir   := "diagrams"
-slides_dir := "slides"
-out_dir    := "output"
-d2_layout  := "elk"   # options: elk, dagre, tala (tala requires licence)
+decks_dir  := "decks"
+template   := "templates/_template.d2"
+d2_layout  := "elk"
 
 # Default: show available recipes
 default:
@@ -28,6 +27,10 @@ check:
     @command -v d2      >/dev/null 2>&1 || (echo "❌  d2 not found      → https://d2lang.com/tour/install" && exit 1)
     @command -v marp    >/dev/null 2>&1 || (echo "❌  marp not found    → npm install -g @marp-team/marp-cli" && exit 1)
     @echo "✅  All tools available"
+
+[private]
+ensure-symlink:
+    @[ -L {{decks_dir}}/aws-icons ] || ln -s ../{{icons_dir}} {{decks_dir}}/aws-icons
 
 # ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -130,103 +133,124 @@ icons filter="":
             cat {{icons_dir}}/catalog.txt; \
         fi \
     else \
-        echo "No catalog found — run: just extract-icons <pptx>"; \
+        echo "No catalog found — run: just import-icons <icon-pack-dir>"; \
     fi
 
 # Show the full icon path ready to paste into a .d2 file
 # Usage: just icon-path lambda
 icon-path name:
     @grep -i "{{name}}" {{icons_dir}}/catalog.txt \
-      | head -10 \
-      | sed "s|^|{{icons_dir}}/|" \
+      | sed "s|^|../{{icons_dir}}/|" \
       || echo "(no matches for '{{name}}')"
+
+# ── Decks ────────────────────────────────────────────────────────────────────
+
+# Scaffold a new deck
+# Usage: just new-deck my-talk
+new-deck name: ensure-symlink
+    @mkdir -p {{decks_dir}}/{{name}}
+    @if [ -f {{decks_dir}}/{{name}}/slides.md ]; then \
+        echo "Already exists: {{decks_dir}}/{{name}}/slides.md"; \
+    else \
+        printf -- '---\nmarp: true\ntheme: default\npaginate: true\n---\n\n# {{name}}\n\n' \
+            > {{decks_dir}}/{{name}}/slides.md; \
+        echo "Created: {{decks_dir}}/{{name}}/slides.md"; \
+    fi
+
+# Add a new diagram to a deck from the template
+# Usage: just new-diagram my-talk my-architecture
+new-diagram deck name: ensure-symlink
+    @if [ ! -d {{decks_dir}}/{{deck}} ]; then \
+        echo "Deck not found: {{decks_dir}}/{{deck}} — run: just new-deck {{deck}}"; \
+        exit 1; \
+    fi
+    @if [ -f {{decks_dir}}/{{deck}}/{{name}}.d2 ]; then \
+        echo "Already exists: {{decks_dir}}/{{deck}}/{{name}}.d2"; \
+    else \
+        cp {{template}} {{decks_dir}}/{{deck}}/{{name}}.d2; \
+        echo "Created: {{decks_dir}}/{{deck}}/{{name}}.d2"; \
+    fi
 
 # ── Diagrams ──────────────────────────────────────────────────────────────────
 
-# Scaffold a new diagram from the template
-# Usage: just new-diagram my-architecture
-new-diagram name:
-    @mkdir -p {{diag_dir}}
-    @if [ -f {{diag_dir}}/{{name}}.d2 ]; then \
-        echo "Already exists: {{diag_dir}}/{{name}}.d2"; \
-    else \
-        cp {{diag_dir}}/_template.d2 {{diag_dir}}/{{name}}.d2; \
-        echo "Created: {{diag_dir}}/{{name}}.d2"; \
-    fi
+# Render a single diagram
+# Usage: just diagram my-talk my-architecture
+diagram deck name: ensure-symlink
+    @mkdir -p {{decks_dir}}/{{deck}}/.output
+    d2 --layout {{d2_layout}} {{decks_dir}}/{{deck}}/{{name}}.d2 {{decks_dir}}/{{deck}}/.output/{{name}}.svg
+    @echo "→ {{decks_dir}}/{{deck}}/.output/{{name}}.svg"
 
-# Render a single diagram → output/diagrams/<name>.svg
-# Usage: just diagram my-architecture
-diagram name:
-    @mkdir -p {{out_dir}}/diagrams
-    d2 --layout {{d2_layout}} {{diag_dir}}/{{name}}.d2 {{out_dir}}/diagrams/{{name}}.svg
-    @echo "→ {{out_dir}}/diagrams/{{name}}.svg"
-
-# Render all diagrams (skips _template.d2)
-build-diagrams:
-    @mkdir -p {{out_dir}}/diagrams
-    @shopt -s nullglob; \
-    for f in {{diag_dir}}/*.d2; do \
-        name=$(basename "$f" .d2); \
-        [ "$name" = "_template" ] && continue; \
-        echo "  → $name.svg"; \
-        d2 --layout {{d2_layout}} "$f" {{out_dir}}/diagrams/$name.svg; \
+# Render all diagrams in a deck
+build-diagrams deck: ensure-symlink
+    #!/usr/bin/env bash
+    set -euo pipefail
+    shopt -s nullglob
+    mkdir -p {{decks_dir}}/{{deck}}/.output
+    for f in {{decks_dir}}/{{deck}}/*.d2; do
+        name=$(basename "$f" .d2)
+        echo "  → $name.svg"
+        d2 --layout {{d2_layout}} "$f" {{decks_dir}}/{{deck}}/.output/$name.svg
     done
 
-# Watch a single diagram and auto-re-render on save
-# Usage: just watch-diagram my-architecture
-watch-diagram name:
-    d2 --watch --layout {{d2_layout}} {{diag_dir}}/{{name}}.d2 {{out_dir}}/diagrams/{{name}}.svg
+# Watch a diagram and auto-re-render on save
+# Usage: just watch-diagram my-talk my-architecture
+watch-diagram deck name: ensure-symlink
+    d2 --watch --layout {{d2_layout}} \
+        {{decks_dir}}/{{deck}}/{{name}}.d2 \
+        {{decks_dir}}/{{deck}}/.output/{{name}}.svg
 
 # ── Slides ────────────────────────────────────────────────────────────────────
 
-# Build a single deck → HTML
+# Build a deck → HTML (renders diagrams first)
 # Usage: just slides my-talk
-slides name:
-    @mkdir -p {{out_dir}}/slides
-    marp {{slides_dir}}/{{name}}.md \
-        --output {{out_dir}}/slides/{{name}}.html \
+slides name: (build-diagrams name)
+    marp {{decks_dir}}/{{name}}/slides.md \
+        --output {{decks_dir}}/{{name}}/.output/slides.html \
         --allow-local-files
-    @echo "→ {{out_dir}}/slides/{{name}}.html"
+    @echo "→ {{decks_dir}}/{{name}}/.output/slides.html"
 
-# Build a single deck → PDF
+# Build a deck → PDF (renders diagrams first)
 # Usage: just slides-pdf my-talk
-slides-pdf name:
-    @mkdir -p {{out_dir}}/slides
-    marp {{slides_dir}}/{{name}}.md \
-        --output {{out_dir}}/slides/{{name}}.pdf \
+slides-pdf name: (build-diagrams name)
+    marp {{decks_dir}}/{{name}}/slides.md \
+        --output {{decks_dir}}/{{name}}/.output/slides.pdf \
         --allow-local-files
-    @echo "→ {{out_dir}}/slides/{{name}}.pdf"
+    @echo "→ {{decks_dir}}/{{name}}/.output/slides.pdf"
 
-# Build all decks → HTML
-build-slides:
-    @mkdir -p {{out_dir}}/slides
-    @shopt -s nullglob; \
-    for f in {{slides_dir}}/*.md; do \
-        name=$(basename "$f" .md); \
-        echo "  → $name.html"; \
-        marp "$f" --output {{out_dir}}/slides/$name.html --allow-local-files; \
-    done
-
-# Watch a deck (live reload — open output/slides/<name>.html in browser)
+# Watch a deck (live reload — open .output/slides.html in browser)
 # Usage: just watch my-talk
-watch name:
+watch name: (build-diagrams name)
     marp --watch \
-        {{slides_dir}}/{{name}}.md \
-        --output {{out_dir}}/slides/{{name}}.html \
+        {{decks_dir}}/{{name}}/slides.md \
+        --output {{decks_dir}}/{{name}}/.output/slides.html \
         --allow-local-files
 
 # ── Combo ─────────────────────────────────────────────────────────────────────
 
-# Render a diagram then rebuild the slides that use it
-# Usage: just update my-architecture my-talk
-update diagram_name slide_name: (diagram diagram_name) (slides slide_name)
-
 # Build everything
-build: build-diagrams build-slides
+build: ensure-symlink
+    #!/usr/bin/env bash
+    set -euo pipefail
+    shopt -s nullglob
+    for deck_dir in {{decks_dir}}/*/; do
+        [ -L "${deck_dir%/}" ] && continue
+        name=$(basename "$deck_dir")
+        echo "Building deck: $name"
+        just build-diagrams "$name"
+        if [ -f "$deck_dir/slides.md" ]; then
+            just slides "$name"
+        fi
+    done
 
-# Delete all output
+# Delete all rendered output
 clean:
-    rm -rf {{out_dir}}
+    #!/usr/bin/env bash
+    shopt -s nullglob
+    for d in {{decks_dir}}/*/.output; do
+        rm -rf "$d"
+    done
+    rm -rf output/
+    echo "Cleaned all .output/ directories"
 
 # Delete imported icons (to re-import from updated pack)
 clean-icons:

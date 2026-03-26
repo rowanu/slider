@@ -1,6 +1,6 @@
 # Agent Security Architecture — Example diagram
 # Demonstrates: containers, multi-service flows, grouping
-# Render: just diagram agent-security
+# Render: just diagram agent-security-example
 
 direction: right
 
@@ -25,17 +25,17 @@ aws: "AWS Account" {
 
     apigw: "API Gateway" {
       shape: image
-      icon: aws-icons/networking-content-delivery/amazon-api-gateway.svg
+      icon: ../aws-icons/networking-content-delivery/amazon-api-gateway.svg
     }
 
     lambda: "Agent Lambda" {
       shape: image
-      icon: aws-icons/compute/aws-lambda.svg
+      icon: ../aws-icons/compute/aws-lambda.svg
     }
 
     bedrock: "Bedrock" {
       shape: image
-      icon: aws-icons/artificial-intelligence/amazon-bedrock.svg
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock.svg
     }
 
     apigw -> lambda: "invoke"
@@ -50,12 +50,12 @@ aws: "AWS Account" {
 
     s3: "S3 (knowledge)" {
       shape: image
-      icon: aws-icons/storage/amazon-s3.svg
+      icon: ../aws-icons/storage/amazon-simple-storage-service.svg
     }
 
     dynamo: "DynamoDB (state)" {
       shape: image
-      icon: aws-icons/databases/amazon-dynamodb.svg
+      icon: ../aws-icons/databases/amazon-dynamodb.svg
     }
   }
 
@@ -67,12 +67,12 @@ aws: "AWS Account" {
 
     guardduty: "GuardDuty" {
       shape: image
-      icon: aws-icons/security-identity/amazon-guardduty.svg
+      icon: ../aws-icons/security-identity/amazon-guardduty.svg
     }
 
     cloudtrail: "CloudTrail" {
       shape: image
-      icon: aws-icons/management-tools/aws-cloudtrail.svg
+      icon: ../aws-icons/management-tools/aws-cloudtrail.svg
     }
   }
 
@@ -80,7 +80,7 @@ aws: "AWS Account" {
 
   iam: "IAM Role\n(least privilege)" {
     shape: image
-    icon: aws-icons/security-identity/aws-identity-and-access-management.svg
+    icon: ../aws-icons/security-identity/aws-identity-and-access-management.svg
   }
 }
 

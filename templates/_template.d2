@@ -3,12 +3,12 @@
 #
 # Find icons:   just icons <keyword>
 # Full path:    just icon-path <keyword>
-# Render:       just diagram <filename-without-extension>
+# Render:       just diagram <deck> <diagram-name>
 #
 # Icon node pattern:
 #   id: "Display Label" {
 #     shape: image
-#     icon: aws-icons/<category>/<slug>.png
+#     icon: ../aws-icons/<category>/<slug>.svg
 #   }
 #
 # Container (VPC, account, subnet) pattern:
@@ -17,7 +17,7 @@
 #     style.fill: "#F8F8F8"
 #     service_inside: "Service" {
 #       shape: image
-#       icon: aws-icons/...
+#       icon: ../aws-icons/...
 #     }
 #   }
 #
@@ -41,17 +41,17 @@ client: "Client" {
 
 api: "API Gateway" {
   shape: image
-  icon: aws-icons/networking-content-delivery/amazon-api-gateway.svg
+  icon: ../aws-icons/networking-content-delivery/amazon-api-gateway.svg
 }
 
 fn: "Lambda" {
   shape: image
-  icon: aws-icons/compute/aws-lambda.svg
+  icon: ../aws-icons/compute/aws-lambda.svg
 }
 
 table: "DynamoDB" {
   shape: image
-  icon: aws-icons/databases/amazon-dynamodb.svg
+  icon: ../aws-icons/databases/amazon-dynamodb.svg
 }
 
 # ── Connections ───────────────────────────────────────────────────────────────

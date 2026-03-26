@@ -38,7 +38,7 @@ But most teams give it **way too many**.
 
 ## Architecture Overview
 
-![diagram w:900](../output/diagrams/agent-security-example.svg)
+![diagram w:900](.output/agent-security-example.svg)
 
 ---
 
