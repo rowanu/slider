@@ -1,0 +1,95 @@
+# Agent Security Architecture — Example diagram
+# Demonstrates: containers, multi-service flows, grouping
+# Render: just diagram agent-security
+
+direction: right
+
+# ── External ──────────────────────────────────────────────────────────────────
+
+user: "User / App" {
+  shape: person
+}
+
+# ── AWS Account boundary ──────────────────────────────────────────────────────
+
+aws: "AWS Account" {
+  style.stroke: "#232F3E"
+  style.fill: "#FAFAFA"
+  style.font-color: "#232F3E"
+
+  # ── Agent layer ────────────────────────────────────────────────────────────
+
+  agent_layer: "Agent Layer" {
+    style.stroke: "#FF9900"
+    style.fill: "#FFF8F0"
+
+    apigw: "API Gateway" {
+      shape: image
+      icon: aws-icons/networking-content-delivery/amazon-api-gateway.svg
+    }
+
+    lambda: "Agent Lambda" {
+      shape: image
+      icon: aws-icons/compute/aws-lambda.svg
+    }
+
+    bedrock: "Bedrock" {
+      shape: image
+      icon: aws-icons/artificial-intelligence/amazon-bedrock.svg
+    }
+
+    apigw -> lambda: "invoke"
+    lambda -> bedrock: "InvokeModel"
+  }
+
+  # ── Data layer ─────────────────────────────────────────────────────────────
+
+  data_layer: "Data Layer" {
+    style.stroke: "#3F8624"
+    style.fill: "#F0FFF0"
+
+    s3: "S3 (knowledge)" {
+      shape: image
+      icon: aws-icons/storage/amazon-s3.svg
+    }
+
+    dynamo: "DynamoDB (state)" {
+      shape: image
+      icon: aws-icons/databases/amazon-dynamodb.svg
+    }
+  }
+
+  # ── Security layer ─────────────────────────────────────────────────────────
+
+  security: "Security & Observability" {
+    style.stroke: "#DD344C"
+    style.fill: "#FFF5F5"
+
+    guardduty: "GuardDuty" {
+      shape: image
+      icon: aws-icons/security-identity/amazon-guardduty.svg
+    }
+
+    cloudtrail: "CloudTrail" {
+      shape: image
+      icon: aws-icons/management-tools/aws-cloudtrail.svg
+    }
+  }
+
+  # ── IAM (spans everything) ─────────────────────────────────────────────────
+
+  iam: "IAM Role\n(least privilege)" {
+    shape: image
+    icon: aws-icons/security-identity/aws-identity-and-access-management.svg
+  }
+}
+
+# ── Connections ───────────────────────────────────────────────────────────────
+
+user -> aws.agent_layer.apigw: "HTTPS"
+aws.agent_layer.lambda -> aws.data_layer.s3: "GetObject"
+aws.agent_layer.lambda -> aws.data_layer.dynamo: "read/write state"
+aws.iam -> aws.agent_layer.lambda: "assumes"
+aws.security.cloudtrail -> aws.agent_layer.lambda: "logs all API calls" {
+  style.stroke-dash: 4
+}

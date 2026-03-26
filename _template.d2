@@ -1,0 +1,61 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# D2 Architecture Diagram Template
+#
+# Find icons:   just icons <keyword>
+# Full path:    just icon-path <keyword>
+# Render:       just diagram <filename-without-extension>
+#
+# Icon node pattern:
+#   id: "Display Label" {
+#     shape: image
+#     icon: aws-icons/<category>/<slug>.png
+#   }
+#
+# Container (VPC, account, subnet) pattern:
+#   my_vpc: "My VPC" {
+#     style.stroke: "#232F3E"
+#     style.fill: "#F8F8F8"
+#     service_inside: "Service" {
+#       shape: image
+#       icon: aws-icons/...
+#     }
+#   }
+#
+# Connection with label:
+#   source -> dest: "label"
+#
+# Bidirectional:
+#   source <-> dest
+#
+# Layout direction (default is top-down):
+#   direction: right
+# ─────────────────────────────────────────────────────────────────────────────
+
+direction: right
+
+# ── Nodes ─────────────────────────────────────────────────────────────────────
+
+client: "Client" {
+  shape: person
+}
+
+api: "API Gateway" {
+  shape: image
+  icon: aws-icons/networking-content-delivery/amazon-api-gateway.svg
+}
+
+fn: "Lambda" {
+  shape: image
+  icon: aws-icons/compute/aws-lambda.svg
+}
+
+table: "DynamoDB" {
+  shape: image
+  icon: aws-icons/databases/amazon-dynamodb.svg
+}
+
+# ── Connections ───────────────────────────────────────────────────────────────
+
+client -> api: "HTTPS"
+api -> fn: "invoke"
+fn -> table: "read/write"
