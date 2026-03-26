@@ -40,7 +40,10 @@ just clean                         # delete output/
 
 - `diagrams/*.d2` — D2 diagram source files. `_template.d2` is the scaffold.
 - `slides/*.md` — MARP slide decks (Markdown with YAML frontmatter).
-- `aws-icons/` — imported SVG icons organized by category. `catalog.txt` is the searchable index.
+- `aws-icons/` — imported SVG icons. `catalog.txt` is the searchable index.
+  - `<category>/` — service icons (64px) and resource icons (48px) colocated by category
+  - `groups/` — group icons (VPC, subnet, account boundaries)
+  - `categories/` — top-level category icons
 - `output/diagrams/` — rendered SVGs. `output/slides/` — final HTML/PDF.
 - `justfile` — all build recipes. Uses `elk` layout engine for D2 by default.
 

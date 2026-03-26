@@ -24,7 +24,11 @@ then unzip it and point at the extracted directory:
 just import-icons ~/Downloads/Icon-package_01302026.../
 ```
 
-Icons are copied as 64px SVGs to `aws-icons/<category>/<service-name>.svg`.
+Icons are organized into `aws-icons/` by type:
+- **Service + Resource icons** → `aws-icons/<category>/` (e.g. `compute/`, `storage/`)
+- **Group icons** (VPC, subnet, account boundaries) → `aws-icons/groups/`
+- **Category icons** → `aws-icons/categories/`
+
 Re-run when AWS releases an updated icon pack.
 
 ## Daily workflow
@@ -98,8 +102,11 @@ direction: right   # or: down (default), left, up
 ├── justfile
 ├── aws-icons/          # imported icons (gitignore if large)
 │   ├── catalog.txt     # searchable index
-│   └── compute/
-│       └── aws-lambda.svg
+│   ├── compute/        # service + resource icons per category
+│   │   ├── aws-lambda.svg
+│   │   └── amazon-ec2_instance.svg
+│   ├── groups/         # VPC, subnet, account boundaries
+│   └── categories/     # top-level category icons
 ├── diagrams/
 │   ├── _template.d2    # scaffold for new diagrams
 │   └── *.d2
