@@ -194,11 +194,21 @@ watch-diagram deck name: ensure-symlink
         {{decks_dir}}/{{deck}}/{{name}}.d2 \
         {{output_dir}}/{{deck}}/{{name}}.svg
 
+# Copy images directory to output (if it exists in the deck)
+[private]
+copy-images deck:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [ -d {{decks_dir}}/{{deck}}/images ]; then
+        mkdir -p {{output_dir}}/{{deck}}/images
+        cp -r {{decks_dir}}/{{deck}}/images/ {{output_dir}}/{{deck}}/images/
+    fi
+
 # ── Slides ────────────────────────────────────────────────────────────────────
 
 # Build a deck → HTML (renders diagrams first)
 # Usage: just slides my-talk
-slides name: (build-diagrams name)
+slides name: (build-diagrams name) (copy-images name)
     #!/usr/bin/env bash
     set -euo pipefail
     theme_flag=""
@@ -211,7 +221,7 @@ slides name: (build-diagrams name)
 
 # Build a deck → PDF (renders diagrams first)
 # Usage: just slides-pdf my-talk
-slides-pdf name: (build-diagrams name)
+slides-pdf name: (build-diagrams name) (copy-images name)
     #!/usr/bin/env bash
     set -euo pipefail
     theme_flag=""
