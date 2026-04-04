@@ -1,0 +1,17 @@
+<svg viewBox="0 0 700 590" xmlns="http://www.w3.org/2000/svg">
+  <!-- Teal circle — Sensitive Data Access (top centre) -->
+  <circle cx="350" cy="200" r="155" fill="#00A3BF" fill-opacity="0.22" stroke="#00A3BF" stroke-width="2.5"/>
+  <!-- Orange circle — Untrusted Content (bottom left) -->
+  <circle cx="250" cy="350" r="155" fill="#FF9900" fill-opacity="0.22" stroke="#FF9900" stroke-width="2.5"/>
+  <!-- Navy circle — External Actions (bottom right) -->
+  <circle cx="450" cy="350" r="155" fill="#232F3E" fill-opacity="0.22" stroke="#232F3E" stroke-width="2.5"/>
+  <!-- Centre danger zone highlight -->
+  <circle cx="350" cy="305" r="42" fill="#D13212" fill-opacity="0.2" stroke="none"/>
+  <!-- Labels — positioned outside the circles -->
+  <text x="350" y="30" text-anchor="middle" font-family="'Amazon Ember','Segoe UI',Helvetica,sans-serif" font-size="22" font-weight="700" fill="#00A3BF">Sensitive Data Access</text>
+  <text x="250" y="555" text-anchor="middle" font-family="'Amazon Ember','Segoe UI',Helvetica,sans-serif" font-size="22" font-weight="700" fill="#CC7A00">Untrusted Content</text>
+  <text x="450" y="555" text-anchor="middle" font-family="'Amazon Ember','Segoe UI',Helvetica,sans-serif" font-size="22" font-weight="700" fill="#232F3E">External Actions</text>
+  <!-- Danger zone label -->
+  <text x="350" y="300" text-anchor="middle" font-family="'Amazon Ember','Segoe UI',Helvetica,sans-serif" font-size="16" font-weight="800" fill="#D13212">DANGER</text>
+  <text x="350" y="320" text-anchor="middle" font-family="'Amazon Ember','Segoe UI',Helvetica,sans-serif" font-size="16" font-weight="800" fill="#D13212">ZONE</text>
+</svg>

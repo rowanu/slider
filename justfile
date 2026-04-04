@@ -12,8 +12,10 @@
 
 icons_dir  := "aws-icons"
 decks_dir  := "decks"
+output_dir := "output"
 template   := "templates/_template.d2"
 d2_layout  := "elk"
+browser    := env("MARP_BROWSER", "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser")
 
 # Default: show available recipes
 default:
@@ -122,26 +124,19 @@ rebuild-catalog:
       | sed "s|^{{icons_dir}}/||" | sort > {{icons_dir}}/catalog.txt
     @echo "Catalog rebuilt: $(wc -l < {{icons_dir}}/catalog.txt) entries"
 
-# List available icons, optionally filtered by keyword
+# Search icons and output paths ready to paste into .d2 files
 # Usage: just icons           → list all
 #        just icons lambda    → filter
 icons filter="":
     @if [ -f {{icons_dir}}/catalog.txt ]; then \
         if [ -n "{{filter}}" ]; then \
-            grep -i "{{filter}}" {{icons_dir}}/catalog.txt || echo "(no matches for '{{filter}}')"; \
+            grep -i "{{filter}}" {{icons_dir}}/catalog.txt | sed "s|^|../{{icons_dir}}/|" || echo "(no matches for '{{filter}}')"; \
         else \
-            cat {{icons_dir}}/catalog.txt; \
+            sed "s|^|../{{icons_dir}}/|" {{icons_dir}}/catalog.txt; \
         fi \
     else \
         echo "No catalog found — run: just import-icons <icon-pack-dir>"; \
     fi
-
-# Show the full icon path ready to paste into a .d2 file
-# Usage: just icon-path lambda
-icon-path name:
-    @grep -i "{{name}}" {{icons_dir}}/catalog.txt \
-      | sed "s|^|../{{icons_dir}}/|" \
-      || echo "(no matches for '{{name}}')"
 
 # ── Decks ────────────────────────────────────────────────────────────────────
 
@@ -176,20 +171,20 @@ new-diagram deck name: ensure-symlink
 # Render a single diagram
 # Usage: just diagram my-talk my-architecture
 diagram deck name: ensure-symlink
-    @mkdir -p {{decks_dir}}/{{deck}}/.output
-    d2 --layout {{d2_layout}} {{decks_dir}}/{{deck}}/{{name}}.d2 {{decks_dir}}/{{deck}}/.output/{{name}}.svg
-    @echo "→ {{decks_dir}}/{{deck}}/.output/{{name}}.svg"
+    @mkdir -p {{output_dir}}/{{deck}}
+    d2 --layout {{d2_layout}} {{decks_dir}}/{{deck}}/{{name}}.d2 {{output_dir}}/{{deck}}/{{name}}.svg
+    @echo "→ {{output_dir}}/{{deck}}/{{name}}.svg"
 
 # Render all diagrams in a deck
 build-diagrams deck: ensure-symlink
     #!/usr/bin/env bash
     set -euo pipefail
     shopt -s nullglob
-    mkdir -p {{decks_dir}}/{{deck}}/.output
+    mkdir -p {{output_dir}}/{{deck}}
     for f in {{decks_dir}}/{{deck}}/*.d2; do
         name=$(basename "$f" .d2)
         echo "  → $name.svg"
-        d2 --layout {{d2_layout}} "$f" {{decks_dir}}/{{deck}}/.output/$name.svg
+        d2 --layout {{d2_layout}} "$f" {{output_dir}}/{{deck}}/$name.svg
     done
 
 # Watch a diagram and auto-re-render on save
@@ -197,33 +192,48 @@ build-diagrams deck: ensure-symlink
 watch-diagram deck name: ensure-symlink
     d2 --watch --layout {{d2_layout}} \
         {{decks_dir}}/{{deck}}/{{name}}.d2 \
-        {{decks_dir}}/{{deck}}/.output/{{name}}.svg
+        {{output_dir}}/{{deck}}/{{name}}.svg
 
 # ── Slides ────────────────────────────────────────────────────────────────────
 
 # Build a deck → HTML (renders diagrams first)
 # Usage: just slides my-talk
 slides name: (build-diagrams name)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    theme_flag=""
+    css=$(find {{decks_dir}}/{{name}} -maxdepth 1 -name '*.css' | head -1)
+    [ -n "$css" ] && theme_flag="--theme $css"
     marp {{decks_dir}}/{{name}}/slides.md \
-        --output {{decks_dir}}/{{name}}/.output/slides.html \
-        --allow-local-files
-    @echo "→ {{decks_dir}}/{{name}}/.output/slides.html"
+        --output {{output_dir}}/{{name}}/slides.html \
+        --allow-local-files $theme_flag
+    echo "→ {{output_dir}}/{{name}}/slides.html"
 
 # Build a deck → PDF (renders diagrams first)
 # Usage: just slides-pdf my-talk
 slides-pdf name: (build-diagrams name)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    theme_flag=""
+    css=$(find {{decks_dir}}/{{name}} -maxdepth 1 -name '*.css' | head -1)
+    [ -n "$css" ] && theme_flag="--theme $css"
     marp {{decks_dir}}/{{name}}/slides.md \
-        --output {{decks_dir}}/{{name}}/.output/slides.pdf \
-        --allow-local-files
-    @echo "→ {{decks_dir}}/{{name}}/.output/slides.pdf"
+        --output {{output_dir}}/{{name}}/slides.pdf \
+        --allow-local-files --browser-path "{{browser}}" $theme_flag
+    echo "→ {{output_dir}}/{{name}}/slides.pdf"
 
 # Watch a deck (live reload — open .output/slides.html in browser)
 # Usage: just watch my-talk
 watch name: (build-diagrams name)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    theme_flag=""
+    css=$(find {{decks_dir}}/{{name}} -maxdepth 1 -name '*.css' | head -1)
+    [ -n "$css" ] && theme_flag="--theme $css"
     marp --watch \
         {{decks_dir}}/{{name}}/slides.md \
-        --output {{decks_dir}}/{{name}}/.output/slides.html \
-        --allow-local-files
+        --output {{output_dir}}/{{name}}/slides.html \
+        --allow-local-files $theme_flag
 
 # ── Combo ─────────────────────────────────────────────────────────────────────
 
@@ -244,13 +254,8 @@ build: ensure-symlink
 
 # Delete all rendered output
 clean:
-    #!/usr/bin/env bash
-    shopt -s nullglob
-    for d in {{decks_dir}}/*/.output; do
-        rm -rf "$d"
-    done
-    rm -rf output/
-    echo "Cleaned all .output/ directories"
+    rm -rf {{output_dir}}/
+    echo "Cleaned {{output_dir}}/"
 
 # Delete imported icons (to re-import from updated pack)
 clean-icons:

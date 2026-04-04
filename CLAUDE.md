@@ -19,20 +19,19 @@ Verify with `just check`.
 ```bash
 just check                              # verify tools installed
 just import-icons <icon-pack-dir>       # one-time icon import from AWS ZIP pack
-just icons <keyword>                    # search icon catalog
-just icon-path <keyword>                # get full path for pasting into .d2 files
+just icons <keyword>                    # search icons, output paste-ready paths
 
 just new-deck <name>                    # scaffold a new deck → decks/<name>/slides.md
 just new-diagram <deck> <name>          # scaffold from template → decks/<deck>/<name>.d2
-just diagram <deck> <name>              # render single diagram → decks/<deck>/.output/<name>.svg
+just diagram <deck> <name>              # render single diagram → output/<deck>/<name>.svg
 just watch-diagram <deck> <name>        # auto-render on save
 
-just slides <name>                      # build all diagrams + slides → .output/slides.html
+just slides <name>                      # build all diagrams + slides → output/<name>/slides.html
 just slides-pdf <name>                  # build to PDF
 just watch <name>                       # live-reload slides
 
 just build                              # render all decks
-just clean                              # delete all .output/ directories
+just clean                              # delete output/ directory
 ```
 
 ## Architecture
@@ -42,7 +41,7 @@ just clean                              # delete all .output/ directories
 - `decks/<name>/` — one directory per presentation, containing:
   - `slides.md` — MARP slide deck (Markdown with YAML frontmatter)
   - `*.d2` — D2 diagram source files for this deck
-  - `.output/` — rendered SVGs and HTML/PDF (gitignored)
+- `output/<name>/` — rendered SVGs and HTML/PDF per deck (gitignored)
 - `templates/_template.d2` — scaffold for new diagrams.
 - `aws-icons/` — imported SVG icons at project root. `catalog.txt` is the searchable index.
   - `<category>/` — service icons (64px) and resource icons (48px) colocated by category
@@ -57,10 +56,44 @@ just clean                              # delete all .output/ directories
 - Containers (VPC, account boundaries) use styled groups with `style.stroke` and `style.fill`
 - Non-AWS actors use `shape: person`
 - Default layout direction is `right`
+- Connections: `->` one-way, `<->` bidirectional; dashed lines via `style.stroke-dash: 4` (for logging/monitoring flows)
+- Container color conventions used in examples:
+  - AWS account boundary: stroke `#232F3E`, fill `#FAFAFA`
+  - Agent/compute layer: stroke `#FF9900`, fill `#FFF8F0`
+  - Data layer: stroke `#3F8624`, fill `#F0FFF0`
+  - Security layer: stroke `#DD344C`, fill `#FFF5F5`
+
+### D2 Quick Reference
+
+```d2
+# AWS service node
+lambda: "Lambda" {
+  shape: image
+  icon: ../aws-icons/compute/aws-lambda.svg
+}
+
+# Container (VPC, account, subnet)
+vpc: "My VPC" {
+  style.stroke: "#232F3E"
+  style.fill: "#F8F8F8"
+  service_inside: "Service" {
+    shape: image
+    icon: ../aws-icons/...
+  }
+}
+
+# Connections
+client -> api: "HTTPS"
+lambda <-> dynamo: "read/write"
+cloudtrail -> lambda { style.stroke-dash: 4 }
+```
+
+Use `just icons <keyword>` to find paste-ready icon paths for `.d2` files.
 
 ## MARP Slide Conventions
 
-- Diagrams referenced as `![diagram w:900](.output/<name>.svg)` — the `diagram` alt text triggers auto-centering CSS
+- Diagrams referenced as `![diagram w:900](../../output/<deck>/<name>.svg)` — the `diagram` alt text triggers auto-centering CSS. Use `w:700` for diagrams needing more whitespace.
 - `--allow-local-files` is passed automatically by justfile recipes
 - `just slides` auto-builds all diagrams before rendering slides
-- Slide styling uses inline CSS in YAML frontmatter (`h1`/`h2` blue, `strong` orange)
+- Title slides use `<!-- _class: title -->` before the heading
+- Slide styling (defined in frontmatter CSS): `h1`/`h2` are blue (`#1836b2`), `strong` is orange (`#ff914d`), `h2` has an orange bottom border

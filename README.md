@@ -36,7 +36,7 @@ Re-run when AWS releases an updated icon pack.
 ```bash
 # Find the icon path you need
 just icons lambda
-just icon-path "api gateway"
+just icons "api gateway"
 
 # Start a new deck
 just new-deck my-talk
@@ -128,8 +128,8 @@ Icon paths use `../aws-icons/...` which resolves via a symlink at `decks/aws-ico
 
 - **LLM-assisted diagrams:** Paste your rough description + the relevant icon paths
   from `just icons` into Claude and ask it to write the D2 spec. Tweak from there.
-- **Icon path autocomplete:** `just icons <keyword>` + copy the path. `just icon-path`
-  prepends the `../aws-icons/` prefix ready to paste.
+- **Icon path autocomplete:** `just icons <keyword>` outputs paths with the `../aws-icons/`
+  prefix ready to paste into `.d2` files.
 - **Slide image sizing:** `w:900` in the alt text controls width. Adjust per slide.
   Use `w:700` for diagrams that need more white space around them.
 - **Auto diagram build:** `just slides <deck>` renders all diagrams before building

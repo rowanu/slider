@@ -1,0 +1,569 @@
+/* @theme aws-summit-sydney */
+
+/* ─────────────────────────────────────────────
+   AWS Summit Sydney — MARP Theme
+   Extracted from official AWS Builder Center PPTX.
+
+   Folder structure required:
+     images/
+       aws-logo-dark.svg       aws-logo-white.svg
+       aws-wordmark-dark.svg   aws-wordmark-white.svg
+       bg-blue-purple.png      bg-teal-wave.png
+       bg-pink-blue.png
+       grid-bar-dark.svg       grid-bar-light.svg
+       grid-panel-title.svg
+   ───────────────────────────────────────────── */
+
+@import 'default';
+
+/* ── Suppress MARP's own ::before overlay ── */
+section::before { content: none !important; display: none !important; }
+
+/* ── Page number — centred in footer bar ── */
+section::after {
+  font-size: 11px;
+  color: #8A92A0;
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  height: auto;
+  background: none;
+  text-shadow: none;
+}
+
+/* ── Base ── */
+section {
+  --aws-dark:   #151D25;
+  --aws-orange: #FF9900;
+  --aws-blue:   #41B3FF;
+  --aws-purple: #AC5BFF;
+  --aws-pink:   #FF57E9;
+  --aws-green:  #00E582;
+  --aws-mid:    #3D4B5C;
+
+  font-family: 'Amazon Ember Display', 'Amazon Ember', -apple-system,
+               'Segoe UI', Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  color: var(--aws-dark);
+  background-color: #FFFFFF;
+  padding: 0;
+  width: 1280px;
+  height: 720px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* ── Default content slide: white bg, bottom bar, logos ──
+   Grid bar at y=631 (89px tall). Logo at x=797 y=663. Wordmark at x=996 y=667.
+   ── */
+section {
+  background-image:
+    url("images/grid-bar-dark.svg"),
+    url("images/aws-logo-dark.svg"),
+    url("images/aws-wordmark-dark.svg");
+  background-repeat: no-repeat;
+  background-size:
+    1280px 89px,
+    50px auto,
+    202px auto;
+  background-position:
+    0 631px,
+    797px 663px,
+    996px 667px;
+}
+
+/* ── Typography ── */
+section h1 {
+  font-size: 34px;
+  font-weight: 400;
+  font-family: 'Courier New', 'Roboto Mono', monospace;
+  color: var(--aws-dark);
+  margin: 0 0 16px;
+  padding: 48px 64px 0;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+section p {
+  font-size: 22px;
+  line-height: 1.6;
+  color: var(--aws-dark);
+  margin: 0 0 8px;
+  padding: 0 64px;
+}
+
+section ul, section ol {
+  padding: 0 64px 0 88px;
+  margin: 0 0 24px;
+}
+
+section li {
+  font-size: 22px;
+  line-height: 1.8;
+  color: var(--aws-dark);
+}
+
+section strong { font-weight: 700; }
+section em { color: var(--aws-purple); font-style: normal; font-weight: 600; }
+
+section code {
+  background: #F0F2F5;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+section footer {
+  position: absolute;
+  bottom: 24px;
+  left: 48px;
+  font-size: 11px;
+  color: #8A92A0;
+}
+
+/* ── Two / three column helper ── */
+section .columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding: 0 64px;
+  margin-top: 8px;
+}
+section .columns.three { grid-template-columns: 1fr 1fr 1fr; }
+section .columns > div > p  { padding: 0; }
+section .columns > div > ul { padding-left: 20px; }
+
+/* ─────────────────────────────────────────────
+   TITLE (Cover A) — white left, gradient grid right
+   Logo top-right: x=1166 y=75. Wordmark inside panel: x=819 y=220.
+   Right panel: x=741, w=539, full height.
+   ───────────────────────────────────────────── */
+section.title {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 0 80px;
+  background-color: #FFFFFF;
+
+  background-image:
+    url("images/grid-panel-title.svg"),
+    url("images/aws-logo-dark.svg"),
+    url("images/aws-wordmark-dark.svg"),
+    url("images/aws-logo-dark.svg"),
+    url("images/bg-teal-wave.png");
+  background-repeat: no-repeat;
+  background-size:
+    539px 720px,
+    50px auto,
+    202px auto,
+    50px auto,
+    539px 720px;
+  background-position:
+    741px 0,
+    1166px 75px,
+    819px 220px,
+    797px 663px,
+    741px 0;
+}
+
+section.title h1 {
+  font-size: 40px;
+  font-weight: 400;
+  font-family: 'Courier New', 'Roboto Mono', monospace;
+  color: var(--aws-dark);
+  padding: 0 64px 8px;
+  margin: 0;
+  line-height: 1.15;
+  max-width: 700px;
+}
+
+section.title p {
+  font-size: 18px;
+  color: var(--aws-mid);
+  padding: 0 64px;
+  margin: 0 0 4px;
+  max-width: 700px;
+}
+
+section.title .date {
+  font-size: 13px;
+  color: #8A92A0;
+  display: block;
+  padding: 4px 64px 0;
+}
+
+/* ─────────────────────────────────────────────
+   TITLE DARK (Cover F.2) — full blue-purple gradient
+   Uses bg-blue-purple.png. White logos. Light grid bar.
+   ───────────────────────────────────────────── */
+section.title-dark {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 0 120px;
+  color: #FFFFFF;
+
+  background-image:
+    url("images/grid-bar-light.svg"),
+    url("images/aws-logo-white.svg"),
+    url("images/aws-wordmark-white.svg"),
+    url("images/bg-blue-purple.png");
+  background-repeat: no-repeat;
+  background-size:
+    1280px 89px,
+    50px auto,
+    202px auto,
+    cover;
+  background-position:
+    0 631px,
+    797px 663px,
+    996px 667px,
+    center center;
+  background-color: #2942C8;
+}
+
+section.title-dark h1 {
+  font-size: 40px;
+  font-weight: 400;
+  font-family: 'Courier New', 'Roboto Mono', monospace;
+  color: #FFFFFF;
+  padding: 0 64px 12px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+section.title-dark p {
+  font-size: 18px;
+  color: rgba(255,255,255,0.85);
+  padding: 0 64px;
+  margin: 0 0 4px;
+}
+
+/* ─────────────────────────────────────────────
+   DIVIDER — pink/blue gradient (image12.png)
+   ───────────────────────────────────────────── */
+section.divider {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+
+  background-image:
+    url("images/grid-bar-dark.svg"),
+    url("images/aws-logo-dark.svg"),
+    url("images/aws-wordmark-dark.svg"),
+    url("images/bg-pink-blue.png");
+  background-repeat: no-repeat;
+  background-size:
+    1280px 89px,
+    50px auto,
+    202px auto,
+    cover;
+  background-position:
+    0 631px,
+    797px 663px,
+    996px 667px,
+    center center;
+}
+
+section.divider h1 {
+  font-size: 44px;
+  font-weight: 400;
+  font-family: 'Courier New', 'Roboto Mono', monospace;
+  color: var(--aws-dark);
+  padding: 0 64px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+section.divider p {
+  font-size: 18px;
+  color: var(--aws-mid);
+  padding: 4px 64px 0;
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────
+   DIVIDER TEAL — teal/blue/purple wave (image1.png)
+   ───────────────────────────────────────────── */
+section.divider-teal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+
+  background-image:
+    url("images/grid-bar-light.svg"),
+    url("images/aws-logo-white.svg"),
+    url("images/aws-wordmark-white.svg"),
+    url("images/bg-teal-wave.png");
+  background-repeat: no-repeat;
+  background-size:
+    1280px 89px,
+    50px auto,
+    202px auto,
+    cover;
+  background-position:
+    0 631px,
+    797px 663px,
+    996px 667px,
+    center center;
+}
+
+section.divider-teal h1 {
+  font-size: 44px;
+  font-weight: 400;
+  font-family: 'Courier New', 'Roboto Mono', monospace;
+  color: #FFFFFF;
+  padding: 0 64px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+section.divider-teal p {
+  font-size: 18px;
+  color: rgba(255,255,255,0.8);
+  padding: 4px 64px 0;
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────
+   DIVIDER WHITE — plain white with dark grid
+   ───────────────────────────────────────────── */
+section.divider-white {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  background-color: #FFFFFF;
+
+  background-image:
+    url("images/grid-bar-dark.svg"),
+    url("images/aws-logo-dark.svg"),
+    url("images/aws-wordmark-dark.svg");
+  background-repeat: no-repeat;
+  background-size: 1280px 89px, 50px auto, 202px auto;
+  background-position:
+    0 631px,
+    797px 663px,
+    996px 667px;
+}
+
+section.divider-white h1 {
+  font-size: 44px;
+  font-weight: 400;
+  font-family: 'Courier New', 'Roboto Mono', monospace;
+  color: var(--aws-dark);
+  padding: 0 64px;
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────
+   DIVIDER BLUE — solid blue with dark text + grid
+   ───────────────────────────────────────────── */
+section.divider-blue {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  background-color: #33BBFF;
+
+  background-image:
+    url("images/grid-bar-dark.svg"),
+    url("images/aws-logo-dark.svg"),
+    url("images/aws-wordmark-dark.svg");
+  background-repeat: no-repeat;
+  background-size: 1280px 89px, 50px auto, 202px auto;
+  background-position:
+    0 631px,
+    797px 663px,
+    996px 667px;
+}
+
+section.divider-blue h1 {
+  font-size: 44px;
+  font-weight: 400;
+  font-family: 'Courier New', 'Roboto Mono', monospace;
+  color: var(--aws-dark);
+  padding: 0 64px;
+  margin: 0;
+}
+
+section.divider-blue p {
+  font-size: 18px;
+  color: var(--aws-dark);
+  padding: 4px 64px 0;
+  margin: 0;
+  opacity: 0.7;
+}
+
+/* ─────────────────────────────────────────────
+   QUOTE — cyan bg, large text, logos bottom-right
+   ───────────────────────────────────────────── */
+section.quote {
+  background-color: #33BBFF;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 80px;
+
+  background-image:
+    url("images/aws-logo-dark.svg"),
+    url("images/aws-wordmark-dark.svg");
+  background-repeat: no-repeat;
+  background-size: 50px auto, 202px auto;
+  background-position:
+    calc(100% - 52px) calc(100% - 24px),
+    calc(100% - 264px) calc(100% - 28px);
+}
+
+section.quote h1 {
+  font-size: 64px;
+  font-weight: 400;
+  font-family: 'Courier New', 'Roboto Mono', monospace;
+  color: var(--aws-dark);
+  padding: 0 96px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+section.quote p {
+  font-size: 20px;
+  color: var(--aws-dark);
+  opacity: 0.75;
+  padding: 8px 96px 0;
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────
+   CONTENT DARK — black bg, large monospace text
+   ───────────────────────────────────────────── */
+section.content-dark {
+  background-color: #0d0d0d;
+  background-image: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+section.content-dark h1 {
+  font-size: 64px;
+  font-weight: 400;
+  font-family: 'Courier New', 'Roboto Mono', monospace;
+  color: #FFFFFF;
+  text-align: center;
+  padding: 0 96px;
+  margin: 0;
+  line-height: 1.25;
+}
+
+/* ─────────────────────────────────────────────
+   AGENDA
+   ───────────────────────────────────────────── */
+section.agenda h1 {
+  font-size: 60px;
+  font-weight: 700;
+  padding: 48px 64px 24px;
+  margin: 0;
+  color: var(--aws-dark);
+}
+
+section.agenda ul {
+  padding: 0 64px 0 84px;
+}
+
+section.agenda li {
+  font-size: 16px;
+  line-height: 1.8;
+  list-style: disc;
+}
+
+/* ─────────────────────────────────────────────
+   STAT callout helpers
+   ───────────────────────────────────────────── */
+section .stat {
+  font-size: 72px;
+  font-weight: 800;
+  color: var(--aws-blue);
+  line-height: 1;
+  display: block;
+}
+
+section .stat-label {
+  font-size: 13px;
+  color: var(--aws-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 16px;
+}
+
+/* ─────────────────────────────────────────────
+   Tables — AWS-branded
+   ───────────────────────────────────────────── */
+section table {
+  width: auto;
+  margin: 8px 64px 16px;
+  border-collapse: collapse;
+  font-size: 18px;
+}
+
+section table th {
+  background: var(--aws-dark);
+  color: #FFFFFF;
+  font-weight: 700;
+  padding: 10px 20px;
+  text-align: left;
+  border: none;
+}
+
+section table td {
+  padding: 10px 20px;
+  border-bottom: 1px solid #E0E3E8;
+  color: var(--aws-dark);
+}
+
+section table tr:last-child td {
+  border-bottom: 2px solid var(--aws-dark);
+}
+
+/* ─────────────────────────────────────────────
+   Code blocks — sized for slides
+   ───────────────────────────────────────────── */
+section pre {
+  margin: 12px 64px;
+  padding: 16px 20px;
+  background: #F0F2F5;
+  border-radius: 8px;
+  border-left: 4px solid var(--aws-blue);
+  overflow-x: auto;
+  max-height: 400px;
+}
+
+section pre code {
+  font-size: 15px;
+  line-height: 1.5;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* ── Dark page number overrides for gradient/coloured slides ── */
+section.divider-teal::after,
+section.title-dark::after {
+  color: rgba(255,255,255,0.5);
+}
+
+section.quote::after,
+section.divider-blue::after {
+  color: var(--aws-dark);
+  opacity: 0.5;
+}

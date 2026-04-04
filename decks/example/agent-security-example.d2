@@ -2,7 +2,7 @@
 # Demonstrates: containers, multi-service flows, grouping
 # Render: just diagram agent-security-example
 
-direction: right
+direction: down
 
 # ── External ──────────────────────────────────────────────────────────────────
 
@@ -78,7 +78,7 @@ aws: "AWS Account" {
 
   # ── IAM (spans everything) ─────────────────────────────────────────────────
 
-  iam: "IAM Role\n(least privilege)" {
+  iam: "IAM Role\n(multi-line)" {
     shape: image
     icon: ../aws-icons/security-identity/aws-identity-and-access-management.svg
   }
@@ -88,7 +88,7 @@ aws: "AWS Account" {
 
 user -> aws.agent_layer.apigw: "HTTPS"
 aws.agent_layer.lambda -> aws.data_layer.s3: "GetObject"
-aws.agent_layer.lambda -> aws.data_layer.dynamo: "read/write state"
+aws.agent_layer.lambda -> aws.data_layer.dynamo: "Read/write state"
 aws.iam -> aws.agent_layer.lambda: "assumes"
 aws.security.cloudtrail -> aws.agent_layer.lambda: "logs all API calls" {
   style.stroke-dash: 4

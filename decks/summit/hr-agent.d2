@@ -1,0 +1,60 @@
+# HR Agent Architecture — AgentCore example
+# Render: just diagram example hr-agent
+
+direction: right
+
+# ── Actor ────────────────────────────────────────────────────────────────────
+
+employee: "Employee" {
+  shape: person
+  style.stroke: "#232F3E"
+  style.fill: "#232F3E"
+}
+
+# ── Agent ────────────────────────────────────────────────────────────────────
+
+hr_agent: "HR Agent" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+}
+
+# ── Tools container ─────────────────────────────────────────────────────────
+
+tools: "Tools" {
+  grid-columns: 4
+  style.stroke: "#232F3E"
+  style.fill: "#FAFAFA"
+  style.border-radius: 8
+
+  records: "Employee\nRecords" {
+    shape: image
+    icon: ../aws-icons/databases/amazon-dynamodb.svg
+  }
+
+  docs: "Resumes\n& Emails" {
+    shape: image
+    icon: ../aws-icons/analytics/amazon-cloudsearch_search-documents.svg
+  }
+
+  payroll: "Payroll\nSystem" {
+    shape: image
+    icon: ../aws-icons/cloud-financial-management/aws-cost-explorer.svg
+  }
+
+  calendar: "Calendar /\nScheduling" {
+    shape: image
+    icon: ../aws-icons/application-integration/amazon-eventbridge_scheduler.svg
+  }
+}
+
+# ── Connections ──────────────────────────────────────────────────────────────
+
+employee -> hr_agent: "natural language request" {
+  style.stroke: "#FF9900"
+  style.font-color: "#232F3E"
+}
+
+hr_agent -> tools: "tool calls" {
+  style.stroke: "#00A4A6"
+  style.font-color: "#232F3E"
+}
