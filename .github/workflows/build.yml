@@ -1,0 +1,94 @@
+name: Build Decks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'decks/**'
+      - 'aws-icons/**'
+      - 'templates/**'
+      - 'justfile'
+  workflow_dispatch:
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      decks: ${{ steps.detect.outputs.decks }}
+      has_decks: ${{ steps.detect.outputs.has_decks }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect changed decks
+        id: detect
+        run: |
+          all_decks() {
+            for dir in decks/*/; do
+              [ -L "${dir%/}" ] && continue
+              [ -f "$dir/slides.md" ] && basename "$dir"
+            done
+          }
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            decks=$(all_decks | jq -R -s -c 'split("\n") | map(select(. != ""))')
+          else
+            changed=$(git diff --name-only HEAD~1)
+
+            # Shared files changed → rebuild all decks
+            if echo "$changed" | grep -qE '^(aws-icons/|justfile|templates/)'; then
+              decks=$(all_decks | jq -R -s -c 'split("\n") | map(select(. != ""))')
+            else
+              decks=$(echo "$changed" \
+                | grep '^decks/' \
+                | cut -d/ -f2 \
+                | sort -u \
+                | while read -r name; do
+                    [ -L "decks/$name" ] && continue
+                    [ -f "decks/$name/slides.md" ] && echo "$name"
+                  done \
+                | jq -R -s -c 'split("\n") | map(select(. != ""))')
+            fi
+          fi
+
+          echo "decks=$decks" >> "$GITHUB_OUTPUT"
+          if [ "$decks" = "[]" ] || [ -z "$decks" ]; then
+            echo "has_decks=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_decks=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Detected decks: $decks"
+
+  build:
+    needs: detect
+    if: needs.detect.outputs.has_decks == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deck: ${{ fromJson(needs.detect.outputs.decks) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: extractions/setup-just@v2
+
+      - name: Install d2
+        run: curl -fsSL https://d2lang.com/install.sh | sh -s --
+
+      - name: Install marp-cli
+        run: npm install -g @marp-team/marp-cli
+
+      - name: Install Chromium dependencies
+        run: npx puppeteer browsers install chrome
+
+      - name: Build HTML slides
+        run: just slides ${{ matrix.deck }}
+
+      - name: Build PDF slides
+        run: just slides-pdf ${{ matrix.deck }}
+
+      - name: Upload deck artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.deck }}
+          path: output/${{ matrix.deck }}/

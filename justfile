@@ -15,7 +15,7 @@ decks_dir  := "decks"
 output_dir := "output"
 template   := "templates/_template.d2"
 d2_layout  := "elk"
-browser    := env("MARP_BROWSER", "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser")
+browser    := env("MARP_BROWSER", "")
 
 # Default: show available recipes
 default:
@@ -232,9 +232,11 @@ slides-pdf name: (copy-images name)
     theme_flag=""
     css=$(find {{decks_dir}}/{{name}} -maxdepth 1 -name '*.css' | head -1)
     [ -n "$css" ] && theme_flag="--theme $css"
+    browser_flag=""
+    [ -n "{{browser}}" ] && browser_flag="--browser-path \"{{browser}}\""
     marp {{decks_dir}}/{{name}}/slides.md \
         --output {{output_dir}}/{{name}}/slides.pdf \
-        --allow-local-files --browser-path "{{browser}}" $theme_flag
+        --allow-local-files $theme_flag $browser_flag
     echo "→ {{output_dir}}/{{name}}/slides.pdf"
 
 # Watch a deck (live reload — open .output/slides.html in browser)
