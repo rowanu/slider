@@ -10,7 +10,7 @@ footer: ""
 
 # Securing Amazon Bedrock AgentCore
 A Practical Framework
-<span class="date">AWS Summit Sydney • April 2026</span>
+<span class="date">Rowan Udell • AWS Summit Sydney • April 2026</span>
 
 ---
 
