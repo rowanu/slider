@@ -14,9 +14,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: extractions/setup-just@v2
+      - uses: extractions/setup-just@v3
 
       - name: Install d2
         run: curl -fsSL https://d2lang.com/install.sh | sh -s --
@@ -39,7 +39,7 @@ jobs:
           done
 
       - name: Upload decks
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: decks
           path: output/

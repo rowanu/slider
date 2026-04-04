@@ -205,8 +205,8 @@ copy-images deck: (build-diagrams deck)
     #!/usr/bin/env bash
     set -euo pipefail
     if [ -d {{decks_dir}}/{{deck}}/images ]; then
-        mkdir -p {{output_dir}}/{{deck}}/images
-        cp -r {{decks_dir}}/{{deck}}/images/ {{output_dir}}/{{deck}}/images/
+        rm -rf {{output_dir}}/{{deck}}/images
+        cp -r {{decks_dir}}/{{deck}}/images {{output_dir}}/{{deck}}/images
     fi
 
 # ── Slides ────────────────────────────────────────────────────────────────────
