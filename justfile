@@ -185,6 +185,10 @@ build-diagrams deck: ensure-symlink
         name=$(basename "$f" .d2)
         echo "  → $name.svg"
         d2 --layout {{d2_layout}} "$f" {{output_dir}}/{{deck}}/$name.svg
+        # Copy to deck images/ so slides can reference as images/name.svg
+        if [ -d {{decks_dir}}/{{deck}}/images ]; then
+            cp {{output_dir}}/{{deck}}/$name.svg {{decks_dir}}/{{deck}}/images/$name.svg
+        fi
     done
 
 # Watch a diagram and auto-re-render on save
@@ -195,8 +199,9 @@ watch-diagram deck name: ensure-symlink
         {{output_dir}}/{{deck}}/{{name}}.svg
 
 # Copy images directory to output (if it exists in the deck)
+# Depends on build-diagrams so rendered SVGs are in images/ before copying
 [private]
-copy-images deck:
+copy-images deck: (build-diagrams deck)
     #!/usr/bin/env bash
     set -euo pipefail
     if [ -d {{decks_dir}}/{{deck}}/images ]; then
@@ -208,7 +213,7 @@ copy-images deck:
 
 # Build a deck → HTML (renders diagrams first)
 # Usage: just slides my-talk
-slides name: (build-diagrams name) (copy-images name)
+slides name: (copy-images name)
     #!/usr/bin/env bash
     set -euo pipefail
     theme_flag=""
@@ -221,7 +226,7 @@ slides name: (build-diagrams name) (copy-images name)
 
 # Build a deck → PDF (renders diagrams first)
 # Usage: just slides-pdf my-talk
-slides-pdf name: (build-diagrams name) (copy-images name)
+slides-pdf name: (copy-images name)
     #!/usr/bin/env bash
     set -euo pipefail
     theme_flag=""
@@ -234,7 +239,7 @@ slides-pdf name: (build-diagrams name) (copy-images name)
 
 # Watch a deck (live reload — open .output/slides.html in browser)
 # Usage: just watch my-talk
-watch name: (build-diagrams name)
+watch name: (copy-images name)
     #!/usr/bin/env bash
     set -euo pipefail
     theme_flag=""

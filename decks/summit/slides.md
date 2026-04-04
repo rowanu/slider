@@ -159,61 +159,7 @@ Mapped to the Trifecta
 
 # The Map
 
-<!--
-  GRAPHIC: A three-column layout that mirrors the Venn diagram.
-
-  Each column represents one trifecta leg, with the AgentCore
-  services that mitigate it stacked below. Use the same colours
-  as the Venn diagram circles for visual continuity.
-
-  Column 1 (teal): "Sensitive Data"
-    → AgentCore Memory (KMS encryption icon)
-    → IAM Policies (shield icon)
-    → Resource-based policies
-
-  Column 2 (orange): "Untrusted Content"
-    → Bedrock Guardrails (filter icon)
-    → Memory best practices (validation icon)
-    → Secure prompt engineering
-
-  Column 3 (navy): "External Actions"
-    → AgentCore Policy / Cedar (policy document icon)
-    → AgentCore Gateway (gateway icon)
-    → AgentCore Identity (OAuth/key icon)
-
-  Connect each column to the corresponding Venn circle with a
-  dotted line or matching colour border to link back to the framework.
--->
-
-<div class="columns three">
-<div>
-
-**Sensitive Data**
-
-Unauthorized access
-
-*Memory* + *IAM*
-
-</div>
-<div>
-
-**Untrusted Content**
-
-Prompt injection, poisoning
-
-*Guardrails* + *Memory best practices*
-
-</div>
-<div>
-
-**External Actions**
-
-Uncontrolled tool use
-
-*Policy* + *Gateway* + *Identity*
-
-</div>
-</div>
+![diagram w:1150](images/trifecta-map.svg)
 
 ---
 
@@ -274,26 +220,7 @@ Not `bedrock-agentcore:*`. Never `*`.
 </div>
 <div>
 
-<!--
-  GRAPHIC: A simplified "pipeline" diagram showing content flowing
-  through security layers before reaching the agent.
-
-  Flow (top to bottom or left to right):
-
-  [Employee message / Resume / Email]
-       ↓
-  [Bedrock Guardrails] - label: "content filter + injection detection"
-       ↓
-  [Input validation] - label: "schema check, sanitise"
-       ↓
-  [HR Agent] - label: "hardened system prompt"
-
-  Each layer should look like a gate or filter.
-  Use red "X" on one path to show blocked malicious content.
-  Use green checkmark on clean path passing through.
-
-  This reinforces "defense in depth" - multiple layers, not one.
--->
+![diagram w:700](images/content-pipeline.svg)
 
 </div>
 </div>
@@ -349,21 +276,7 @@ The agent doesn't decide its own permissions. You do.
 - Identity-aware authorization
 - Agent acts *as* the user, not *instead of*
 
-<!--
-  GRAPHIC: A flow diagram showing identity propagation.
-
-  [Employee "Sarah"] - logs in via SSO
-       ↓ (OAuth token)
-  [HR Agent] - receives Sarah's identity context
-       ↓ (agent acts AS Sarah)
-  [AgentCore Gateway] - checks Cedar policy against Sarah's role
-       ↓ (permitted actions only)
-  [Payroll API] - Sarah can see her own record, not others
-
-  Key visual: Sarah's identity "flows through" the whole chain.
-  Contrast with a crossed-out alternative: "Agent uses service account
-  with full access" - show this as the WRONG way with a red X.
--->
+![diagram w:900](images/identity-flow.svg)
 
 </div>
 </div>
@@ -373,19 +286,19 @@ The agent doesn't decide its own permissions. You do.
 <!-- _class: divider-teal -->
 <!-- _paginate: skip -->
 
-# What To Do Monday
+# What To Do Tomorrow
 
 ---
 
 # Audit Your Agents
 
-![w:150](images/venn-trifecta-small.svg)
+![bg right:40% 80%](images/venn-trifecta.svg)
 
-1. Apply least privilege to agent IAM roles
-2. Use AgentCore Policy (Cedar) for tool boundaries - not agent code
-3. Encrypt memory, validate inputs, test for injection
-4. Enable CloudTrail + CloudWatch for agent activity
-5. Ask: does your agent *really* need all three legs?
+* Apply least privilege to agent IAM roles
+* Use AgentCore Policy (Cedar) for tool boundaries - not agent code
+* Encrypt memory, validate inputs, test for injection
+* Enable CloudTrail + CloudWatch for agent activity
+* Ask: does your agent *really* need all three legs?
 
 ---
 
@@ -397,11 +310,10 @@ Secure them like software.
 
 ---
 
-<!-- _class: title-dark -->
+<!-- _class: title-dark centered -->
 <!-- _paginate: skip -->
 
-# Thank You
-rowanudell.com
-<span class="date">I help teams move agents from prototype to production. Come say hi.</span>
+# Thank You!
+<span class="subtitle">I help teams move agents from prototype to production 👋</span>
 
-![w:200](images/linkedin-qr.png)
+![bg right:40% 80%](images/rowanu-linkedin-qr.svg)

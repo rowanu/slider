@@ -1,0 +1,82 @@
+# Defense in Depth — Content Filtering Pipeline
+# Shows untrusted content flowing through security layers before reaching the agent
+
+direction: down
+
+# ── Untrusted inputs ──────────────────────────────────────────────────────
+
+inputs: "Untrusted Content" {
+  grid-columns: 3
+  style.stroke: "#FF9900"
+  style.fill: "#FFF3E0"
+  style.border-radius: 8
+
+  messages: "Employee\nMessages" {
+    shape: image
+    icon: ../aws-icons/business-applications/aws-end-user-messaging.svg
+  }
+
+  resumes: "Resumes\n& CVs" {
+    shape: image
+    icon: ../aws-icons/analytics/amazon-cloudsearch_search-documents.svg
+  }
+
+  emails: "Forwarded\nEmails" {
+    shape: image
+    icon: ../aws-icons/business-applications/amazon-simple-email-service_email.svg
+  }
+}
+
+# ── Security layers ───────────────────────────────────────────────────────
+
+guardrails: "Bedrock Guardrails\nContent filter + injection detection" {
+  shape: image
+  icon: ../aws-icons/security-identity/aws-waf_filtering-rule.svg
+}
+
+validation: "Input Validation\nSchema check, sanitise, reject malformed" {
+  shape: image
+  icon: ../aws-icons/security-identity/amazon-inspector_agent.svg
+}
+
+agent: "HR Agent\nHardened system prompt" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+}
+
+# ── Flow ──────────────────────────────────────────────────────────────────
+
+inputs -> guardrails: {
+  style.stroke: "#DD344C"
+  style.stroke-width: 2
+}
+guardrails -> validation: "clean content ✓" {
+  style.stroke: "#FF9900"
+  style.stroke-width: 2
+  style.font-color: "#3F8624"
+  style.font-size: 14
+}
+validation -> agent: "validated ✓" {
+  style.stroke: "#3F8624"
+  style.stroke-width: 2
+  style.font-color: "#3F8624"
+  style.font-size: 14
+}
+
+# ── Blocked path ──────────────────────────────────────────────────────────
+
+blocked: "✗ Blocked" {
+  style.font-color: "#DD344C"
+  style.stroke: "#DD344C"
+  style.fill: "#FFF5F5"
+  style.border-radius: 8
+  style.font-size: 16
+  style.bold: true
+}
+
+guardrails -> blocked: "malicious content" {
+  style.stroke: "#DD344C"
+  style.stroke-dash: 4
+  style.font-color: "#DD344C"
+  style.font-size: 14
+}

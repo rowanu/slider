@@ -245,6 +245,20 @@ section.title-dark p {
   margin: 0 0 4px;
 }
 
+section.title-dark .subtitle {
+  font-size: 16px;
+  font-family: 'Courier New', 'Roboto Mono', monospace;
+  color: rgba(255,255,255,0.6);
+  display: block;
+  padding: 0;
+}
+
+/* ── Title-dark vertically centered (e.g. closing slide) ── */
+section.title-dark.centered {
+  justify-content: center;
+  padding: 0;
+}
+
 /* ─────────────────────────────────────────────
    DIVIDER — pink/blue gradient (image12.png)
    ───────────────────────────────────────────── */
@@ -567,3 +581,4 @@ section.divider-blue::after {
   color: var(--aws-dark);
   opacity: 0.5;
 }
+

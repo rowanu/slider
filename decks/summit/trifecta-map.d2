@@ -1,0 +1,103 @@
+# Trifecta → AgentCore Security Map
+# Three columns mapping each lethal trifecta leg to AgentCore mitigations
+
+direction: down
+
+# ── Trifecta legs (top row) ────────────────────────────────────────────────
+
+sensitive: "Sensitive Data" {
+  style.stroke: "#00A4A6"
+  style.fill: "#E6F7F7"
+  style.border-radius: 12
+  style.font-size: 20
+  style.bold: true
+
+  desc: |md
+    Unauthorized access
+  | {
+    style.font-size: 14
+  }
+}
+
+untrusted: "Untrusted Content" {
+  style.stroke: "#FF9900"
+  style.fill: "#FFF3E0"
+  style.border-radius: 12
+  style.font-size: 20
+  style.bold: true
+
+  desc: |md
+    Prompt injection, poisoning
+  | {
+    style.font-size: 14
+  }
+}
+
+external: "External Actions" {
+  style.stroke: "#232F3E"
+  style.fill: "#E8EAF0"
+  style.border-radius: 12
+  style.font-size: 20
+  style.bold: true
+
+  desc: |md
+    Uncontrolled tool use
+  | {
+    style.font-size: 14
+  }
+}
+
+# ── Mitigations (bottom row) ──────────────────────────────────────────────
+
+memory: "AgentCore Memory" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock.svg
+}
+
+kms: "KMS Encryption" {
+  shape: image
+  icon: ../aws-icons/security-identity/aws-key-management-service.svg
+}
+
+iam: "IAM Policies" {
+  shape: image
+  icon: ../aws-icons/security-identity/aws-identity-access-management_permissions.svg
+}
+
+guardrails: "Bedrock\nGuardrails" {
+  shape: image
+  icon: ../aws-icons/security-identity/aws-waf_filtering-rule.svg
+}
+
+validation: "Input\nValidation" {
+  shape: image
+  icon: ../aws-icons/security-identity/amazon-inspector_agent.svg
+}
+
+policy: "AgentCore\nPolicy (Cedar)" {
+  shape: image
+  icon: ../aws-icons/security-identity/amazon-verified-permissions.svg
+}
+
+gateway: "AgentCore\nGateway" {
+  shape: image
+  icon: ../aws-icons/networking-content-delivery/amazon-api-gateway.svg
+}
+
+identity: "AgentCore\nIdentity" {
+  shape: image
+  icon: ../aws-icons/security-identity/aws-iam-identity-center.svg
+}
+
+# ── Connections ───────────────────────────────────────────────────────────
+
+sensitive -> memory: "" { style.stroke: "#00A4A6" }
+sensitive -> kms: "" { style.stroke: "#00A4A6" }
+sensitive -> iam: "" { style.stroke: "#00A4A6" }
+
+untrusted -> guardrails: "" { style.stroke: "#FF9900" }
+untrusted -> validation: "" { style.stroke: "#FF9900" }
+
+external -> policy: "" { style.stroke: "#232F3E" }
+external -> gateway: "" { style.stroke: "#232F3E" }
+external -> identity: "" { style.stroke: "#232F3E" }
