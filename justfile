@@ -184,10 +184,10 @@ build-diagrams deck: ensure-symlink
     for f in {{decks_dir}}/{{deck}}/*.d2; do
         name=$(basename "$f" .d2)
         echo "  → $name.svg"
-        d2 --layout {{d2_layout}} "$f" {{output_dir}}/{{deck}}/$name.svg
-        # Copy to deck images/ so slides can reference as images/name.svg
         if [ -d {{decks_dir}}/{{deck}}/images ]; then
-            cp {{output_dir}}/{{deck}}/$name.svg {{decks_dir}}/{{deck}}/images/$name.svg
+            d2 --layout {{d2_layout}} "$f" {{decks_dir}}/{{deck}}/images/$name.svg
+        else
+            d2 --layout {{d2_layout}} "$f" {{output_dir}}/{{deck}}/$name.svg
         fi
     done
 
