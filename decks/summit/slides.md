@@ -94,10 +94,10 @@ Any concerns?
 
 The agent can see what employees can't see about each other
 
-* Employee records - names, salaries, performance reviews
-* Payroll data - bank accounts, tax file numbers
-* Leave balances and medical certificates
-* Onboarding documents - ID copies, contracts
+- Employee records - names, salaries, performance reviews
+- Payroll data - bank accounts, tax file numbers
+- Leave balances and medical certificates
+- Onboarding documents - ID copies, contracts
 
 ---
 
@@ -105,10 +105,10 @@ The agent can see what employees can't see about each other
 
 LLMs follow instructions in content, regardless of source
 
-* Employee chat messages
-* Uploaded resumes and CVs
-* Forwarded emails
-* RAG results from the knowledge base
+- Employee chat messages
+- Uploaded resumes and CVs
+- Forwarded emails
+- RAG results from the knowledge base
 
 ---
 
@@ -116,10 +116,10 @@ LLMs follow instructions in content, regardless of source
 
 Data exfiltration as a feature
 
-* Update payroll
-* Send offer letters
-* Book onboarding meetings
-* Call external APIs
+- Update payroll
+- Send offer letters
+- Book onboarding meetings
+- Call external APIs
 
 ---
 
@@ -276,10 +276,10 @@ The agent doesn't decide its own permissions. You do.
 - Identity-aware authorization
 - Agent acts *as* the user, not *instead of*
 
-![diagram w:900](images/identity-flow.svg)
+</div>
+</div>
 
-</div>
-</div>
+![diagram w:1150](images/identity-flow.svg)
 
 ---
 
