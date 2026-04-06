@@ -28,6 +28,7 @@ just watch-diagram <deck> <name>        # auto-render on save
 
 just slides <name>                      # build all diagrams + slides → output/<name>/slides.html
 just slides-pdf <name>                  # build to PDF
+just slides-pptx <name>                 # build to PPTX
 just watch <name>                       # live-reload slides
 
 just build                              # render all decks

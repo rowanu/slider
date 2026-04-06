@@ -239,6 +239,21 @@ slides-pdf name: (copy-images name)
         --allow-local-files $theme_flag $browser_flag
     echo "→ {{output_dir}}/{{name}}/slides.pdf"
 
+# Build a deck → PPTX (renders diagrams first)
+# Usage: just slides-pptx my-talk
+slides-pptx name: (copy-images name)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    theme_flag=""
+    css=$(find {{decks_dir}}/{{name}} -maxdepth 1 -name '*.css' | head -1)
+    [ -n "$css" ] && theme_flag="--theme $css"
+    browser_flag=""
+    [ -n "{{browser}}" ] && browser_flag="--browser-path \"{{browser}}\""
+    marp {{decks_dir}}/{{name}}/slides.md \
+        --output {{output_dir}}/{{name}}/slides.pptx \
+        --allow-local-files $theme_flag $browser_flag
+    echo "→ {{output_dir}}/{{name}}/slides.pptx"
+
 # Watch a deck (live reload — open .output/slides.html in browser)
 # Usage: just watch my-talk
 watch name: (copy-images name)
