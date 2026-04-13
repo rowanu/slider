@@ -15,7 +15,8 @@ decks_dir  := "decks"
 output_dir := "output"
 template   := "templates/_template.d2"
 d2_layout  := "elk"
-browser    := env("MARP_BROWSER", "")
+browser    := env("MARP_BROWSER", env("CHROME_PATH", ""))
+brave_path := "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
 
 # Default: show available recipes
 default:
@@ -224,35 +225,29 @@ slides name: (copy-images name)
         --allow-local-files $theme_flag
     echo "→ {{output_dir}}/{{name}}/slides.html"
 
-# Build a deck → PDF (renders diagrams first)
-# Usage: just slides-pdf my-talk
-slides-pdf name: (copy-images name)
+# Build a deck with browser rendering (PDF/PPTX need a Chromium browser)
+[private]
+marp-render name ext: (copy-images name)
     #!/usr/bin/env bash
     set -euo pipefail
-    theme_flag=""
+    args=({{decks_dir}}/{{name}}/slides.md --output {{output_dir}}/{{name}}/slides.{{ext}} --allow-local-files)
     css=$(find {{decks_dir}}/{{name}} -maxdepth 1 -name '*.css' | head -1)
-    [ -n "$css" ] && theme_flag="--theme $css"
-    browser_flag=""
-    [ -n "{{browser}}" ] && browser_flag="--browser-path \"{{browser}}\""
-    marp {{decks_dir}}/{{name}}/slides.md \
-        --output {{output_dir}}/{{name}}/slides.pdf \
-        --allow-local-files $theme_flag $browser_flag
-    echo "→ {{output_dir}}/{{name}}/slides.pdf"
+    [ -n "$css" ] && args+=(--theme "$css")
+    browser="{{browser}}"
+    if [ -z "$browser" ] && [ -x "{{brave_path}}" ]; then
+        browser="{{brave_path}}"
+    fi
+    [ -n "$browser" ] && args+=(--browser-path "$browser")
+    marp "${args[@]}"
+    echo "→ {{output_dir}}/{{name}}/slides.{{ext}}"
+
+# Build a deck → PDF (renders diagrams first)
+# Usage: just slides-pdf my-talk
+slides-pdf name: (marp-render name "pdf")
 
 # Build a deck → PPTX (renders diagrams first)
 # Usage: just slides-pptx my-talk
-slides-pptx name: (copy-images name)
-    #!/usr/bin/env bash
-    set -euo pipefail
-    theme_flag=""
-    css=$(find {{decks_dir}}/{{name}} -maxdepth 1 -name '*.css' | head -1)
-    [ -n "$css" ] && theme_flag="--theme $css"
-    browser_flag=""
-    [ -n "{{browser}}" ] && browser_flag="--browser-path \"{{browser}}\""
-    marp {{decks_dir}}/{{name}}/slides.md \
-        --output {{output_dir}}/{{name}}/slides.pptx \
-        --allow-local-files $theme_flag $browser_flag
-    echo "→ {{output_dir}}/{{name}}/slides.pptx"
+slides-pptx name: (marp-render name "pptx")
 
 # Watch a deck (live reload — open .output/slides.html in browser)
 # Usage: just watch my-talk
