@@ -12,7 +12,7 @@ A slide-production pipeline combining **MARP** (Markdown → HTML/PDF slides) wi
 - `marp` (MARP CLI, installed via npm)
 - `just` (command runner)
 
-Verify with `just check`.
+Verify with `just check`. PDF/PPTX output requires a Chromium browser — justfile auto-detects Brave, or set `MARP_BROWSER`/`CHROME_PATH`.
 
 ## Key Commands
 
@@ -22,6 +22,8 @@ just import-icons <icon-pack-dir>       # one-time icon import from AWS ZIP pack
 just icons <keyword>                    # search icons, output paste-ready paths
 
 just new-deck <name>                    # scaffold a new deck → decks/<name>/slides.md
+just new-deck <name> dark               # scaffold with dark theme
+just theme <deck> dark                  # switch a deck's theme (light/dark)
 just new-diagram <deck> <name>          # scaffold from template → decks/<deck>/<name>.d2
 just diagram <deck> <name>              # render single diagram → output/<deck>/<name>.svg
 just watch-diagram <deck> <name>        # auto-render on save
@@ -42,8 +44,10 @@ just clean                              # delete output/ directory
 - `decks/<name>/` — one directory per presentation, containing:
   - `slides.md` — MARP slide deck (Markdown with YAML frontmatter)
   - `*.d2` — D2 diagram source files for this deck
-- `output/<name>/` — rendered SVGs and HTML/PDF per deck (gitignored)
-- `templates/_template.d2` — scaffold for new diagrams.
+  - `images/` — (optional) static images + rendered diagram SVGs. When this dir exists, `build-diagrams` renders SVGs here instead of `output/`.
+  - `theme.css` — deck-specific MARP theme (created by `new-deck`, switchable with `just theme`)
+- `output/<name>/` — rendered SVGs (when no `images/` dir) and HTML/PDF per deck (gitignored)
+- `templates/` — `_template.d2` scaffold, `slides.md` template, `light.css`/`dark.css` themes, shared `images/`
 - `aws-icons/` — imported SVG icons at project root. `catalog.txt` is the searchable index.
   - `<category>/` — service icons (64px) and resource icons (48px) colocated by category
   - `groups/` — group icons (VPC, subnet, account boundaries)
@@ -93,8 +97,12 @@ Use `just icons <keyword>` to find paste-ready icon paths for `.d2` files.
 
 ## MARP Slide Conventions
 
-- Diagrams referenced as `![diagram w:900](../../output/<deck>/<name>.svg)` — the `diagram` alt text triggers auto-centering CSS. Use `w:700` for diagrams needing more whitespace.
+- **Diagram image paths** depend on where SVGs live:
+  - Decks with `images/` dir (e.g. summit): `![w:900](images/<name>.svg)` — relative to deck
+  - Decks without `images/` dir: `![diagram w:900](../../output/<deck>/<name>.svg)`
+- The `diagram` alt text triggers auto-centering CSS in the default themes. Use `w:700` for diagrams needing more whitespace.
 - `--allow-local-files` is passed automatically by justfile recipes
 - `just slides` auto-builds all diagrams before rendering slides
-- Title slides use `<!-- _class: title -->` before the heading
-- Slide styling (defined in frontmatter CSS): `h1`/`h2` are blue (`#1836b2`), `strong` is orange (`#ff914d`), `h2` has an orange bottom border
+- Slide classes via `<!-- _class: <name> -->` — default themes provide `title`; custom deck CSS (like summit's) can define additional classes (`divider`, `title-dark`, etc.)
+- Default theme styling: `h1`/`h2` are blue (`#1836b2`), `strong` is orange (`#ff914d`), `h2` has an orange bottom border. Dark theme uses blue `#6ea8fe` instead.
+- Decks can use fully custom CSS (see `decks/summit/aws-summit-sydney.css`) — set the theme name in both the CSS `/* @theme name */` comment and slides frontmatter `theme: name`

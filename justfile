@@ -311,6 +311,50 @@ build: ensure-symlink
         fi
     done
 
+# Generate index page listing all built decks
+index:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    mkdir -p {{output_dir}}
+    cat > {{output_dir}}/index.html <<'HEADER'
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Slides</title>
+    <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 4rem auto; padding: 0 1rem; color: #1a1a1a; }
+    h1 { font-size: 1.5rem; margin-bottom: 2rem; }
+    ul { list-style: none; }
+    li { padding: 0.75rem 0; border-bottom: 1px solid #eee; }
+    a { color: #1836b2; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .formats { font-size: 0.85rem; color: #666; margin-left: 0.5rem; }
+    .formats a { color: #666; }
+    </style>
+    </head>
+    <body>
+    <h1>Slides</h1>
+    <ul>
+    HEADER
+    shopt -s nullglob
+    for html in {{output_dir}}/*/slides.html; do
+        deck=$(basename "$(dirname "$html")")
+        echo "<li><a href=\"$deck/slides.html\">$deck</a>" >> {{output_dir}}/index.html
+        formats=""
+        [ -f "{{output_dir}}/$deck/slides.pdf" ] && formats="<a href=\"$deck/slides.pdf\">pdf</a>"
+        [ -n "$formats" ] && echo "<span class=\"formats\">($formats)</span>" >> {{output_dir}}/index.html
+        echo "</li>" >> {{output_dir}}/index.html
+    done
+    cat >> {{output_dir}}/index.html <<'FOOTER'
+    </ul>
+    </body>
+    </html>
+    FOOTER
+    echo "→ {{output_dir}}/index.html"
+
 # Delete all rendered output
 clean:
     rm -rf {{output_dir}}/

@@ -10,6 +10,15 @@ on:
       - 'justfile'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -41,8 +50,27 @@ jobs:
             just slides-pdf "$(basename "$dir")"
           done
 
-      - name: Upload decks
+      - name: Generate index page
+        run: just index
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
           name: decks
           path: output/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: output/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
