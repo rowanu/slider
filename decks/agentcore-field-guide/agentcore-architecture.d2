@@ -1,0 +1,117 @@
+# AgentCore Architecture — How the services connect at runtime
+
+direction: right
+
+# ── External ──────────────────────────────────────────────────────────────────
+
+user: "User / App" {
+  shape: person
+}
+
+# ── Agent Compute ─────────────────────────────────────────────────────────────
+
+compute: "Agent Compute" {
+  style.stroke: "#FF9900"
+  style.fill: "#FFF8F0"
+
+  runtime: "Runtime" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  code_interpreter: "Code Interpreter" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  browser: "Browser" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  runtime -> code_interpreter: "execute code"
+  runtime -> browser: "browse web"
+}
+
+# ── Integration ───────────────────────────────────────────────────────────────
+
+gateway: "Gateway" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+}
+
+memory: "Memory" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+}
+
+tools: "External Tools\n(Slack, Jira, APIs)" {
+  shape: cloud
+}
+
+# ── Security ──────────────────────────────────────────────────────────────────
+
+security: "Security & Governance" {
+  style.stroke: "#DD344C"
+  style.fill: "#FFF5F5"
+
+  identity: "Identity" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  policy: "Policy" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  registry: "Registry" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+}
+
+# ── Observability ─────────────────────────────────────────────────────────────
+
+monitoring: "Observe & Evaluate" {
+  style.stroke: "#3F8624"
+  style.fill: "#F0FFF0"
+
+  observability: "Observability" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  evaluations: "Evaluations" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+}
+
+# ── LLM ───────────────────────────────────────────────────────────────────────
+
+bedrock: "Bedrock / Any LLM" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock.svg
+}
+
+# ── Connections ───────────────────────────────────────────────────────────────
+
+user -> security.identity: "authenticate"
+user -> compute.runtime: "invoke"
+compute.runtime -> bedrock: "InvokeModel"
+compute.runtime -> gateway: "call tools"
+compute.runtime <-> memory: "read/write context"
+gateway -> tools: "MCP"
+security.policy -> gateway: "intercept" {
+  style.stroke-dash: 4
+}
+security.registry -> gateway: "discover" {
+  style.stroke-dash: 4
+}
+monitoring.observability -> compute.runtime: "traces" {
+  style.stroke-dash: 4
+}
+monitoring.evaluations -> compute.runtime: "evaluate" {
+  style.stroke-dash: 4
+}

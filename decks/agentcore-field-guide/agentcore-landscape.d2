@@ -1,0 +1,88 @@
+# AgentCore Service Landscape
+# All 10 services grouped by concern
+
+direction: down
+
+agentcore: "Amazon Bedrock AgentCore" {
+  style.stroke: "#232F3E"
+  style.fill: "#FAFAFA"
+  style.font-color: "#232F3E"
+
+  # ── Run Your Agent ─────────────────────────────────────────────────────────
+
+  run: "Run Your Agent" {
+    style.stroke: "#FF9900"
+    style.fill: "#FFF8F0"
+
+    runtime: "Runtime" {
+      shape: image
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    }
+
+    code_interpreter: "Code Interpreter" {
+      shape: image
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    }
+
+    browser: "Browser" {
+      shape: image
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    }
+  }
+
+  # ── Connect to the World ──────────────────────────────────────────────────
+
+  connect: "Connect to the World" {
+    style.stroke: "#00A4A6"
+    style.fill: "#E6F7F7"
+
+    gateway: "Gateway" {
+      shape: image
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    }
+
+    memory: "Memory" {
+      shape: image
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    }
+  }
+
+  # ── Secure & Govern ───────────────────────────────────────────────────────
+
+  secure: "Secure & Govern" {
+    style.stroke: "#DD344C"
+    style.fill: "#FFF5F5"
+
+    identity: "Identity" {
+      shape: image
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    }
+
+    policy: "Policy" {
+      shape: image
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    }
+
+    registry: "Registry" {
+      shape: image
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    }
+  }
+
+  # ── Observe & Evaluate ────────────────────────────────────────────────────
+
+  observe: "Observe & Evaluate" {
+    style.stroke: "#3F8624"
+    style.fill: "#F0FFF0"
+
+    observability: "Observability" {
+      shape: image
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    }
+
+    evaluations: "Evaluations" {
+      shape: image
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    }
+  }
+}

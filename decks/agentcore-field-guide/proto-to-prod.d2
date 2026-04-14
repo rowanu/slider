@@ -1,0 +1,84 @@
+# Prototype to Production — which services matter at each stage
+
+direction: right
+
+# ── Stage 1: Prototype ────────────────────────────────────────────────────────
+
+prototype: "Prototype\nGet it working" {
+  style.stroke: "#FF9900"
+  style.fill: "#FFF8F0"
+
+  runtime: "Runtime" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  gateway: "Gateway" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+}
+
+# ── Stage 2: Hardening ────────────────────────────────────────────────────────
+
+hardening: "Hardening\nMake it safe" {
+  style.stroke: "#DD344C"
+  style.fill: "#FFF5F5"
+
+  identity: "Identity" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  policy: "Policy\n(LOG_ONLY)" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  memory: "Memory" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  observability: "Observability" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+}
+
+# ── Stage 3: Production ──────────────────────────────────────────────────────
+
+production: "Production\nRun with confidence" {
+  style.stroke: "#3F8624"
+  style.fill: "#F0FFF0"
+
+  policy_enforce: "Policy\n(ENFORCE)" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  evaluations: "Evaluations" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  registry: "Registry" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  code_interpreter: "Code Interpreter" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  browser: "Browser" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+}
+
+# ── Flow ──────────────────────────────────────────────────────────────────────
+
+prototype -> hardening: "layer on"
+hardening -> production: "go live"
