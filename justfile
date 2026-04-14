@@ -142,16 +142,48 @@ icons filter="":
 # ── Decks ────────────────────────────────────────────────────────────────────
 
 # Scaffold a new deck
-# Usage: just new-deck my-talk
-new-deck name: ensure-symlink
-    @mkdir -p {{decks_dir}}/{{name}}
-    @if [ -f {{decks_dir}}/{{name}}/slides.md ]; then \
-        echo "Already exists: {{decks_dir}}/{{name}}/slides.md"; \
-    else \
-        printf -- '---\nmarp: true\ntheme: default\npaginate: true\n---\n\n# {{name}}\n\n' \
-            > {{decks_dir}}/{{name}}/slides.md; \
-        echo "Created: {{decks_dir}}/{{name}}/slides.md"; \
+# Usage: just new-deck my-talk         (light theme, default)
+#        just new-deck my-talk dark     (dark theme)
+new-deck name theme="light": ensure-symlink
+    #!/usr/bin/env bash
+    set -euo pipefail
+    deck="{{decks_dir}}/{{name}}"
+    if [ -f "$deck/slides.md" ]; then
+        echo "Already exists: $deck/slides.md"
+        exit 0
     fi
+    mkdir -p "$deck/images"
+    # Copy theme CSS
+    if [ -f "templates/{{theme}}.css" ]; then
+        cp "templates/{{theme}}.css" "$deck/theme.css"
+    else
+        echo "Unknown theme: {{theme}} (available: light, dark)"
+        exit 1
+    fi
+    # Copy template images
+    if [ -d templates/images ]; then
+        cp templates/images/* "$deck/images/" 2>/dev/null || true
+    fi
+    # Copy and customize slides template
+    sed "s/DECK_NAME/{{name}}/" templates/slides.md > "$deck/slides.md"
+    # Update theme reference in frontmatter to match CSS
+    theme_name=$(grep -o '/\* @theme [^ ]*' "$deck/theme.css" | awk '{print $3}')
+    [ -n "$theme_name" ] && sed -i '' "s/^theme: .*/theme: $theme_name/" "$deck/slides.md"
+    echo "Created: $deck/ (theme: {{theme}})"
+
+# Switch a deck's theme
+# Usage: just theme my-talk dark
+theme deck variant="light":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [ ! -f "templates/{{variant}}.css" ]; then
+        echo "Unknown theme: {{variant}} (available: light, dark)"
+        exit 1
+    fi
+    cp "templates/{{variant}}.css" "{{decks_dir}}/{{deck}}/theme.css"
+    theme_name=$(grep -o '/\* @theme [^ ]*' "{{decks_dir}}/{{deck}}/theme.css" | awk '{print $3}')
+    [ -n "$theme_name" ] && sed -i '' "s/^theme: .*/theme: $theme_name/" "{{decks_dir}}/{{deck}}/slides.md"
+    echo "→ {{deck}} now uses {{variant}} theme"
 
 # Add a new diagram to a deck from the template
 # Usage: just new-diagram my-talk my-architecture
