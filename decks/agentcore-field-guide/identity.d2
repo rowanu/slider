@@ -1,0 +1,43 @@
+direction: right
+
+# ── User ─────────────────────────────────────────────────────────────────────
+
+user: "User" {
+  shape: person
+}
+
+# ── Identity ─────────────────────────────────────────────────────────────────
+
+identity: "Identity" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+}
+
+# ── Agent ────────────────────────────────────────────────────────────────────
+
+agent_arn: "Agent\n(unique ARN)" {
+  shape: image
+  icon: ../aws-icons/security-identity/aws-iam-identity-center.svg
+}
+
+# ── Credential Vault ─────────────────────────────────────────────────────────
+
+vault: "Credential Vault" {
+  shape: image
+  icon: ../aws-icons/security-identity/aws-secrets-manager.svg
+}
+
+# ── Downstream Tools ─────────────────────────────────────────────────────────
+
+tools: "Tools & APIs" {
+  shape: cloud
+}
+
+# ── Connections ──────────────────────────────────────────────────────────────
+
+user -> identity: "OAuth 2.0\ndelegate access"
+identity -> agent_arn: "issue credentials"
+agent_arn -> tools: "act as user"
+vault -> agent_arn: "3rd-party tokens" {
+  style.stroke-dash: 4
+}

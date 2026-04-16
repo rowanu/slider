@@ -1,84 +1,99 @@
-# Prototype to Production — which services matter at each stage
+# Prototype to Production — inverted pyramid, bottom to top
 
-direction: right
+grid-rows: 6
+grid-gap: 4
 
-# ── Stage 1: Prototype ────────────────────────────────────────────────────────
+# ── Production (widest) ─────────────────────────────────────────────────────
 
-prototype: "Prototype\nGet it working" {
-  style.stroke: "#FF9900"
-  style.fill: "#FFF8F0"
-
-  runtime: "Runtime" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
-  }
-
-  gateway: "Gateway" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
-  }
-}
-
-# ── Stage 2: Hardening ────────────────────────────────────────────────────────
-
-hardening: "Hardening\nMake it safe" {
-  style.stroke: "#DD344C"
-  style.fill: "#FFF5F5"
-
-  identity: "Identity" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
-  }
-
-  policy: "Policy\n(LOG_ONLY)" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
-  }
-
-  memory: "Memory" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
-  }
-
-  observability: "Observability" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
-  }
-}
-
-# ── Stage 3: Production ──────────────────────────────────────────────────────
-
-production: "Production\nRun with confidence" {
+production: "Production" {
   style.stroke: "#3F8624"
   style.fill: "#F0FFF0"
+  grid-columns: 5
 
   policy_enforce: "Policy\n(ENFORCE)" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    style.fill: "#3F8624"
+    style.font-color: "#FFFFFF"
   }
-
   evaluations: "Evaluations" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    style.fill: "#3F8624"
+    style.font-color: "#FFFFFF"
   }
-
   registry: "Registry" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    style.fill: "#3F8624"
+    style.font-color: "#FFFFFF"
   }
-
-  code_interpreter: "Code Interpreter" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  code_interpreter: "Code\nInterpreter" {
+    style.fill: "#3F8624"
+    style.font-color: "#FFFFFF"
   }
-
   browser: "Browser" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    style.fill: "#3F8624"
+    style.font-color: "#FFFFFF"
   }
 }
 
-# ── Flow ──────────────────────────────────────────────────────────────────────
+label1: "Run with confidence" {
+  style.stroke: transparent
+  style.fill: transparent
+  style.font-size: 18
+  style.font-color: "#3F8624"
+  style.bold: true
+}
 
-prototype -> hardening: "layer on"
-hardening -> production: "go live"
+# ── Hardening (medium) ──────────────────────────────────────────────────────
+
+hardening: "Hardening" {
+  style.stroke: "#DD344C"
+  style.fill: "#FFF5F5"
+  grid-columns: 4
+
+  identity: "Identity" {
+    style.fill: "#DD344C"
+    style.font-color: "#FFFFFF"
+  }
+  policy: "Policy\n(LOG_ONLY)" {
+    style.fill: "#DD344C"
+    style.font-color: "#FFFFFF"
+  }
+  memory: "Memory" {
+    style.fill: "#DD344C"
+    style.font-color: "#FFFFFF"
+  }
+  observability: "Observability" {
+    style.fill: "#DD344C"
+    style.font-color: "#FFFFFF"
+  }
+}
+
+label2: "Make it safe" {
+  style.stroke: transparent
+  style.fill: transparent
+  style.font-size: 18
+  style.font-color: "#DD344C"
+  style.bold: true
+}
+
+# ── Prototype (narrowest) ───────────────────────────────────────────────────
+
+prototype: "Prototype" {
+  style.stroke: "#FF9900"
+  style.fill: "#FFF8F0"
+  grid-columns: 2
+
+  runtime: "Runtime" {
+    style.fill: "#FF9900"
+    style.font-color: "#FFFFFF"
+  }
+  gateway: "Gateway" {
+    style.fill: "#FF9900"
+    style.font-color: "#FFFFFF"
+  }
+}
+
+label3: "Get it working" {
+  style.stroke: transparent
+  style.fill: transparent
+  style.font-size: 18
+  style.font-color: "#FF9900"
+  style.bold: true
+}

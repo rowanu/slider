@@ -1,0 +1,34 @@
+/* @theme slider-dark */
+@import 'default';
+
+section {
+  font-family: system-ui, sans-serif;
+  font-size: 1.6rem;
+  background: #1a1a2e;
+  color: #e0e0e0;
+}
+
+section.title {
+  text-align: center;
+  justify-content: center;
+}
+
+h1 { color: #6ea8fe; }
+h2 { color: #6ea8fe; border-bottom: 2px solid #ff914d; padding-bottom: 0.2em; }
+strong { color: #ff914d; }
+
+a { color: #6ea8fe; }
+
+code {
+  background: #2d2d44;
+  color: #e0e0e0;
+}
+
+pre {
+  background: #2d2d44;
+}
+
+img[alt~="diagram"] {
+  display: block;
+  margin: auto;
+}

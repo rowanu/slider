@@ -1,0 +1,50 @@
+direction: right
+
+# ── Agent ────────────────────────────────────────────────────────────────────
+
+agent: "Agent" {
+  shape: person
+}
+
+# ── Memory ───────────────────────────────────────────────────────────────────
+
+mem: "Memory" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+}
+
+# ── Storage Types ────────────────────────────────────────────────────────────
+
+short_term: "Short-Term" {
+  style.stroke: "#FF9900"
+  style.fill: "#FFF8F0"
+  style.border-radius: 8
+
+  session: "Session context"
+  scratchpad: "Scratchpad"
+}
+
+long_term: "Long-Term" {
+  style.stroke: "#3F8624"
+  style.fill: "#F0FFF0"
+  style.border-radius: 8
+
+  prefs: "User preferences"
+  facts: "Facts & summaries"
+}
+
+# ── Encryption ───────────────────────────────────────────────────────────────
+
+kms: "KMS" {
+  shape: image
+  icon: ../aws-icons/security-identity/aws-key-management-service.svg
+}
+
+# ── Connections ──────────────────────────────────────────────────────────────
+
+agent <-> mem: "read / write"
+mem -> short_term: "per session"
+mem -> long_term: "persisted"
+kms -> mem: "encryption\nat rest" {
+  style.stroke-dash: 4
+}

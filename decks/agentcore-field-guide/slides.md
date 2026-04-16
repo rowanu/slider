@@ -1,6 +1,6 @@
 ---
 marp: true
-theme: default
+theme: slider-dark
 paginate: true
 style: |
   section {
@@ -49,10 +49,10 @@ AgentCore is the **missing platform layer** between your agent code and producti
 
 A suite of **10 composable services** for building, running, and governing AI agents.
 
-- **Framework-agnostic** — LangGraph, CrewAI, Strands, custom code
-- **Model-agnostic** — Bedrock, Claude, OpenAI, Gemini, whatever
+- **Framework-agnostic**: LangGraph, CrewAI, Strands, custom code
+- **Model-agnostic**: Bedrock, Claude, OpenAI, Gemini, whatever
 - Use what you need, skip what you don't
-- Not a new framework — it's **infrastructure for agents**
+- Not a new framework. It's **infrastructure for agents**
 
 ---
 
@@ -62,104 +62,31 @@ A suite of **10 composable services** for building, running, and governing AI ag
 
 <!-- _class: title -->
 
-# Run Your Agent
-Runtime · Code Interpreter · Browser
-
----
-
-## Runtime
-
-Serverless hosting for AI agents — no infrastructure to manage.
-
-- **Framework-agnostic**: bring any agent framework or custom Python
-- **MicroVM isolation** (Firecracker) — each invocation is sandboxed
-- Executions up to **8 hours** for long-running agents
-- Native **MCP server** and **A2A protocol** support
-- **WebSocket streaming** for real-time interactions
-- Scales to zero, scales up automatically
-- Pay only for what you use
-
----
-
-## Code Interpreter & Browser
-
-Two sandboxed capabilities agents can use at runtime.
-
-**Code Interpreter**
-- Sandboxed Python execution — agents can write and run code dynamically
-- Data analysis, calculations, file I/O within the sandbox
-- Direct invocation or framework integration
-
-**Browser**
-- Isolated Chromium instance per session
-- Navigate, fill forms, click buttons, parse dynamic content
-- **Session recording** for audit and debugging
-- Built-in CAPTCHA reduction
-
----
-
-<!-- _class: title -->
-
-# Connect to the World
-Gateway · Memory
+# Build Your Agent
+Gateway · Policy · Memory · Identity · Browser · Code Interpreter
 
 ---
 
 ## Gateway
 
-Turn any API into an **MCP-compatible tool** — without writing glue code.
+Turn any API into an **MCP-compatible tool**, without writing glue code.
 
-- Import from **Lambda functions, OpenAPI specs, or existing APIs**
-- **1-click integrations**: Slack, Jira, GitHub, Salesforce, Zendesk
-- **Semantic tool discovery** — agents find the right tool by description
-- Centralized tool management across all your agents
-- VPC Lattice support for private resources
-- Built-in authentication and credential exchange
+* **Import from anywhere**: Lambda, OpenAPI specs, existing APIs
+* **1-click integrations**: Slack, Jira, GitHub, Salesforce, Zendesk
+* **Semantic tool discovery**: agents find the right tool by description
+* **Centralized & secure**: VPC Lattice, built-in auth
 
----
-
-## Memory
-
-Give agents the ability to **remember**.
-
-- **Short-term memory**: session context — conversation history, scratchpad
-- **Long-term memory**: persists across sessions — user preferences, facts, summaries
-- Asynchronous memory generation and consolidation
-- Managed storage — no DynamoDB tables to maintain
-- **Encryption at rest** (KMS)
-- Useful for personalization, continuity, and multi-step workflows
-
----
-
-<!-- _class: title -->
-
-# Secure & Govern
-Identity · Policy · Registry
-
----
-
-## Identity
-
-First-class identity for agents — not just IAM roles bolted on.
-
-- Each agent gets a **unique ARN**
-- **OAuth 2.0** credential management
-- **Credential vault** for third-party tokens — no secrets in env vars
-- **User-delegated access**: agent acts *as* the user, not *instead of*
-- Identity propagation through the full tool chain
-
-![bg right:40% 90%](images/AgentCore%20Identity.jpg)
+![bg right:40% 90%](images/gateway.svg)
 
 ---
 
 ## Policy
 
-Fine-grained access control using **Cedar** — enforced *outside* agent code.
+Fine-grained access control using **Cedar**, enforced *outside* agent code.
 
-- Policies are **declarative**, not embedded in prompts or agent logic
-- Intercept tool calls at **gateway, tool, operation, or parameter** level
-- Two modes: **LOG_ONLY** (shadow) or **ENFORCE** (block)
-- Start in LOG_ONLY, review, then enforce
+* **Declarative policies**, not embedded in prompts or agent logic
+* **Granular interception** at gateway, tool, operation, or parameter level
+* **Safe rollout**: **LOG_ONLY** (shadow) → **ENFORCE** (block)
 
 ```
 forbid(
@@ -171,24 +98,94 @@ forbid(
 
 The agent doesn't decide its own permissions. **You do.**
 
+![bg right:40% 90%](images/policy.svg)
+
+---
+
+## Memory
+
+Give agents the ability to **remember**.
+
+* **Short-term**: session context, conversation history, scratchpad
+* **Long-term**: user preferences, facts, summaries (async consolidation)
+* **Managed**: no DynamoDB tables, **encryption at rest** (KMS)
+
+![bg right:40% 90%](images/memory.svg)
+
+---
+
+## Identity
+
+First-class identity for agents, not just IAM roles bolted on.
+
+* **Unique agent ARN**: each agent gets its own identity
+* **OAuth 2.0** credential management + **credential vault** for 3rd-party tokens
+* **User-delegated access**: agent acts *as* the user, not *instead of*
+* Identity propagation through the full tool chain
+
+![bg right:40% 90%](images/identity.svg)
+
+---
+
+## Browser
+
+Sandboxed web browsing agents can use at runtime.
+
+* **Isolated Chromium**: one instance per session, sandboxed
+* **Full interaction**
+  - Navigate, fill forms, click buttons, parse dynamic content
+* **Audit & reliability**
+  - **Session recording** for audit and debugging
+  - Built-in CAPTCHA reduction
+
+---
+
+## Code Interpreter
+
+Sandboxed code execution agents can use at runtime.
+
+* **Sandboxed Python**: agents can write and run code dynamically
+* **Rich capabilities**
+  - Data analysis, calculations, file I/O within the sandbox
+* **Flexible integration**
+  - Direct invocation or framework integration
+
+---
+
+<!-- _class: title -->
+
+# Deploy Your Agent
+Runtime · Registry
+
+---
+
+## Runtime
+
+Serverless hosting for AI agents. No infrastructure to manage.
+
+* **Framework-agnostic**: any framework or custom Python, scales to zero
+* **MicroVM isolation** (Firecracker): each invocation sandboxed, up to **8 hours**
+* **Protocol-native**: MCP server, A2A protocol, WebSocket streaming
+
+![diagram w:700](images/runtime.svg)
+
 ---
 
 ## Registry
 
 Centralized discovery and governance for your agent estate.
 
-- **Register** agents, tools, and MCP servers in one catalog
-- **Discover** what exists across teams and accounts
-- Governance metadata: ownership, version, lifecycle status
-- Approval workflows for curation
-- MCP-native access via registry endpoints
-- Foundation for **multi-agent architectures**
+* **Catalog**: register agents, tools, and MCP servers in one place
+* **Governance**: ownership, version, lifecycle metadata + approval workflows
+* **Multi-agent foundation**: cross-team discovery, MCP-native access
+
+![bg right:40% 90%](images/registry.svg)
 
 ---
 
 <!-- _class: title -->
 
-# Observe & Evaluate
+# Operate Your Agents
 Observability · Evaluations
 
 ---
@@ -197,12 +194,11 @@ Observability · Evaluations
 
 See what your agents are **actually doing**.
 
-- **OpenTelemetry-compatible** tracing
-- Integrates with **Amazon CloudWatch** natively
-- Agent-specific trace views: tool calls, LLM invocations, decisions
-- Correlate agent behavior with downstream service metrics
-- Key metrics: session count, latency, duration, token usage, error rates
-- Essential for debugging **non-deterministic behavior**
+* **OpenTelemetry-compatible** tracing → **Amazon CloudWatch**
+* **Agent-specific views**: tool calls, LLM invocations, decisions
+* **Key metrics**: latency, token usage, error rates
+
+![bg right:40% 90%](images/observability.svg)
 
 ---
 
@@ -210,13 +206,11 @@ See what your agents are **actually doing**.
 
 Measure agent quality **systematically**.
 
-- **LLM-as-a-Judge**: use a model to evaluate agent outputs
-- **13+ built-in evaluators**: correctness, faithfulness, relevance, toxicity
-- Two modes:
-  - **On-demand**: run evaluations in CI/CD or ad hoc
-  - **Online**: continuous evaluation of live production traffic
-- Build confidence before promoting agents to production
-- Works with Runtime-hosted and external agents
+* **LLM-as-a-Judge**: use a model to evaluate agent outputs
+* **13+ built-in evaluators**: correctness, faithfulness, relevance, toxicity
+* **On-demand** (CI/CD) and **Online** (live traffic) modes
+
+![bg right:40% 90%](images/evaluations.svg)
 
 ---
 
@@ -228,7 +222,7 @@ Measure agent quality **systematically**.
 
 ## Prototype to Production
 
-![diagram w:900](images/proto-to-prod.svg)
+![diagram h:450](images/proto-to-prod.svg)
 
 ---
 
@@ -237,15 +231,15 @@ Measure agent quality **systematically**.
 Start small. You don't need all 10 services on day one.
 
 **Minimum viable agent stack:**
-1. **Runtime** — deploy your existing agent code
-2. **Gateway** — connect it to one or two tools
-3. **Observability** — see what it's doing
+1. **Runtime**: deploy your existing agent code
+2. **Gateway**: connect it to one or two tools
+3. **Observability**: see what it's doing
 
 **Then layer on:**
-4. **Memory** — when you need cross-session context
-5. **Policy** — when you need tool access control (start with LOG_ONLY)
-6. **Identity** — when users need delegated access
-7. **Evaluations** — before you promote to production
+4. **Memory**: when you need cross-session context
+5. **Policy**: when you need tool access control (start with LOG_ONLY)
+6. **Identity**: when users need delegated access
+7. **Evaluations**: before you promote to production
 
 ---
 
@@ -274,9 +268,9 @@ aws bedrock-agentcore deploy-agent \
 
 - Not a replacement for **Bedrock Agents** (managed orchestration)
   - AgentCore = infrastructure; Bedrock Agents = opinionated orchestration
-- Not a new agent **framework** — bring your own
-- Not **limited to Bedrock models** — works with any LLM
-- Not a monolith — each service is **independently useful**
+- Not a new agent **framework**: bring your own
+- Not **limited to Bedrock models**: works with any LLM
+- Not a monolith: each service is **independently useful**
 
 ---
 
@@ -287,7 +281,7 @@ aws bedrock-agentcore deploy-agent \
 3. Start with **Runtime + Gateway + Observability**
 4. Use **Policy in LOG_ONLY** mode before enforcing
 5. **Identity propagation** solves the "agent uses a shared service account" anti-pattern
-6. Treat agent security like application security — because it is
+6. Treat agent security like application security, because it is
 
 ---
 

@@ -1,0 +1,52 @@
+direction: right
+
+# ── Registry ─────────────────────────────────────────────────────────────────
+
+registry: "Registry" {
+  shape: image
+  icon: ../aws-icons/containers/amazon-elastic-container-registry_registry.svg
+}
+
+# ── Registered Items ─────────────────────────────────────────────────────────
+
+catalog: "Catalog" {
+  style.stroke: "#FF9900"
+  style.fill: "#FFF8F0"
+  style.border-radius: 8
+
+  agents: "Agents"
+  tools: "Tools"
+  mcp: "MCP Servers"
+}
+
+# ── Governance ───────────────────────────────────────────────────────────────
+
+governance: "Governance" {
+  style.stroke: "#3F8624"
+  style.fill: "#F0FFF0"
+  style.border-radius: 8
+
+  metadata: "Version & lifecycle"
+  approval: "Approval workflow"
+}
+
+# ── Consumers ────────────────────────────────────────────────────────────────
+
+team_a: "Team A" {
+  shape: person
+}
+
+team_b: "Team B" {
+  shape: person
+}
+
+# ── Connections ──────────────────────────────────────────────────────────────
+
+registry -> catalog: "register"
+registry -> governance: "govern"
+team_a -> registry: "discover" {
+  style.stroke-dash: 4
+}
+team_b -> registry: "discover" {
+  style.stroke-dash: 4
+}

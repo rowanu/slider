@@ -1,0 +1,63 @@
+direction: right
+
+# ── Sources ──────────────────────────────────────────────────────────────────
+
+sources: "Tool Sources" {
+  style.stroke: "#FF9900"
+  style.fill: "#FFF8F0"
+  style.border-radius: 8
+
+  lambda: "Lambda" {
+    shape: image
+    icon: ../aws-icons/compute/aws-lambda.svg
+  }
+
+  openapi: "OpenAPI Spec" {
+    style.border-radius: 4
+  }
+
+  apis: "Existing APIs" {
+    shape: cloud
+  }
+}
+
+# ── Gateway ──────────────────────────────────────────────────────────────────
+
+gw: "Gateway" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+}
+
+# ── Integrations ─────────────────────────────────────────────────────────────
+
+integrations: "1-Click Integrations" {
+  style.stroke: "#3F8624"
+  style.fill: "#F0FFF0"
+  style.border-radius: 8
+
+  slack: "Slack"
+  jira: "Jira"
+  github: "GitHub"
+}
+
+# ── Output ───────────────────────────────────────────────────────────────────
+
+agent: "Agent" {
+  shape: person
+}
+
+lattice: "VPC Lattice\n(private)" {
+  shape: image
+  icon: ../aws-icons/networking-content-delivery/amazon-vpc-lattice.svg
+}
+
+# ── Connections ──────────────────────────────────────────────────────────────
+
+sources.lambda -> gw: "import"
+sources.openapi -> gw: "import"
+sources.apis -> gw: "import"
+integrations.slack -> gw
+integrations.jira -> gw
+integrations.github -> gw
+gw -> agent: "MCP tools"
+gw -> lattice: "private access"

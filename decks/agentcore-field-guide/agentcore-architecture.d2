@@ -15,18 +15,15 @@ compute: "Agent Compute" {
   style.fill: "#FFF8F0"
 
   runtime: "Runtime" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    style.border-radius: 8
   }
 
   code_interpreter: "Code Interpreter" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    style.border-radius: 8
   }
 
   browser: "Browser" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    style.border-radius: 8
   }
 
   runtime -> code_interpreter: "execute code"
@@ -36,13 +33,11 @@ compute: "Agent Compute" {
 # ── Integration ───────────────────────────────────────────────────────────────
 
 gateway: "Gateway" {
-  shape: image
-  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  style.border-radius: 8
 }
 
 memory: "Memory" {
-  shape: image
-  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  style.border-radius: 8
 }
 
 tools: "External Tools\n(Slack, Jira, APIs)" {
@@ -56,18 +51,15 @@ security: "Security & Governance" {
   style.fill: "#FFF5F5"
 
   identity: "Identity" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    style.border-radius: 8
   }
 
   policy: "Policy" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    style.border-radius: 8
   }
 
   registry: "Registry" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    style.border-radius: 8
   }
 }
 
@@ -78,13 +70,11 @@ monitoring: "Observe & Evaluate" {
   style.fill: "#F0FFF0"
 
   observability: "Observability" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    style.border-radius: 8
   }
 
   evaluations: "Evaluations" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    style.border-radius: 8
   }
 }
 

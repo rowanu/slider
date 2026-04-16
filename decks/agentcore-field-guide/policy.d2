@@ -1,0 +1,46 @@
+direction: right
+
+# ── Agent ────────────────────────────────────────────────────────────────────
+
+agent: "Agent" {
+  shape: person
+}
+
+# ── Policy ───────────────────────────────────────────────────────────────────
+
+policy: "Policy\n(Cedar)" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+}
+
+# ── Gateway + Tools ──────────────────────────────────────────────────────────
+
+gw: "Gateway" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+}
+
+tools: "Tools" {
+  shape: cloud
+}
+
+# ── Modes ────────────────────────────────────────────────────────────────────
+
+modes: "Enforcement" {
+  style.stroke: "#DD344C"
+  style.fill: "#FFF5F5"
+  style.border-radius: 8
+
+  log: "LOG_ONLY\n(shadow)"
+  enforce: "ENFORCE\n(block)"
+}
+
+# ── Connections ──────────────────────────────────────────────────────────────
+
+agent -> gw: "call tool"
+policy -> gw: "intercept" {
+  style.stroke-dash: 4
+  style.stroke: "#DD344C"
+}
+gw -> tools: "execute"
+policy -> modes
