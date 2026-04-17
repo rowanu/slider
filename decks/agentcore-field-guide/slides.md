@@ -23,25 +23,28 @@ style: |
 <!-- _class: title -->
 
 # Amazon Bedrock AgentCore
+
+![w:150](images/amazon-bedrock-agentcore.svg)
+
 ## A Field Guide for AWS Builders
 
-Rowan Udell · AWS Security Hero & Consultant
-AWS Brisbane Usergroup · April 2026
+Rowan Udell - AWS Security Hero & Consultant
+AWS Brisbane Usergroup, April 2026
 
 ---
 
 ## The Problem with AI Agents Today
 
-Prototypes are easy. **Production is hard.**
+* Prototypes are easy. **Production is hard.**
 
-Every team re-invents the same things:
-- Hosting and scaling agent code
-- Memory and session management
-- Authentication and authorization
-- Tool integration
-- Observability and evaluation
+* Every team re-invents the same things:
+    - Hosting and scaling agent code
+    - Memory and session management
+    - Authentication and authorization
+    - Tool integration
+    - Observability and evaluation
 
-AgentCore is the **missing platform layer** between your agent code and production.
+* AgentCore is the **platform layer** between your agent code and production.
 
 ---
 
@@ -49,10 +52,10 @@ AgentCore is the **missing platform layer** between your agent code and producti
 
 A suite of **10 composable services** for building, running, and governing AI agents.
 
-- **Framework-agnostic**: LangGraph, CrewAI, Strands, custom code
-- **Model-agnostic**: Bedrock, Claude, OpenAI, Gemini, whatever
-- Use what you need, skip what you don't
-- Not a new framework. It's **infrastructure for agents**
+* Not a new framework. It's **infrastructure for agents**
+* **Framework-agnostic**: LangGraph, CrewAI, Strands, custom code
+* **Model-agnostic**: Bedrock, Claude, OpenAI, Gemini, whatever
+* Use what you need, skip what you don't
 
 ---
 
@@ -183,7 +186,7 @@ Centralized discovery and governance for your agent estate.
 
 ---
 
-<!-- _class: title -->
+!-- _class: title --
 
 # Operate Your Agents
 Observability · Evaluations
@@ -220,87 +223,55 @@ Measure agent quality **systematically**.
 
 ---
 
-## Prototype to Production
-
-![diagram h:450](images/proto-to-prod.svg)
-
----
-
-## Getting Started: Day 1
+## Getting Started
 
 Start small. You don't need all 10 services on day one.
 
-**Minimum viable agent stack:**
-1. **Runtime**: deploy your existing agent code
-2. **Gateway**: connect it to one or two tools
-3. **Observability**: see what it's doing
+Minimum viable agent stack:
 
-**Then layer on:**
-4. **Memory**: when you need cross-session context
-5. **Policy**: when you need tool access control (start with LOG_ONLY)
-6. **Identity**: when users need delegated access
-7. **Evaluations**: before you promote to production
+1. **Runtime** to deploy your existing agent code
+1. **Memory** when you need cross-session context
+1. **Gateway** to connect it to tools
 
----
+Then layer on:
 
-## Quick Start (CLI)
-
-```bash
-# Create a gateway with tools
-aws bedrock-agentcore create-gateway \
-  --gateway-name my-tools \
-  --tool-configs file://tools.json
-
-# Create a runtime endpoint
-aws bedrock-agentcore create-runtime-endpoint \
-  --runtime-name my-agent \
-  --framework-config '{"type": "CUSTOM"}'
-
-# Deploy your agent
-aws bedrock-agentcore deploy-agent \
-  --runtime-id $RUNTIME_ID \
-  --agent-config file://agent.json
-```
+- **Identity** when users need delegated access
+- **Observability** to see what it's doing
+- **Policy** when you need tool access control (start with LOG_ONLY)
+- **Evaluations** before you promote to production
 
 ---
 
 ## What AgentCore Is Not
 
-- Not a replacement for **Bedrock Agents** (managed orchestration)
+* Not the `agentcore` CLI
+* Not **Bedrock Agents**
   - AgentCore = infrastructure; Bedrock Agents = opinionated orchestration
-- Not a new agent **framework**: bring your own
-- Not **limited to Bedrock models**: works with any LLM
-- Not a monolith: each service is **independently useful**
+* Not a new agent **framework**: bring your own
+* Not **limited to Bedrock models**: works with any LLM
+* Not a monolith: each service is **independently useful**
 
 ---
 
 ## Key Takeaways
 
 1. AgentCore is **infrastructure for agents**, not another framework
-2. **10 services** that are individually useful and composable
-3. Start with **Runtime + Gateway + Observability**
+2. **10+ services** that are individually useful and composable
+3. Start with **Runtime + Memory + Gateway**
 4. Use **Policy in LOG_ONLY** mode before enforcing
-5. **Identity propagation** solves the "agent uses a shared service account" anti-pattern
-6. Treat agent security like application security, because it is
+5. **Identity propagation** avoids the "agent uses a shared service account" anti-pattern
+6. Treat agent security like application security, because it is (with some other stuff)
 
 ---
 
-## Resources
+## Thanks!
 
-- **AgentCore docs**: AWS Bedrock AgentCore User Guide
-- **Cedar playground**: cedarpolicy.com
-- **Strands SDK**: github.com/strands-agents/sdk-python
-- **AWS re:Post**: search "AgentCore"
+Rowan Udell - AWS Security Hero & Consultant
 
----
-
-<!-- _class: title -->
-
-# Thanks!
-
-Rowan Udell
-AWS Security Hero & Consultant
-
-auditready.cloud
+- **Slides** [slider.rowanudell.com](https://slider.rowanudell.com)
+- **Amazon Bedrock Agentcore** [Documentation](https://docs.aws.amazon.com/bedrock-agentcore/)
+- **Cedar playground** [cedarpolicy.com](https://cedarpolicy.com)
+- **Strands SDK** [on GitHub](https://github.com/strands-agents/sdk-python)
+- **AWS re:Post** [AgentCore tag](https://repost.aws/tags/TAaysfWwGaS3SNb1O0i1GkOg/amazon-bedrock-agentcore)
 
 ![bg right:40% 80%](images/rowanu-linkedin-qr.svg)
