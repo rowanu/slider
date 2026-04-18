@@ -16,15 +16,15 @@ identity: "Identity" {
 # ── Agent ────────────────────────────────────────────────────────────────────
 
 agent_arn: "Agent\n(unique ARN)" {
-  shape: image
-  icon: ../aws-icons/security-identity/aws-iam-identity-center.svg
+  style.border-radius: 8
 }
 
 # ── Credential Vault ─────────────────────────────────────────────────────────
 
 vault: "Credential Vault" {
-  shape: image
-  icon: ../aws-icons/security-identity/aws-secrets-manager.svg
+  style.stroke: "#DD344C"
+  style.fill: "#FFF5F5"
+  style.border-radius: 8
 }
 
 # ── Downstream Tools ─────────────────────────────────────────────────────────
@@ -35,9 +35,12 @@ tools: "Tools & APIs" {
 
 # ── Connections ──────────────────────────────────────────────────────────────
 
-user -> identity: "OAuth 2.0\ndelegate access"
+user -> identity: "3LO\ndelegate access"
 identity -> agent_arn: "issue credentials"
 agent_arn -> tools: "act as user"
+identity -> agent_arn: "2LO\nclient credentials" {
+  style.stroke-dash: 4
+}
 vault -> agent_arn: "3rd-party tokens" {
   style.stroke-dash: 4
 }

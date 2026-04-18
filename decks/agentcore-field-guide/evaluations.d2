@@ -7,6 +7,13 @@ agent: "Agent" {
   icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
 }
 
+# ── Observability ────────────────────────────────────────────────────────────
+
+obs: "Observability" {
+  shape: image
+  icon: ../aws-icons/management-tools/aws-distro-for-opentelemetry.svg
+}
+
 # ── Evaluations ──────────────────────────────────────────────────────────────
 
 evals: "Evaluations" {
@@ -14,12 +21,8 @@ evals: "Evaluations" {
   style.fill: "#FFF8F0"
   style.border-radius: 8
 
-  judge: "LLM-as-Judge" {
-    shape: image
-    icon: ../aws-icons/artificial-intelligence/amazon-bedrock.svg
-  }
-
   builtin: "13+ built-in\nevaluators"
+  custom: "Custom\n(LLM or Lambda)"
 }
 
 # ── Modes ────────────────────────────────────────────────────────────────────
@@ -42,8 +45,10 @@ score: "Quality Scores" {
 
 # ── Connections ──────────────────────────────────────────────────────────────
 
-agent -> evals.judge: "agent output"
-evals.judge -> evals.builtin: "apply"
+agent -> obs: "traces" {
+  style.stroke-dash: 4
+}
+obs -> evals: "read traces"
 on_demand -> evals: "ad hoc / CI"
 online -> evals: "continuous" {
   style.stroke-dash: 4

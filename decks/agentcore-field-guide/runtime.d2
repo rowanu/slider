@@ -18,7 +18,7 @@ runtime: "Runtime" {
     style.fill: "#FFF5F5"
     style.border-radius: 4
 
-    engine: "Runtime" {
+    agent: "Your Agent" {
       shape: image
       icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
     }
@@ -46,8 +46,8 @@ protocols: "Protocols" {
 
 # ── Connections ──────────────────────────────────────────────────────────────
 
-agent_code -> runtime.microvm.engine: "deploy"
-runtime.microvm.engine -> llm: "InvokeModel"
-runtime.microvm.engine -> protocols.mcp
-runtime.microvm.engine -> protocols.a2a
-runtime.microvm.engine -> protocols.ws
+agent_code -> runtime.microvm.agent: "deploy"
+runtime.microvm.agent -> llm: "InvokeModel"
+runtime.microvm.agent -> protocols.mcp
+runtime.microvm.agent -> protocols.a2a
+runtime.microvm.agent -> protocols.ws

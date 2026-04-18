@@ -20,8 +20,8 @@ short_term: "Short-Term" {
   style.fill: "#FFF8F0"
   style.border-radius: 8
 
-  session: "Session context"
-  scratchpad: "Scratchpad"
+  session: "Conversation history"
+  events: "Raw events"
 }
 
 long_term: "Long-Term" {
@@ -30,7 +30,9 @@ long_term: "Long-Term" {
   style.border-radius: 8
 
   prefs: "User preferences"
-  facts: "Facts & summaries"
+  facts: "Facts & semantic"
+  summaries: "Session summaries"
+  episodic: "Episodic"
 }
 
 # ── Encryption ───────────────────────────────────────────────────────────────
@@ -44,7 +46,7 @@ kms: "KMS" {
 
 agent <-> mem: "read / write"
 mem -> short_term: "per session"
-mem -> long_term: "persisted"
+mem -> long_term: "async extraction"
 kms -> mem: "encryption\nat rest" {
   style.stroke-dash: 4
 }
