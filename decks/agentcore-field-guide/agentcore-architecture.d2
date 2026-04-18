@@ -1,0 +1,114 @@
+# AgentCore Architecture — How the services connect at runtime
+
+direction: right
+
+# ── External (left) ─────────────────────────────────────────────────────────
+
+user: "User / App" {
+  shape: person
+}
+
+models: "Models\n(Bedrock, any LLM)" {
+  style.border-radius: 8
+}
+
+# ── Agent Compute (centre) ──────────────────────────────────────────────────
+
+compute: "Agent Compute" {
+  style.stroke: "#FF9900"
+  style.fill: "#FFF8F0"
+
+  runtime: "Runtime" {
+    style.border-radius: 8
+  }
+
+  browser: "Browser" {
+    style.border-radius: 8
+  }
+
+  code_interpreter: "Code Interpreter" {
+    style.border-radius: 8
+  }
+
+  runtime -> browser: "browse"
+  runtime -> code_interpreter: "execute"
+}
+
+# ── Integration (right of compute) ──────────────────────────────────────────
+
+gateway: "Gateway" {
+  style.border-radius: 8
+}
+
+memory: "Memory" {
+  style.border-radius: 8
+}
+
+tools: "External Tools\n(Slack, Jira, APIs)" {
+  shape: cloud
+}
+
+# ── Security & Governance (below gateway) ───────────────────────────────────
+
+security: "Security & Governance" {
+  style.stroke: "#DD344C"
+  style.fill: "#FFF5F5"
+
+  identity: "Identity" {
+    style.border-radius: 8
+  }
+
+  policy: "Policy" {
+    style.border-radius: 8
+  }
+
+  registry: "Registry" {
+    style.border-radius: 8
+  }
+}
+
+# ── Observe & Evaluate (below compute) ──────────────────────────────────────
+
+monitoring: "Observe & Evaluate" {
+  style.stroke: "#3F8624"
+  style.fill: "#F0FFF0"
+
+  observability: "Observability" {
+    style.border-radius: 8
+  }
+
+  evaluations: "Evaluations" {
+    style.border-radius: 8
+  }
+}
+
+# ── Connections ─────────────────────────────────────────────────────────────
+
+# Primary flow (left to right)
+user -> compute.runtime: "invoke"
+models -> compute.runtime
+compute.runtime -> gateway: "call tools"
+gateway -> tools: "MCP"
+compute.runtime <-> memory: "read/write"
+
+# Identity
+user -> security.identity: "authenticate"
+security.identity -> gateway: "credentials" {
+  style.stroke-dash: 4
+}
+
+# Policy + Registry (gateway-adjacent to reduce crossover)
+gateway -> security.policy: "evaluate" {
+  style.stroke-dash: 4
+}
+compute.runtime -> security.registry: "discover" {
+  style.stroke-dash: 4
+}
+
+# Observability (traces flow OUT of runtime)
+compute.runtime -> monitoring.observability: "traces" {
+  style.stroke-dash: 4
+}
+monitoring.evaluations -> monitoring.observability: "read traces" {
+  style.stroke-dash: 4
+}

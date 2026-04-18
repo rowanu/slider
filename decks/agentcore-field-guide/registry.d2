@@ -1,0 +1,61 @@
+direction: right
+
+# ── Teams ────────────────────────────────────────────────────────────────────
+
+team_a: "Team A" {
+  shape: person
+}
+
+team_b: "Team B" {
+  shape: person
+}
+
+# ── Registry ─────────────────────────────────────────────────────────────────
+
+registry: "Registry" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+}
+
+# ── Catalog ──────────────────────────────────────────────────────────────────
+
+catalog: "Catalog" {
+  style.stroke: "#FF9900"
+  style.fill: "#FFF8F0"
+  style.border-radius: 8
+
+  agents: "Agents"
+  tools: "Tools"
+  mcp: "MCP Servers"
+}
+
+# ── Governance ───────────────────────────────────────────────────────────────
+
+governance: "Governance" {
+  style.stroke: "#3F8624"
+  style.fill: "#F0FFF0"
+  style.border-radius: 8
+
+  metadata: "Version & lifecycle"
+  approval: "Approval workflow"
+}
+
+# ── Discovery source ────────────────────────────────────────────────────────
+
+live_mcp: "Live MCP Servers" {
+  shape: cloud
+}
+
+# ── Connections ──────────────────────────────────────────────────────────────
+
+team_a -> registry: "discover" {
+  style.stroke-dash: 4
+}
+team_b -> registry: "discover" {
+  style.stroke-dash: 4
+}
+registry -> catalog: "register"
+registry -> governance: "govern"
+live_mcp -> registry: "auto-discover" {
+  style.stroke-dash: 4
+}

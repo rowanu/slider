@@ -1,23 +1,7 @@
 ---
 marp: true
-theme: default
+theme: slider-light
 paginate: true
-style: |
-  section {
-    font-family: system-ui, sans-serif;
-    font-size: 1.6rem;
-  }
-  section.title {
-    text-align: center;
-    justify-content: center;
-  }
-  h1 { color: #1836b2; }
-  h2 { color: #1836b2; border-bottom: 2px solid #ff914d; padding-bottom: 0.2em; }
-  strong { color: #ff914d; }
-  img[alt~="diagram"] {
-    display: block;
-    margin: auto;
-  }
 ---
 
 <!-- _class: title -->

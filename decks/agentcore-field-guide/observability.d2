@@ -1,0 +1,69 @@
+direction: right
+
+# ── Runtime ──────────────────────────────────────────────────────────────────
+
+runtime: "Agent Runtime" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+}
+
+# ── Observability ────────────────────────────────────────────────────────────
+
+obs: "Observability" {
+  shape: image
+  icon: ../aws-icons/management-tools/aws-distro-for-opentelemetry.svg
+}
+
+# ── Destinations ─────────────────────────────────────────────────────────────
+
+destinations: "Destinations" {
+  style.stroke: "#FF9900"
+  style.fill: "#FFF8F0"
+  style.border-radius: 8
+
+  cloudwatch: "CloudWatch" {
+    shape: image
+    icon: ../aws-icons/management-governance/amazon-cloudwatch_logs.svg
+  }
+
+  s3: "S3" {
+    shape: image
+    icon: ../aws-icons/storage/amazon-simple-storage-service.svg
+  }
+
+  firehose: "Firehose" {
+    shape: image
+    icon: ../aws-icons/analytics/amazon-data-firehose.svg
+  }
+}
+
+# ── What's Traced ────────────────────────────────────────────────────────────
+
+traces: "Traces" {
+  style.stroke: "#3F8624"
+  style.fill: "#F0FFF0"
+  style.border-radius: 8
+
+  tool_calls: "Tool calls"
+  llm: "LLM invocations"
+  decisions: "Agent decisions"
+}
+
+metrics: "Metrics" {
+  style.stroke: "#3F8624"
+  style.fill: "#F0FFF0"
+  style.border-radius: 8
+
+  latency: "Latency"
+  tokens: "Token usage"
+  errors: "Error rates"
+}
+
+# ── Connections ──────────────────────────────────────────────────────────────
+
+runtime -> obs: "OTel traces" {
+  style.stroke-dash: 4
+}
+obs -> destinations
+obs -> traces
+obs -> metrics

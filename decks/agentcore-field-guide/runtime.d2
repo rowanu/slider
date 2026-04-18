@@ -1,0 +1,53 @@
+direction: right
+
+# ── Input ────────────────────────────────────────────────────────────────────
+
+agent_code: "Agent Code\n(any framework)" {
+  style.border-radius: 4
+}
+
+# ── Runtime ──────────────────────────────────────────────────────────────────
+
+runtime: "Runtime" {
+  style.stroke: "#FF9900"
+  style.fill: "#FFF8F0"
+  style.border-radius: 8
+
+  microvm: "MicroVM\n(Firecracker)" {
+    style.stroke: "#DD344C"
+    style.fill: "#FFF5F5"
+    style.border-radius: 4
+
+    agent: "Your Agent" {
+      shape: image
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+    }
+  }
+}
+
+# ── LLM ──────────────────────────────────────────────────────────────────────
+
+llm: "Bedrock / Any LLM" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock.svg
+}
+
+# ── Protocols ────────────────────────────────────────────────────────────────
+
+protocols: "Protocols" {
+  style.stroke: "#3F8624"
+  style.fill: "#F0FFF0"
+  style.border-radius: 8
+
+  mcp: "MCP Server"
+  a2a: "A2A Protocol"
+  ws: "WebSocket"
+}
+
+# ── Connections ──────────────────────────────────────────────────────────────
+
+agent_code -> runtime.microvm.agent: "deploy"
+runtime.microvm.agent -> llm: "InvokeModel"
+runtime.microvm.agent -> protocols.mcp
+runtime.microvm.agent -> protocols.a2a
+runtime.microvm.agent -> protocols.ws
