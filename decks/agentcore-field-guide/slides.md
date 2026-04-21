@@ -17,6 +17,22 @@ AWS Brisbane Usergroup, April 2026
 
 ---
 
+## `whoami`
+
+**Rowan Udell**
+AWS Security Hero & Consultant
+
+* Helping teams build on AWS — securely
+* Focused on **identity, security, and AI agents**
+* Why this talk: agents are the new workloads, and they need the same rigour we apply to everything else on AWS
+
+**Slides** [slider.rowanudell.com 🍔](https://slider.rowanudell.com)
+**Connect** LinkedIn →
+
+![bg right:35% 80%](images/rowanu-linkedin-qr.svg)
+
+---
+
 ## The Problem with AI Agents Today
 
 * Prototypes are easy. **Production is hard.**
