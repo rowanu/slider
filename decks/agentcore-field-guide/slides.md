@@ -383,6 +383,8 @@ Then layer on:
 
 Rowan Udell - AWS Security Hero & Consultant
 
+**Questions?** Come find me after, or on LinkedIn →
+
 **Slides** [slider.rowanudell.com 🍔](https://slider.rowanudell.com)
 **Amazon Bedrock Agentcore** [Documentation](https://docs.aws.amazon.com/bedrock-agentcore/)
 **Cedar playground** [cedarpolicy.com](https://cedarpolicy.com)
