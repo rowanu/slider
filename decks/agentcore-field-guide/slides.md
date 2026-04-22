@@ -17,6 +17,16 @@ AWS Brisbane Usergroup, April 2026
 
 ---
 
+## About Me
+
+![bg left:40% 80%](images/rowan.png)
+
+- **AWS Security Hero**
+- Using AWS for **15+ years**
+- Helping businesses **build and secure agents**
+
+---
+
 ## The Problem with AI Agents Today
 
 * Prototypes are easy. **Production is hard.**
@@ -44,6 +54,17 @@ A suite of **10 composable services** for building, running, and governing AI ag
 ---
 
 ![bg contain](images/agentcore_all_components_final.png)
+
+---
+
+## What AgentCore Is Not
+
+* Not the `agentcore` CLI
+* Not **Bedrock Agents**
+  - AgentCore = infrastructure; Bedrock Agents = opinionated orchestration
+* Not a new agent **framework**: bring your own
+* Not **limited to Bedrock models**: works with any LLM
+* Not a monolith: each service is **independently useful**
 
 ---
 
@@ -211,7 +232,6 @@ Serverless hosting for AI agents. No infrastructure to manage.
 
 * **Consumption-based pricing**: pay only for resources used
 * **MicroVM isolation**: Firecracker, up to **8 hours**
-* **Framework-agnostic**
 * **Multi-protocol**: MCP, A2A, HTTP, WebSockets
 * **Shell execution**: same container as agent
 * **Persistent filesystem**
@@ -338,17 +358,6 @@ Then layer on:
 - **Observability** to see what it's doing
 - **Policy** when you need tool access control (start with LOG_ONLY)
 - **Evaluations** before you promote to production
-
----
-
-## What AgentCore Is Not
-
-* Not the `agentcore` CLI
-* Not **Bedrock Agents**
-  - AgentCore = infrastructure; Bedrock Agents = opinionated orchestration
-* Not a new agent **framework**: bring your own
-* Not **limited to Bedrock models**: works with any LLM
-* Not a monolith: each service is **independently useful**
 
 ---
 
