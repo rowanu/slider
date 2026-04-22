@@ -9,8 +9,9 @@ user: "User" {
 # ── Identity ─────────────────────────────────────────────────────────────────
 
 identity: "Identity" {
-  shape: image
-  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  style.stroke: "#DD344C"
+  style.fill: "#FFF5F5"
+  style.border-radius: 8
 }
 
 # ── Agent ────────────────────────────────────────────────────────────────────
@@ -36,11 +37,8 @@ tools: "Tools & APIs" {
 # ── Connections ──────────────────────────────────────────────────────────────
 
 user -> identity: "3LO\ndelegate access"
-identity -> agent_arn: "issue credentials"
+identity -> agent_arn: "issue credentials\n(3LO or 2LO)"
 agent_arn -> tools: "act as user"
-identity -> agent_arn: "2LO\nclient credentials" {
-  style.stroke-dash: 4
-}
 vault -> agent_arn: "3rd-party tokens" {
   style.stroke-dash: 4
 }

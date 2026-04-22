@@ -24,8 +24,9 @@ sources: "Tool Sources" {
 # ── Gateway ──────────────────────────────────────────────────────────────────
 
 gw: "Gateway" {
-  shape: image
-  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  style.stroke: "#00A4A6"
+  style.fill: "#E6F7F7"
+  style.border-radius: 8
 }
 
 # ── Integrations ─────────────────────────────────────────────────────────────
@@ -56,8 +57,6 @@ lattice: "VPC Lattice\n(private)" {
 sources.lambda -> gw: "import"
 sources.openapi -> gw: "import"
 sources.apis -> gw: "import"
-integrations.slack -> gw
-integrations.jira -> gw
-integrations.github -> gw
+integrations -> gw: "built-in"
 agent -> gw: "discover & call\n(MCP)"
 gw -> lattice: "private access"

@@ -8,20 +8,15 @@ agent_code: "Agent Code\n(any framework)" {
 
 # ── Runtime ──────────────────────────────────────────────────────────────────
 
-runtime: "Runtime" {
+runtime: "Runtime\n(Firecracker MicroVM)" {
   style.stroke: "#FF9900"
   style.fill: "#FFF8F0"
   style.border-radius: 8
 
-  microvm: "MicroVM\n(Firecracker)" {
+  agent: "Your Agent" {
     style.stroke: "#DD344C"
     style.fill: "#FFF5F5"
     style.border-radius: 4
-
-    agent: "Your Agent" {
-      shape: image
-      icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
-    }
   }
 }
 
@@ -46,8 +41,6 @@ protocols: "Protocols" {
 
 # ── Connections ──────────────────────────────────────────────────────────────
 
-agent_code -> runtime.microvm.agent: "deploy"
-runtime.microvm.agent -> llm: "InvokeModel"
-runtime.microvm.agent -> protocols.mcp
-runtime.microvm.agent -> protocols.a2a
-runtime.microvm.agent -> protocols.ws
+agent_code -> runtime.agent: "deploy"
+runtime.agent <-> llm: "InvokeModel"
+runtime.agent -> protocols: "expose"

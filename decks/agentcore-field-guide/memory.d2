@@ -9,8 +9,9 @@ agent: "Agent" {
 # ── Memory ───────────────────────────────────────────────────────────────────
 
 mem: "Memory" {
-  shape: image
-  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  style.stroke: "#00A4A6"
+  style.fill: "#E6F7F7"
+  style.border-radius: 8
 }
 
 # ── Storage Types ────────────────────────────────────────────────────────────
@@ -47,6 +48,9 @@ kms: "KMS" {
 agent <-> mem: "read / write"
 mem -> short_term: "per session"
 mem -> long_term: "async extraction"
-kms -> mem: "encryption\nat rest" {
+short_term -> long_term: "async" {
+  style.stroke-dash: 4
+}
+mem -> kms: "encrypt / decrypt" {
   style.stroke-dash: 4
 }

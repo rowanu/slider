@@ -86,7 +86,7 @@ monitoring: "Observe & Evaluate" {
 
 # Primary flow (left to right)
 user -> compute.runtime: "invoke"
-models -> compute.runtime
+models -> compute.runtime: "completions"
 compute.runtime -> gateway: "call tools"
 gateway -> tools: "MCP"
 compute.runtime <-> memory: "read/write"

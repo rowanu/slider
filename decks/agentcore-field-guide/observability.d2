@@ -3,8 +3,9 @@ direction: right
 # ── Runtime ──────────────────────────────────────────────────────────────────
 
 runtime: "Agent Runtime" {
-  shape: image
-  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  style.stroke: "#FF9900"
+  style.fill: "#FFF8F0"
+  style.border-radius: 8
 }
 
 # ── Observability ────────────────────────────────────────────────────────────
@@ -37,9 +38,9 @@ destinations: "Destinations" {
   }
 }
 
-# ── What's Traced ────────────────────────────────────────────────────────────
+# ── What's Captured ─────────────────────────────────────────────────────────
 
-traces: "Traces" {
+captured: "What's Captured" {
   style.stroke: "#3F8624"
   style.fill: "#F0FFF0"
   style.border-radius: 8
@@ -47,13 +48,6 @@ traces: "Traces" {
   tool_calls: "Tool calls"
   llm: "LLM invocations"
   decisions: "Agent decisions"
-}
-
-metrics: "Metrics" {
-  style.stroke: "#3F8624"
-  style.fill: "#F0FFF0"
-  style.border-radius: 8
-
   latency: "Latency"
   tokens: "Token usage"
   errors: "Error rates"
@@ -64,6 +58,5 @@ metrics: "Metrics" {
 runtime -> obs: "OTel traces" {
   style.stroke-dash: 4
 }
-obs -> destinations
-obs -> traces
-obs -> metrics
+obs -> destinations: "export"
+obs -> captured: "collects"

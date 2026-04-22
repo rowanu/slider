@@ -3,8 +3,7 @@ direction: right
 # ── Agent ────────────────────────────────────────────────────────────────────
 
 agent: "Agent" {
-  shape: image
-  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  shape: person
 }
 
 # ── Observability ────────────────────────────────────────────────────────────
@@ -23,16 +22,8 @@ evals: "Evaluations" {
 
   builtin: "13+ built-in\nevaluators"
   custom: "Custom\n(LLM or Lambda)"
-}
-
-# ── Modes ────────────────────────────────────────────────────────────────────
-
-on_demand: "On-Demand\n(CI/CD)" {
-  style.border-radius: 4
-}
-
-online: "Online\n(live traffic)" {
-  style.border-radius: 4
+  on_demand: "On-Demand (CI/CD)"
+  online: "Online (live traffic)"
 }
 
 # ── Output ───────────────────────────────────────────────────────────────────
@@ -48,9 +39,7 @@ score: "Quality Scores" {
 agent -> obs: "traces" {
   style.stroke-dash: 4
 }
-obs -> evals: "read traces"
-on_demand -> evals: "ad hoc / CI"
-online -> evals: "continuous" {
+obs -> evals: "read traces" {
   style.stroke-dash: 4
 }
 evals -> score: "results"

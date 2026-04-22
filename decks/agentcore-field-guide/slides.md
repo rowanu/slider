@@ -17,11 +17,12 @@ AWS Brisbane Usergroup, April 2026
 
 ---
 
-## About Me
+## Hi, I'm Rowan 👋
 
-![bg left:40% 80%](images/rowan.png)
+![bg left:40% 60%](images/rowanu-linkedin-qr.svg)
 
 - **AWS Security Hero**
+- Independent consultant
 - Using AWS for **15+ years**
 - Helping businesses **build and secure agents**
 
@@ -110,15 +111,15 @@ Fine-grained access control using **Cedar**, enforced *outside* agent code.
 ```
 forbid(
   principal,
-  action == AgentCore::Action::"HRTools__export_salary_report",
+  action == AgentCore::Action::"PaymentTools__transfer_funds",
   resource
-);
+) when { context.amount > 10000 };
 ```
 
 * **Declarative**: outside prompts and agent logic
 * **Granular interception**: gateway/tool/operation/etc
 * **Safe rollout**: LOG_ONLY, then ENFORCE
-* **Schema validation**: generates from your tools
+* **Schema validation**: generates from Gateway tools
 * **Natural language authoring**
 
 ![bg right:40% 90%](images/policy.svg)
@@ -151,10 +152,9 @@ Give agents the ability to **remember**.
 
 First-class identity for agents, not just IAM roles.
 
-* **Identity propagation**
 * **Multi-credential**: OAuth2 tokens, API keys, client certs, SAML, custom tokens
 * **OAuth flows**: client credentials (2LO) + authorization code (3LO)
-* **Declarative SDK**: annotations reduce boilerplate, handle token refresh automatically
+* **Helpful SDK**: annotations reduce boilerplate, automatic token refresh
 * **Request verification**: signature/expiry/scope validated on every call
 * **Audit trail**: credential access logged
 
@@ -374,7 +374,7 @@ Then layer on:
 
 ## Thanks!
 
-Rowan Udell - AWS Security Hero & Consultant
+Any questions?
 
 **Slides** [slider.rowanudell.com 🍔](https://slider.rowanudell.com)
 **Amazon Bedrock Agentcore** [Documentation](https://docs.aws.amazon.com/bedrock-agentcore/)
@@ -382,4 +382,4 @@ Rowan Udell - AWS Security Hero & Consultant
 **Strands SDK** [on GitHub](https://github.com/strands-agents/sdk-python)
 **AWS re:Post** [AgentCore tag](https://repost.aws/tags/TAaysfWwGaS3SNb1O0i1GkOg/amazon-bedrock-agentcore)
 
-![bg right:40% 80%](images/rowanu-linkedin-qr.svg)
+![bg right:40% 80%](images/slides-qr.svg)
