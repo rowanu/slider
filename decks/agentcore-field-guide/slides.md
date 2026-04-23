@@ -54,7 +54,11 @@ A suite of **10 composable services** for building, running, and governing AI ag
 
 ---
 
-![bg contain](images/agentcore_all_components_final.png)
+![bg contain](images/agentcore-all-components-final.png)
+
+---
+
+![bg contain](images/ac-overviewchart-harness.png)
 
 ---
 
