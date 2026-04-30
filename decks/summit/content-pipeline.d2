@@ -1,7 +1,7 @@
 # Defense in Depth — Content Filtering Pipeline
 # Shows untrusted content flowing through security layers before reaching the agent
 
-direction: down
+direction: right
 
 # ── Untrusted inputs ──────────────────────────────────────────────────────
 
@@ -11,19 +11,19 @@ inputs: "Untrusted Content" {
   style.fill: "#FFF3E0"
   style.border-radius: 8
 
-  messages: "Employee\nMessages" {
+  messages: "Taxpayer\nMessages" {
     shape: image
     icon: ../aws-icons/business-applications/aws-end-user-messaging.svg
   }
 
-  resumes: "Resumes\n& CVs" {
+  resumes: "Receipts\n& Invoices" {
     shape: image
     icon: ../aws-icons/analytics/amazon-cloudsearch_search-documents.svg
   }
 
-  emails: "Forwarded\nEmails" {
+  emails: "Bank\nStatements" {
     shape: image
-    icon: ../aws-icons/business-applications/amazon-simple-email-service_email.svg
+    icon: ../aws-icons/storage/amazon-simple-storage-service_s3-batch-operations.svg
   }
 }
 
@@ -39,7 +39,7 @@ validation: "Input Validation\nSchema check, sanitise, reject malformed" {
   icon: ../aws-icons/security-identity/amazon-inspector_agent.svg
 }
 
-agent: "HR Agent\nHardened system prompt" {
+agent: "Tax Assistant\nHardened system prompt" {
   shape: image
   icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
 }
@@ -63,6 +63,13 @@ validation -> agent: "validated ✓" {
   style.font-size: 14
 }
 
+agent -> guardrails: "responses\nalso filtered" {
+  style.stroke: "#232F3E"
+  style.stroke-dash: 4
+  style.font-size: 12
+  style.font-color: "#232F3E"
+}
+
 # ── Blocked path ──────────────────────────────────────────────────────────
 
 blocked: "✗ Blocked" {
@@ -75,6 +82,13 @@ blocked: "✗ Blocked" {
 }
 
 guardrails -> blocked: "malicious content" {
+  style.stroke: "#DD344C"
+  style.stroke-dash: 4
+  style.font-color: "#DD344C"
+  style.font-size: 14
+}
+
+validation -> blocked: "invalid input" {
   style.stroke: "#DD344C"
   style.stroke-dash: 4
   style.font-color: "#DD344C"

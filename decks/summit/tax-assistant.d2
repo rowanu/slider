@@ -1,11 +1,11 @@
-# HR Agent Architecture — AgentCore example
-# Render: just diagram example hr-agent
+# Tax Assistant Architecture — AgentCore example
+# Render: just diagram summit tax-assistant
 
 direction: right
 
 # ── Actor ────────────────────────────────────────────────────────────────────
 
-employee: "Employee" {
+taxpayer: "Taxpayer" {
   shape: person
   style.stroke: "#232F3E"
   style.fill: "#232F3E"
@@ -13,7 +13,7 @@ employee: "Employee" {
 
 # ── Agent ────────────────────────────────────────────────────────────────────
 
-hr_agent: "HR Agent" {
+tax_agent: "Tax Assistant" {
   shape: image
   icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
 }
@@ -26,35 +26,35 @@ tools: "Tools" {
   style.fill: "#FAFAFA"
   style.border-radius: 8
 
-  records: "Employee\nRecords" {
+  records: "Tax Records\n& TFN" {
     shape: image
     icon: ../aws-icons/databases/amazon-dynamodb.svg
   }
 
-  docs: "Resumes\n& Emails" {
+  docs: "Receipts &\nStatements" {
     shape: image
-    icon: ../aws-icons/analytics/amazon-cloudsearch_search-documents.svg
+    icon: ../aws-icons/storage/amazon-simple-storage-service_bucket-with-objects.svg
   }
 
-  payroll: "Payroll\nSystem" {
+  ato: "ATO Portal\n& BAS" {
     shape: image
     icon: ../aws-icons/cloud-financial-management/aws-cost-explorer.svg
   }
 
-  calendar: "Calendar /\nScheduling" {
+  bank: "Bank &\nSuper APIs" {
     shape: image
-    icon: ../aws-icons/application-integration/amazon-eventbridge_scheduler.svg
+    icon: ../aws-icons/application-integration/amazon-appflow.svg
   }
 }
 
 # ── Connections ──────────────────────────────────────────────────────────────
 
-employee -> hr_agent: "natural language request" {
+taxpayer -> tax_agent: "natural language request" {
   style.stroke: "#FF9900"
   style.font-color: "#232F3E"
 }
 
-hr_agent -> tools: "tool calls" {
+tax_agent -> tools: "tool calls" {
   style.stroke: "#00A4A6"
   style.font-color: "#232F3E"
 }

@@ -1,0 +1,41 @@
+# Sensitive Data — IAM scoping of agent resource access
+
+direction: right
+
+agent: "Tax Assistant" {
+  shape: image
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+}
+
+iam: "IAM Role\n(least privilege)" {
+  shape: image
+  icon: ../aws-icons/security-identity/aws-identity-and-access-management.svg
+}
+
+s3: "Tax Documents" {
+  shape: image
+  icon: ../aws-icons/storage/amazon-simple-storage-service_bucket.svg
+}
+
+denied: "✗ Other Customers'\nRecords — no policy" {
+  style.font-color: "#DD344C"
+  style.stroke: "#DD344C"
+  style.fill: "#FFF5F5"
+  style.border-radius: 8
+}
+
+agent -> iam
+
+iam -> s3: "s3:GetObject  bucket/tax-docs/*" {
+  style.stroke: "#3F8624"
+  style.stroke-width: 2
+  style.font-color: "#3F8624"
+  style.font-size: 13
+}
+
+iam -> denied: "✗ no policy" {
+  style.stroke: "#DD344C"
+  style.stroke-dash: 4
+  style.font-color: "#DD344C"
+  style.font-size: 13
+}

@@ -29,20 +29,22 @@ Secure them like software.
 
 **Traditional App**
 
-- Deterministic execution
-- Fixed control flow
-- Scoped permissions
-- Predictable I/O
+Deterministic execution
+
+* Fixed control flow
+* Clearly scoped permissions
+* Predictable I/O
 
 </div>
 <div>
 
 **AI Agent**
 
-- Probabilistic decisions
-- Dynamic tool selection
-- Broad access patterns
-- Untrusted content in the loop
+Probabilistic outcomes are a feature, not a bug
+
+* Broad access patterns
+* Dynamic tool selection
+* Untrusted content in the loop
 
 </div>
 </div>
@@ -57,47 +59,42 @@ Simon Willison, 2025
 
 ---
 
-# Three Capabilities. Dangerous When Combined.
+# A Dangerous Combination
 
-<div class="columns">
-<div>
+![bg left:50% 100%](images/venn-trifecta.svg)
 
-![w:500](images/venn-trifecta.svg)
-
-</div>
-<div>
-
-* Any two? Manageable.
+* One or two? Manageable.
 * All three?
-  1. **Data exfiltration.**
-  1. **Prompt injection exploitation.**
-  1. **Unauthorized actions.**
-
-</div>
-</div>
 
 ---
 
-# Meet the HR Assistant
+# A Dangerous Combination
 
-![w:900](images/hr-agent.svg)
+![bg left 100%](images/venn-trifecta.svg)
+![w:450](images/maverick.jpg)
 
-An AI agent that helps employees with leave, payroll, onboarding
+---
 
-It has access to **employee records**, processes **messages** from users, and **takes actions** on other systems
+# Meet the Tax Assistant
+
+![w:900](images/tax-assistant.svg)
+
+An AI agent that helps Australians with tax returns, deductions, and financial planning
+
+It has access to **financial records**, processes **documents** from users, and **takes actions** with the ATO and banks
 
 Any concerns?
 
 ---
 
-# Sensitive Data Access
+# Sensitive Data
 
-The agent can see what employees can't see about each other
+The agent can see what users can't see about each other
 
-- Employee records - names, salaries, performance reviews
-- Payroll data - bank accounts, tax file numbers
-- Leave balances and medical certificates
-- Onboarding documents - ID copies, contracts
+- Tax file numbers (TFNs) and income summaries
+- Bank accounts, investment portfolios, super balances
+- PAYG payment summaries and group certificates
+- Prior year returns and ATO correspondence
 
 ---
 
@@ -105,10 +102,10 @@ The agent can see what employees can't see about each other
 
 LLMs follow instructions in content, regardless of source
 
-- Employee chat messages
-- Uploaded resumes and CVs
-- Forwarded emails
-- RAG results from the knowledge base
+- Uploaded receipts and invoices
+- Forwarded bank statements and payslips
+- MyGov / ATO portal messages
+- RAG results from the financial knowledge base
 
 ---
 
@@ -116,10 +113,10 @@ LLMs follow instructions in content, regardless of source
 
 Data exfiltration as a feature
 
-- Update payroll
-- Send offer letters
-- Book onboarding meetings
-- Call external APIs
+- Lodge tax returns with the ATO
+- Submit BAS statements
+- Initiate bank transfers and BPAY
+- Call third-party financial APIs
 
 ---
 
@@ -163,98 +160,60 @@ Mapped to the Trifecta
 
 ---
 
-# Leg 1: Controlling Data Access
+# Sensitive Data
 
-<div class="columns">
-<div>
+What your agent knows.
 
-**AgentCore Memory**
-- Encryption at rest (KMS / CMK)
-- Memory poisoning prevention
-- Input validation
+![diagram w:900](images/sensitive-data.svg)
 
-**IAM Policies**
-- Least privilege per agent
-- Resource-based policies on Runtime, Gateway, Memory
-
-</div>
-<div>
-
-```json
-{
-  "Effect": "Allow",
-  "Action": [
-    "bedrock-agentcore:GetMemory",
-    "bedrock-agentcore:RetrieveMemoryRecords"
-  ],
-  "Resource":
-    "arn:aws:bedrock-agentcore:
-     ap-southeast-2:123456789012:
-     memory/hr-assistant/*"
-}
-```
-
-Not `bedrock-agentcore:*`. Never `*`.
-
-</div>
-</div>
+- IAM role: specific actions and scoped ARNs only — never `*`
+- AgentCore Memory: actor ID scoping isolates each user's records
 
 ---
 
-# Leg 2: Defending Against Untrusted Content
+# Untrusted Content
 
-<div class="columns">
-<div>
+What your agent sees.
 
-**Bedrock Guardrails**
-- Content filtering
-- Prompt injection detection
+![diagram w:1050](images/content-pipeline.svg)
 
-**Memory Hygiene**
-- Validate before storing
-- Test for injection regularly
-
-**Prompt Engineering**
-- System prompts that resist manipulation
-
-</div>
-<div>
-
-![diagram w:700](images/content-pipeline.svg)
-
-</div>
-</div>
+**Bedrock Guardrails** — Content filtering + injection detection. Call `ApplyGuardrail` explicitly.
+**Input Validation** — Schema check, reject malformed or oversized payloads.
+**Prompt Engineering** — Separate data from instructions. Never echo untrusted content.
 
 ---
 
-# Leg 3: Controlling Tool Access
+# External Tool Access
 
-**AgentCore Policy** - Cedar policies, enforced *outside* agent code
+What your agent does.
+
+**AgentCore Policy** - Cedar policies, enforced *outside* agent code and context
 
 ```cedar
-// HR assistant can read employee records
+// Tax agents can approve claims under $1,000
 permit(
   principal is AgentCore::OAuthUser,
-  action == AgentCore::Action::"HRTools__get_employee_record",
-  resource == AgentCore::Gateway::"arn:aws:bedrock-agentcore:ap-southeast-2:123456789012:gateway/hr-assistant"
+  action == AgentCore::Action::"TaxTool__approve_claim",
+  resource == AgentCore::Gateway::"arn:aws:bedrock-agentcore:ap-southeast-2:123456789012:gateway/tax-tool"
 ) when {
-  principal.hasTag("role") &&
-  (principal.getTag("role") == "hr-manager" || principal.getTag("role") == "hr-admin")
+  principal.hasTag("role") && principal.getTag("role") == "tax-agent" && context.request.claim_amount < 1000
 };
 
-// Nobody can bulk-export salary data
+// Tax agents cannot approve a return — the taxpayer must give final approval
 forbid(
   principal is AgentCore::OAuthUser,
-  action == AgentCore::Action::"HRTools__export_salary_report",
-  resource == AgentCore::Gateway::"arn:aws:bedrock-agentcore:ap-southeast-2:123456789012:gateway/hr-assistant"
-);
+  action == AgentCore::Action::"TaxTool__approve_return",
+  resource == AgentCore::Gateway::"arn:aws:bedrock-agentcore:ap-southeast-2:123456789012:gateway/tax-tool"
+) when {
+  principal.hasTag("role") && principal.getTag("role") == "tax-agent"
+};
 ```
 
 The agent doesn't decide its own permissions. You do.
 
 ---
 
-# Leg 3: Gateway + Identity
+# Gateway + Identity
 
 <div class="columns">
 <div>
@@ -292,13 +251,13 @@ The agent doesn't decide its own permissions. You do.
 
 # Audit Your Agents
 
-![bg right:40% 80%](images/venn-trifecta.svg)
-
-* Apply least privilege to agent IAM roles
-* Use AgentCore Policy (Cedar) for tool boundaries - not agent code
-* Encrypt memory, validate inputs, test for injection
-* Enable CloudTrail + CloudWatch for agent activity
-* Ask: does your agent *really* need all three legs?
+1. Does your agent *really* need all three trifecta legs?
+1. Least privilege IAM roles `#runtime` `#gateway`
+1. Validate and sanitise all inputs before the model sees them `#runtime`
+1. Add Guardrails - not perfect, but not bad `#runtime`
+1. Tool boundaries in Cedar policies, not agent code `#policy`
+1. Delegate credentials - agents act as users, not themselves `#identity`
+1. Observability no longer a "nice to have" `#observability`
 
 ---
 
@@ -314,6 +273,9 @@ Secure them like software.
 <!-- _paginate: skip -->
 
 # Thank You!
-<span class="subtitle">I help teams move agents from prototype to production 👋</span>
 
-![bg right:40% 80%](images/rowanu-linkedin-qr.svg)
+~~Questions?~~ No time for questions! Happy to chat after 🤙
+
+<span class="subtitle">I help teams move agents from prototype to production</span>
+
+![bg right:40% 80%](images/real-linkedin-qr.png)
