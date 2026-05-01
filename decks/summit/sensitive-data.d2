@@ -1,4 +1,4 @@
-# Sensitive Data — IAM scoping of agent resource access
+# Sensitive Data — Memory-aware IAM access
 
 direction: right
 
@@ -12,12 +12,12 @@ iam: "IAM Role\n(least privilege)" {
   icon: ../aws-icons/security-identity/aws-identity-and-access-management.svg
 }
 
-s3: "Tax Documents" {
+memory: "AgentCore\nMemory" {
   shape: image
-  icon: ../aws-icons/storage/amazon-simple-storage-service_bucket.svg
+  icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
 }
 
-denied: "✗ Other Customers'\nRecords — no policy" {
+denied: "✗ Other Users'\nMemory — namespace\ncondition fails" {
   style.font-color: "#DD344C"
   style.stroke: "#DD344C"
   style.fill: "#FFF5F5"
@@ -26,14 +26,14 @@ denied: "✗ Other Customers'\nRecords — no policy" {
 
 agent -> iam
 
-iam -> s3: "s3:GetObject  bucket/tax-docs/*" {
+iam -> memory: "RetrieveMemoryRecords\nnamespace: /actor/[userId]/..." {
   style.stroke: "#3F8624"
   style.stroke-width: 2
   style.font-color: "#3F8624"
   style.font-size: 13
 }
 
-iam -> denied: "✗ no policy" {
+iam -> denied: "✗ condition fails" {
   style.stroke: "#DD344C"
   style.stroke-dash: 4
   style.font-color: "#DD344C"

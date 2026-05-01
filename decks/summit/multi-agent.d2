@@ -1,0 +1,81 @@
+# Multi-Agent Architecture — Separation of Concerns
+
+direction: right
+
+agentcore: "Amazon Bedrock AgentCore" {
+  style.stroke: "#232F3E"
+  style.fill: "#FAFAFA"
+  style.border-radius: 12
+  style.font-size: 16
+  style.bold: true
+
+  orchestrator: "Orchestrator\nAgent" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  subagents: "Sub-agents" {
+    style.stroke: "#FF9900"
+    style.fill: "#FFF8F0"
+    style.border-radius: 8
+
+    research: "Research\nAgent" {
+      shape: image
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock.svg
+    }
+
+    ato: "ATO\nAgent" {
+      shape: image
+      icon: ../aws-icons/artificial-intelligence/amazon-bedrock.svg
+    }
+  }
+
+  orchestrator -> subagents.research: "delegates" {
+    style.stroke: "#FF9900"
+    style.font-color: "#232F3E"
+    style.font-size: 13
+  }
+
+  orchestrator -> subagents.ato: "" {
+    style.stroke: "#FF9900"
+  }
+}
+
+gateway: "AgentCore\nGateway" {
+  shape: image
+  icon: ../aws-icons/networking-content-delivery/amazon-api-gateway.svg
+}
+
+tools: "Tools" {
+  style.stroke: "#3F8624"
+  style.fill: "#F0FFF0"
+  style.border-radius: 8
+
+  ato_api: "ATO API" {
+    shape: image
+    icon: ../aws-icons/compute/aws-lambda.svg
+  }
+
+  bank_api: "Bank API" {
+    shape: image
+    icon: ../aws-icons/compute/aws-lambda.svg
+  }
+}
+
+agentcore.subagents.research -> gateway: "tool call" {
+  style.stroke: "#00A4A6"
+  style.font-color: "#232F3E"
+  style.font-size: 13
+}
+
+agentcore.subagents.ato -> gateway: "" {
+  style.stroke: "#00A4A6"
+}
+
+gateway -> tools.ato_api: "" {
+  style.stroke: "#3F8624"
+}
+
+gateway -> tools.bank_api: "" {
+  style.stroke: "#3F8624"
+}

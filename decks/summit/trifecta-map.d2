@@ -1,5 +1,4 @@
 # Trifecta → AgentCore Security Map
-# Three columns mapping each lethal trifecta leg to AgentCore mitigations
 
 direction: down
 
@@ -47,16 +46,11 @@ external: "External Actions" {
   }
 }
 
-# ── Mitigations (bottom row) ──────────────────────────────────────────────
+# ── Specific mitigations (middle row) ─────────────────────────────────────
 
 memory: "AgentCore Memory" {
   shape: image
   icon: ../aws-icons/artificial-intelligence/amazon-bedrock.svg
-}
-
-kms: "KMS Encryption" {
-  shape: image
-  icon: ../aws-icons/security-identity/aws-key-management-service.svg
 }
 
 iam: "IAM Policies" {
@@ -89,10 +83,34 @@ identity: "AgentCore\nIdentity" {
   icon: ../aws-icons/security-identity/aws-iam-identity-center.svg
 }
 
-# ── Connections ───────────────────────────────────────────────────────────
+# ── Cross-cutting (bottom row) ─────────────────────────────────────────────
+
+crosscutting: "All three legs" {
+  style.stroke: "#8A92A0"
+  style.fill: "#F5F6F8"
+  style.border-radius: 12
+  style.font-size: 14
+  style.bold: true
+
+  runtime: "AgentCore\nRuntime" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+
+  observability: "AgentCore\nObservability" {
+    shape: image
+    icon: ../aws-icons/management-tools/amazon-cloudwatch.svg
+  }
+
+  evaluations: "AgentCore\nEvaluations" {
+    shape: image
+    icon: ../aws-icons/management-governance/amazon-cloudwatch_evidently.svg
+  }
+}
+
+# ── Connections: specific mitigations ─────────────────────────────────────
 
 sensitive -> memory: "" { style.stroke: "#00A4A6" }
-sensitive -> kms: "" { style.stroke: "#00A4A6" }
 sensitive -> iam: "" { style.stroke: "#00A4A6" }
 
 untrusted -> guardrails: "" { style.stroke: "#FF9900" }
@@ -101,3 +119,18 @@ untrusted -> validation: "" { style.stroke: "#FF9900" }
 external -> policy: "" { style.stroke: "#232F3E" }
 external -> gateway: "" { style.stroke: "#232F3E" }
 external -> identity: "" { style.stroke: "#232F3E" }
+
+# ── Connections: cross-cutting (all three legs) ────────────────────────────
+
+sensitive -> crosscutting: "" {
+  style.stroke: "#8A92A0"
+  style.stroke-dash: 4
+}
+untrusted -> crosscutting: "" {
+  style.stroke: "#8A92A0"
+  style.stroke-dash: 4
+}
+external -> crosscutting: "" {
+  style.stroke: "#8A92A0"
+  style.stroke-dash: 4
+}

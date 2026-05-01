@@ -1,0 +1,71 @@
+# AgentCore Observability & Evaluations
+
+direction: right
+
+agentcore: "Amazon Bedrock AgentCore" {
+  style.stroke: "#232F3E"
+  style.fill: "#FAFAFA"
+  style.border-radius: 12
+  style.font-size: 16
+  style.bold: true
+
+  agent: "Runtime\nAgent" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
+  }
+}
+
+cloudwatch: "Amazon\nCloudWatch" {
+  shape: image
+  icon: ../aws-icons/management-tools/amazon-cloudwatch.svg
+}
+
+evals: "AgentCore Evaluations" {
+  style.stroke: "#AC5BFF"
+  style.fill: "#F8F0FF"
+  style.border-radius: 12
+  style.font-size: 14
+  style.bold: true
+
+  online: "Online\n(live traffic)" {
+    style.stroke: "#AC5BFF"
+    style.fill: "#F0E8FF"
+    style.border-radius: 8
+    style.font-size: 13
+  }
+
+  pre_deploy: "Pre-deployment\n(test cases)" {
+    style.stroke: "#00A4A6"
+    style.fill: "#F0FAFA"
+    style.border-radius: 8
+    style.font-size: 13
+  }
+}
+
+test_cases: "Test Dataset" {
+  shape: image
+  icon: ../aws-icons/storage/amazon-simple-storage-service.svg
+}
+
+# Observability: OTel spans to CloudWatch
+agentcore.agent -> cloudwatch: "OTel spans\n(traces, metrics, logs)" {
+  style.stroke: "#41B3FF"
+  style.stroke-width: 2
+  style.font-color: "#41B3FF"
+  style.font-size: 13
+}
+
+# Online evaluation: live agent responses
+agentcore.agent -> evals.online: "live responses" {
+  style.stroke: "#AC5BFF"
+  style.stroke-width: 2
+  style.stroke-dash: 4
+  style.font-color: "#AC5BFF"
+  style.font-size: 13
+}
+
+# Pre-deployment evaluation: test dataset
+test_cases -> evals.pre_deploy: "" {
+  style.stroke: "#00A4A6"
+  style.stroke-width: 2
+}
