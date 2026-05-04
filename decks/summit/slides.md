@@ -149,129 +149,77 @@ is still your best friend.
 <!-- _class: divider -->
 <!-- _paginate: skip -->
 
-# AgentCore's Security Toolkit
-Mapped to the Trifecta
+# Break a Leg
+The trifecta is only lethal with **all three**.
 
 ---
 
-# The Map
+# Three Patterns
 
 ![diagram w:1150](images/trifecta-map.svg)
 
----
-
-# Sensitive Data
-
-What your agent knows.
-
-![bg right:40% 85%](images/sensitive-data.svg)
-
-```json
-{
-  "Action": ["bedrock-agentcore:RetrieveMemoryRecords"],
-  "Resource": "arn:aws:bedrock-agentcore:us-east-1:123456789012:memory/mem-12345abcdef",
-  "Condition": { "StringEquals": {
-    "bedrock-agentcore:namespace": "/actor/${aws:PrincipalTag/userId}/preferences/"
-  }}
-}
-```
-
-Namespace condition locks memory records to the calling user's identity. AgentCore Memory encrypts at rest (KMS-backed).
+Pick a leg to remove. If you can't, you're carrying all three.
 
 ---
 
-# Untrusted Content
+# Three Patterns, Practically
 
-What your agent sees.
-
-![diagram w:800](images/content-pipeline.svg)
-
-**Bedrock Guardrails**: Content filtering + injection detection.
-**Input Validation**: Schema check, reject malformed or oversized payloads.
-**Prompt Engineering**: Separate data from instructions. Never echo untrusted content.
-
-```python
-bedrock.apply_guardrail(
-    guardrailIdentifier="grd-xxxxx", guardrailVersion="1",
-    source="INPUT", content=[{"text": {"text": user_input}}]
-)
-```
-
-Call `ApplyGuardrail` explicitly on all untrusted input. Don't rely on in-model filtering.
-
----
-
-# Gateway + Identity
-
-<div class="columns">
+<div class="columns three">
 <div>
 
-**AgentCore Gateway**
-- Centralized tool access
-- **Request interceptors**: validate the ATO reference in the request belongs to the calling user
-- **Response interceptors**: strip TFNs and bank account numbers before returning to the agent
+**Read-Only**
+
+The agent thinks, doesn't act.
+
+* No writes, no submissions
+* Output goes back to the user
+* *Assistants, advisors, summarisers*
 
 </div>
 <div>
 
-**AgentCore Identity**
-- OAuth 2.0 credential management
-- Token vault
-- The agent's OAuth token carries the user's identity tag. Cedar sees it, policies enforce it.
-- Agent acts *as* the user, not *instead of*
+**Curated Input**
+
+You control what the agent sees.
+
+* Structured payloads only
+* No documents, no scraping, no email
+* *Anything that moves money*
+
+</div>
+<div>
+
+**Scoped Data**
+
+Caller's slice only.
+
+* No cross-tenant access
+* User identity flows with every call
+* *Multi-tenant SaaS*
 
 </div>
 </div>
 
-![diagram w:1150](images/identity-flow.svg)
+AgentCore makes each pattern cheap: Cedar `forbid` rules, Gateway schemas, Memory namespaces.
 
 ---
 
-# External Tool Access
+# Back to the Tax Assistant
 
-What your agent does.
+![diagram w:900](images/multi-agent.svg)
 
-**AgentCore Policy** - Cedar policies, enforced *outside* agent code and context
-
-```cedar
-// Tax agents can approve claims under $1,000
-permit(
-  principal is AgentCore::OAuthUser,
-  action == AgentCore::Action::"TaxTool__approve_claim",
-  resource == AgentCore::Gateway::"arn:aws:bedrock-agentcore:ap-southeast-2:123456789012:gateway/tax-tool"
-) when {
-  principal.hasTag("role") &&
-  principal.getTag("role") == "tax-agent" &&
-  context.request.claim_amount < 1000
-};
-// forbid() works the same way - use it to block actions regardless of any permits
-```
-
-The agent doesn't decide its own permissions. You do.
+One scary monolith → three boring sub-agents. Each one provably missing a leg.
 
 ---
 
-# Separation of Concerns
+# Verify It Sticks
 
-How your agent is *structured*.
+A regression that adds a leg back is a security incident.
 
-![diagram w:750](images/multi-agent.svg)
+* **AgentCore Observability** — full session replay, every tool call traced
+* **AgentCore Evaluations** — pre-deployment testing plus always-on scoring in production
 
-**AgentCore Runtime**: each agent runs isolated - scoped memory, credentials, and tool access
-- Orchestrator delegates tasks to single-responsibility sub-agents
-- A compromised sub-agent cannot escalate to orchestrator permissions
-- Smaller blast radius per agent
-
----
-
-# Observability & Evaluations
-
-What your agent *did*.
-
-![diagram w:900](images/observability-evaluations.svg)
-
-**AgentCore Observability**: OTel spans to CloudWatch - tool calls, inputs/outputs, latency, errors. Full session replay.
-**AgentCore Evaluations**: pre-deployment testing against datasets, plus always-on scoring of live traffic. Thirteen built-in evaluators - catch safety regressions before users do.
+You can't claim a leg is removed if you can't prove it stayed removed.
 
 ---
 
@@ -282,16 +230,12 @@ What your agent *did*.
 
 ---
 
-# Audit Your Agents
+# Four Things
 
-1. Does your agent *really* need all three trifecta legs?
-1. Least privilege IAM roles `#runtime` `#gateway`
-1. Validate and sanitise all inputs before the model sees them `#runtime`
-1. Add Guardrails - not perfect, but not bad `#runtime`
-1. Tool boundaries in Cedar policies, not agent code `#policy`
-1. Delegate credentials - agents act as users, not themselves `#identity`
-1. Decompose agents - single-responsibility sub-agents limit blast radius `#runtime`
-1. Observability no longer a "nice to have" `#observability`
+1. For each agent, **name the leg you removed.** If you can't, you're holding all three.
+1. **Decompose** multi-leg agents into single-purpose sub-agents.
+1. Enforce leg-removal **outside** agent code — policies, gateways, identity.
+1. **Verify** with observability and evaluations. Treat regressions as incidents.
 
 ---
 
