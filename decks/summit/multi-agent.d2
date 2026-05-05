@@ -43,6 +43,16 @@ agentcore: "Amazon Bedrock AgentCore" {
   orchestrator -> submitter: "" { style.stroke: "#FF9900" }
 }
 
+uploads: "Receipts\nbucket" {
+  shape: image
+  icon: ../aws-icons/storage/amazon-simple-storage-service_bucket.svg
+}
+
+records: "Tax records" {
+  shape: image
+  icon: ../aws-icons/databases/amazon-dynamodb.svg
+}
+
 ato: "ATO API" {
   shape: image
   icon: ../aws-icons/cloud-financial-management/aws-cost-explorer.svg
@@ -50,6 +60,16 @@ ato: "ATO API" {
 
 user -> agentcore.orchestrator: "asks" {
   style.stroke: "#232F3E"
+  style.font-size: 13
+}
+
+agentcore.parser -> uploads: "one doc" {
+  style.stroke: "#3F8624"
+  style.font-size: 13
+}
+
+agentcore.advisor -> records: "read" {
+  style.stroke: "#3F8624"
   style.font-size: 13
 }
 
