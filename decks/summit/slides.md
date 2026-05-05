@@ -87,36 +87,31 @@ Any concerns?
 
 ---
 
-# Sensitive Data
+# All Three Legs
 
-The agent can see what users can't see about each other
+<div class="columns three">
+<div>
 
-- Tax file numbers (TFNs) and income summaries
-- Bank accounts, investment portfolios, super balances
-- PAYG payment summaries and group certificates
-- Prior year returns and ATO correspondence
+**Sensitive Data**
 
----
+TFNs, bank accounts, super balances, prior returns.
 
-# Untrusted Content
+</div>
+<div>
 
-LLMs follow instructions in content, regardless of source
+**Untrusted Content**
 
-- Uploaded receipts and invoices
-- Forwarded bank statements and payslips
-- MyGov / ATO portal messages
-- RAG results from the financial knowledge base
+Uploaded receipts, forwarded statements, RAG results.
 
----
+</div>
+<div>
 
-# External Actions
+**External Actions**
 
-Data exfiltration as a feature
+Lodge returns, submit BAS, initiate transfers.
 
-- Lodge tax returns with the ATO
-- Submit BAS statements
-- Initiate bank transfers and BPAY
-- Call third-party financial APIs
+</div>
+</div>
 
 ---
 
