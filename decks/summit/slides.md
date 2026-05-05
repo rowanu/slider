@@ -94,32 +94,29 @@ Any concerns?
 
 **Sensitive Data**
 
-TFNs, bank accounts, super balances, prior returns.
+* TFNs and income
+* Bank and super balances
+* Prior returns 
 
 </div>
 <div>
 
 **Untrusted Content**
 
-Uploaded receipts, forwarded statements, RAG results.
+* Uploaded receipts
+* Forwarded bank statements
 
 </div>
 <div>
 
 **External Actions**
 
-Lodge returns, submit BAS, initiate transfers.
+* Lodge tax returns
+* Submit BAS statements
+* Initiate bank transfers
 
 </div>
 </div>
-
----
-
-<!-- _class: divider -->
-<!-- _paginate: skip -->
-
-# Guardrails that are 95% effective
-are not reliable enough.
 
 ---
 
@@ -144,6 +141,14 @@ is still your best friend.
 <!-- _class: divider -->
 <!-- _paginate: skip -->
 
+# Guardrails that are 95% effective
+are not reliable enough.
+
+---
+
+<!-- _class: divider -->
+<!-- _paginate: skip -->
+
 # Break a Leg
 The trifecta is only lethal with **all three**.
 
@@ -151,70 +156,78 @@ The trifecta is only lethal with **all three**.
 
 # Three Patterns
 
-![diagram w:1150](images/trifecta-map.svg)
-
-Pick a leg to remove. If you can't, you're carrying all three.
-
----
-
-# Three Patterns, Practically
+Pick a leg to remove.
 
 <div class="columns three">
 <div>
 
-**Read-Only**
 
-The agent thinks, doesn't act.
+**Scoped Data**
 
-* No writes, no submissions
-* Output goes back to the user
-* *Assistants, advisors, summarisers*
+* Removes Sensitive Data
+* Caller's own slice
+* Like multi-tenant SaaS
 
 </div>
 <div>
 
 **Curated Input**
 
-You control what the agent sees.
-
-* Structured payloads only
-* No documents, no scraping, no email
-* *Anything that moves money*
+* Removes Untrusted Content
+* You limit what the agent sees
+* Anything that writes
 
 </div>
 <div>
 
-**Scoped Data**
+**Read-Only**
 
-Caller's slice only.
-
-* No cross-tenant access
-* User identity flows with every call
-* *Multi-tenant SaaS*
+* Removes External Actions
+* Agent thinks, doesn't act
+* Think assistants, advisors
 
 </div>
 </div>
 
-AgentCore makes each pattern cheap: Cedar `forbid` rules, Gateway schemas, Memory namespaces.
 
 ---
 
 # Back to the Tax Assistant
 
-![diagram w:900](images/multi-agent.svg)
+<div class="columns three">
+<div>
 
-One scary monolith, three boring sub-agents. Each one provably missing a leg.
+**Sensitive Data**
+
+* Memory namespace `/actor/{actorId}/` — one slice per user
+* IAM condition `bedrock-agentcore:namespace` blocks cross-user retrieval
+* AgentCore Identity OBO token carries `actorId` on every call
+
+</div>
+<div>
+
+**Untrusted Content**
+
+* Gateway `SchemaDefinition` types every field: amounts, dates, ABNs
+* No free-text or file-upload fields in the tool schema
+* Documents pre-parsed into structured records before reaching agent context
+
+</div>
+<div>
+
+**External Actions**
+
+* Policy enforced at the Gateway, outside agent code
+* Cedar `forbid` and `when` condition
+
+</div>
+</div>
 
 ---
 
-# Verify It Sticks
+# A Multi-Agent Approach
 
-A regression that adds a leg back is a security incident.
-
-* **AgentCore Observability**: full session replay, every tool call traced
-* **AgentCore Evaluations**: pre-deployment testing plus always-on scoring in production
-
-You can't claim a leg is removed if you can't prove it stayed removed.
+![diagram w:900](images/multi-agent.svg)
 
 ---
 
@@ -225,12 +238,13 @@ You can't claim a leg is removed if you can't prove it stayed removed.
 
 ---
 
-# Four Things
+# Make Things Better
 
-1. For each agent, **name the leg you removed.** If you can't, you're holding all three.
-1. **Decompose** multi-leg agents into single-purpose sub-agents.
-1. Enforce leg-removal **outside** agent code: policies, gateways, identity.
-1. **Verify** with observability and evaluations. Treat regressions as incidents.
+* **Catalogue every agent** you run: you can't secure what you can't see.
+* **Map the legs** each agent carries, erring on the side of caution.
+* **Name the leg you removed** for each agent: if you can't name it, you haven't removed it.
+* **Enforce removal outside agent code** using policies, gateways, and identity.
+* **Decompose** multi-leg agents into focused, single-purpose sub-agents.
 
 ---
 
