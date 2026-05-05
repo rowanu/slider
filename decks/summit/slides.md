@@ -203,7 +203,7 @@ AgentCore makes each pattern cheap: Cedar `forbid` rules, Gateway schemas, Memor
 
 ![diagram w:900](images/multi-agent.svg)
 
-One scary monolith → three boring sub-agents. Each one provably missing a leg.
+One scary monolith, three boring sub-agents. Each one provably missing a leg.
 
 ---
 
@@ -211,8 +211,8 @@ One scary monolith → three boring sub-agents. Each one provably missing a leg.
 
 A regression that adds a leg back is a security incident.
 
-* **AgentCore Observability** — full session replay, every tool call traced
-* **AgentCore Evaluations** — pre-deployment testing plus always-on scoring in production
+* **AgentCore Observability**: full session replay, every tool call traced
+* **AgentCore Evaluations**: pre-deployment testing plus always-on scoring in production
 
 You can't claim a leg is removed if you can't prove it stayed removed.
 
@@ -229,7 +229,7 @@ You can't claim a leg is removed if you can't prove it stayed removed.
 
 1. For each agent, **name the leg you removed.** If you can't, you're holding all three.
 1. **Decompose** multi-leg agents into single-purpose sub-agents.
-1. Enforce leg-removal **outside** agent code — policies, gateways, identity.
+1. Enforce leg-removal **outside** agent code: policies, gateways, identity.
 1. **Verify** with observability and evaluations. Treat regressions as incidents.
 
 ---
