@@ -1,6 +1,12 @@
-# Multi-Agent Architecture — Separation of Concerns
+# Tax Assistant — Decomposed so each sub-agent is missing a leg
 
 direction: right
+
+user: "Taxpayer" {
+  shape: person
+  style.stroke: "#232F3E"
+  style.fill: "#232F3E"
+}
 
 agentcore: "Amazon Bedrock AgentCore" {
   style.stroke: "#232F3E"
@@ -9,73 +15,65 @@ agentcore: "Amazon Bedrock AgentCore" {
   style.font-size: 16
   style.bold: true
 
-  orchestrator: "Orchestrator\nAgent" {
+  orchestrator: "Orchestrator" {
     shape: image
     icon: ../aws-icons/artificial-intelligence/amazon-bedrock-agentcore.svg
   }
 
-  subagents: "Sub-agents" {
-    style.stroke: "#FF9900"
-    style.fill: "#FFF8F0"
-    style.border-radius: 8
-
-    research: "Research\nAgent" {
-      shape: image
-      icon: ../aws-icons/artificial-intelligence/amazon-bedrock.svg
-    }
-
-    ato: "ATO\nAgent" {
-      shape: image
-      icon: ../aws-icons/artificial-intelligence/amazon-bedrock.svg
-    }
-  }
-
-  orchestrator -> subagents.research: "delegates" {
-    style.stroke: "#FF9900"
-    style.font-color: "#232F3E"
+  parser: "Document Parser\n— Scoped Data" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock.svg
     style.font-size: 13
   }
 
-  orchestrator -> subagents.ato: "" {
-    style.stroke: "#FF9900"
+  advisor: "Personal Advisor\n— Read-Only" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock.svg
+    style.font-size: 13
   }
+
+  submitter: "ATO Submitter\n— Curated Input" {
+    shape: image
+    icon: ../aws-icons/artificial-intelligence/amazon-bedrock.svg
+    style.font-size: 13
+  }
+
+  orchestrator -> parser: "" { style.stroke: "#FF9900" }
+  orchestrator -> advisor: "" { style.stroke: "#FF9900" }
+  orchestrator -> submitter: "" { style.stroke: "#FF9900" }
 }
 
-gateway: "AgentCore\nGateway" {
+uploads: "Receipts\nbucket" {
   shape: image
-  icon: ../aws-icons/networking-content-delivery/amazon-api-gateway.svg
+  icon: ../aws-icons/storage/amazon-simple-storage-service_bucket.svg
 }
 
-tools: "Tools" {
-  style.stroke: "#3F8624"
-  style.fill: "#F0FFF0"
-  style.border-radius: 8
-
-  ato_api: "ATO API" {
-    shape: image
-    icon: ../aws-icons/compute/aws-lambda.svg
-  }
-
-  bank_api: "Bank API" {
-    shape: image
-    icon: ../aws-icons/compute/aws-lambda.svg
-  }
+records: "Tax records" {
+  shape: image
+  icon: ../aws-icons/databases/amazon-dynamodb.svg
 }
 
-agentcore.subagents.research -> gateway: "tool call" {
-  style.stroke: "#00A4A6"
-  style.font-color: "#232F3E"
+ato: "ATO API" {
+  shape: image
+  icon: ../aws-icons/cloud-financial-management/aws-cost-explorer.svg
+}
+
+user -> agentcore.orchestrator: "asks" {
+  style.stroke: "#232F3E"
   style.font-size: 13
 }
 
-agentcore.subagents.ato -> gateway: "" {
-  style.stroke: "#00A4A6"
+agentcore.parser -> uploads: "one doc" {
+  style.stroke: "#3F8624"
+  style.font-size: 13
 }
 
-gateway -> tools.ato_api: "" {
+agentcore.advisor -> records: "read" {
   style.stroke: "#3F8624"
+  style.font-size: 13
 }
 
-gateway -> tools.bank_api: "" {
+agentcore.submitter -> ato: "structured\nsubmission" {
   style.stroke: "#3F8624"
+  style.font-size: 13
 }

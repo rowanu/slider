@@ -9,8 +9,8 @@ footer: ""
 <!-- _paginate: skip -->
 
 # Securing Amazon Bedrock AgentCore
-A Practical Framework
-<span class="date">Rowan Udell • AWS Summit Sydney • April 2026</span>
+Rowan Udell, AWS Security Hero
+<span class="date">AWS Summit Sydney 2026</span>
 
 ---
 
@@ -22,7 +22,7 @@ Treat them like software.
 
 ---
 
-# What Makes Agents Different?
+# What Makes Agents Unusual Software?
 
 <div class="columns">
 <div>
@@ -48,6 +48,14 @@ Probabilistic outcomes are a feature, not a bug
 
 </div>
 </div>
+
+---
+
+<!-- _class: divider -->
+<!-- _paginate: skip -->
+
+# Guardrails that are 95% effective
+are not reliable enough.
 
 ---
 
@@ -87,44 +95,37 @@ Any concerns?
 
 ---
 
-# Sensitive Data
+# All Three Legs
 
-The agent can see what users can't see about each other
+<div class="columns three">
+<div>
 
-- Tax file numbers (TFNs) and income summaries
-- Bank accounts, investment portfolios, super balances
-- PAYG payment summaries and group certificates
-- Prior year returns and ATO correspondence
+**Sensitive Data**
 
----
+* TFNs and income
+* Bank and super balances
+* Prior returns 
 
-# Untrusted Content
+</div>
+<div>
 
-LLMs follow instructions in content, regardless of source
+**Untrusted Content**
 
-- Uploaded receipts and invoices
-- Forwarded bank statements and payslips
-- MyGov / ATO portal messages
-- RAG results from the financial knowledge base
+* Uploaded receipts
+* Forwarded bank statements
+* User requests
 
----
+</div>
+<div>
 
-# External Actions
+**External Actions**
 
-Data exfiltration as a feature
+* Lodge tax returns
+* Submit BAS statements
+* Initiate bank transfers
 
-- Lodge tax returns with the ATO
-- Submit BAS statements
-- Initiate bank transfers and BPAY
-- Call third-party financial APIs
-
----
-
-<!-- _class: divider -->
-<!-- _paginate: skip -->
-
-# Guardrails that are 95% effective
-are not reliable enough.
+</div>
+</div>
 
 ---
 
@@ -149,129 +150,88 @@ is still your best friend.
 <!-- _class: divider -->
 <!-- _paginate: skip -->
 
-# AgentCore's Security Toolkit
-Mapped to the Trifecta
+# Break a Leg
+The trifecta is only lethal with **all three**.
 
 ---
 
-# The Map
+# Three Patterns
 
-![diagram w:1150](images/trifecta-map.svg)
+Pick a leg to remove
 
----
-
-# Sensitive Data
-
-What your agent knows.
-
-![bg right:40% 85%](images/sensitive-data.svg)
-
-```json
-{
-  "Action": ["bedrock-agentcore:RetrieveMemoryRecords"],
-  "Resource": "arn:aws:bedrock-agentcore:us-east-1:123456789012:memory/mem-12345abcdef",
-  "Condition": { "StringEquals": {
-    "bedrock-agentcore:namespace": "/actor/${aws:PrincipalTag/userId}/preferences/"
-  }}
-}
-```
-
-Namespace condition locks memory records to the calling user's identity. AgentCore Memory encrypts at rest (KMS-backed).
-
----
-
-# Untrusted Content
-
-What your agent sees.
-
-![diagram w:800](images/content-pipeline.svg)
-
-**Bedrock Guardrails**: Content filtering + injection detection.
-**Input Validation**: Schema check, reject malformed or oversized payloads.
-**Prompt Engineering**: Separate data from instructions. Never echo untrusted content.
-
-```python
-bedrock.apply_guardrail(
-    guardrailIdentifier="grd-xxxxx", guardrailVersion="1",
-    source="INPUT", content=[{"text": {"text": user_input}}]
-)
-```
-
-Call `ApplyGuardrail` explicitly on all untrusted input. Don't rely on in-model filtering.
-
----
-
-# Gateway + Identity
-
-<div class="columns">
+<div class="columns three">
 <div>
 
-**AgentCore Gateway**
-- Centralized tool access
-- **Request interceptors**: validate the ATO reference in the request belongs to the calling user
-- **Response interceptors**: strip TFNs and bank account numbers before returning to the agent
+
+## **Scoped Data**
+
+* Limit **Sensitive Data**
+* Caller's own data
+* Like multi-tenant SaaS
 
 </div>
 <div>
 
-**AgentCore Identity**
-- OAuth 2.0 credential management
-- Token vault
-- The agent's OAuth token carries the user's identity tag. Cedar sees it, policies enforce it.
-- Agent acts *as* the user, not *instead of*
+## **Curated Input**
+
+* Avoid **Untrusted Content**
+* Limit what the agent sees
+* Only required modalitites
+
+</div>
+<div>
+
+## **Read-Only**
+
+* Forbid **External Actions**
+* Agent thinks, doesn't act
+* Whenever output is enough
 
 </div>
 </div>
 
-![diagram w:1150](images/identity-flow.svg)
 
 ---
 
-# External Tool Access
+# Back to the Tax Assistant
 
-What your agent does.
+<div class="columns three">
+<div>
 
-**AgentCore Policy** - Cedar policies, enforced *outside* agent code and context
+**Sensitive Data**
 
-```cedar
-// Tax agents can approve claims under $1,000
-permit(
-  principal is AgentCore::OAuthUser,
-  action == AgentCore::Action::"TaxTool__approve_claim",
-  resource == AgentCore::Gateway::"arn:aws:bedrock-agentcore:ap-southeast-2:123456789012:gateway/tax-tool"
-) when {
-  principal.hasTag("role") &&
-  principal.getTag("role") == "tax-agent" &&
-  context.request.claim_amount < 1000
-};
-// forbid() works the same way - use it to block actions regardless of any permits
-```
+* Memory namespace
+  - `memoryStrategyId`
+  - `actorId`
+  - `sessionId`
+* IAM condition `bedrock-agentcore:namespace` blocks cross-user retrieval
+* AgentCore Identity OBO token carries `actorId` on every call
 
-The agent doesn't decide its own permissions. You do.
+</div>
+<div>
+
+**Untrusted Content**
+
+* Gateway `SchemaDefinition` types every field: amounts, dates, ABNs
+* No free-text or file-upload fields in the tool schema
+* Documents pre-parsed into structured records before reaching agent context
+
+</div>
+<div>
+
+**External Actions**
+
+* Policy enforced at the Gateway, outside agent code
+* Cedar `forbid` and `when` condition
+
+</div>
+</div>
 
 ---
 
-# Separation of Concerns
+# A Multi-Agent Approach
 
-How your agent is *structured*.
-
-![diagram w:750](images/multi-agent.svg)
-
-**AgentCore Runtime**: each agent runs isolated - scoped memory, credentials, and tool access
-- Orchestrator delegates tasks to single-responsibility sub-agents
-- A compromised sub-agent cannot escalate to orchestrator permissions
-- Smaller blast radius per agent
-
----
-
-# Observability & Evaluations
-
-What your agent *did*.
-
-![diagram w:900](images/observability-evaluations.svg)
-
-**AgentCore Observability**: OTel spans to CloudWatch - tool calls, inputs/outputs, latency, errors. Full session replay.
-**AgentCore Evaluations**: pre-deployment testing against datasets, plus always-on scoring of live traffic. Thirteen built-in evaluators - catch safety regressions before users do.
+![diagram w:900](images/multi-agent.svg)
 
 ---
 
@@ -282,16 +242,15 @@ What your agent *did*.
 
 ---
 
-# Audit Your Agents
+# Make Things Better
 
-1. Does your agent *really* need all three trifecta legs?
-1. Least privilege IAM roles `#runtime` `#gateway`
-1. Validate and sanitise all inputs before the model sees them `#runtime`
-1. Add Guardrails - not perfect, but not bad `#runtime`
-1. Tool boundaries in Cedar policies, not agent code `#policy`
-1. Delegate credentials - agents act as users, not themselves `#identity`
-1. Decompose agents - single-responsibility sub-agents limit blast radius `#runtime`
-1. Observability no longer a "nice to have" `#observability`
+![bg right:28% 85%](images/venn-trifecta.svg)
+
+* **Catalogue every agent** you run: you can't secure what you can't see.
+* **Map the legs** each agent carries, erring on the side of caution.
+* **Name the leg you removed** for each agent: if you can't name it, is it gone?
+* **Enforce removal outside agent code** using Policy, Gateway, and Identity.
+* **Decompose** multi-leg agents into focused, single-purpose sub-agents.
 
 ---
 
