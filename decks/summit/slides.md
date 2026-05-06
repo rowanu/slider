@@ -9,8 +9,8 @@ footer: ""
 <!-- _paginate: skip -->
 
 # Securing Amazon Bedrock AgentCore
-A Practical Framework
-<span class="date">Rowan Udell • AWS Summit Sydney • April 2026</span>
+Rowan Udell, AWS Security Hero
+<span class="date">AWS Summit Sydney 2026</span>
 
 ---
 
@@ -22,7 +22,7 @@ Treat them like software.
 
 ---
 
-# What Makes Agents Different?
+# What Makes Agents Unusual Software?
 
 <div class="columns">
 <div>
@@ -48,6 +48,14 @@ Probabilistic outcomes are a feature, not a bug
 
 </div>
 </div>
+
+---
+
+<!-- _class: divider -->
+<!-- _paginate: skip -->
+
+# Guardrails that are 95% effective
+are not reliable enough.
 
 ---
 
@@ -105,6 +113,7 @@ Any concerns?
 
 * Uploaded receipts
 * Forwarded bank statements
+* User requests
 
 </div>
 <div>
@@ -141,14 +150,6 @@ is still your best friend.
 <!-- _class: divider -->
 <!-- _paginate: skip -->
 
-# Guardrails that are 95% effective
-are not reliable enough.
-
----
-
-<!-- _class: divider -->
-<!-- _paginate: skip -->
-
 # Break a Leg
 The trifecta is only lethal with **all three**.
 
@@ -156,35 +157,35 @@ The trifecta is only lethal with **all three**.
 
 # Three Patterns
 
-Pick a leg to remove.
+Pick a leg to remove
 
 <div class="columns three">
 <div>
 
 
-**Scoped Data**
+## **Scoped Data**
 
-* Removes Sensitive Data
-* Caller's own slice
+* Limit **Sensitive Data**
+* Caller's own data
 * Like multi-tenant SaaS
 
 </div>
 <div>
 
-**Curated Input**
+## **Curated Input**
 
-* Removes Untrusted Content
-* You limit what the agent sees
-* Anything that writes
+* Avoid **Untrusted Content**
+* Limit what the agent sees
+* Only required modalitites
 
 </div>
 <div>
 
-**Read-Only**
+## **Read-Only**
 
-* Removes External Actions
+* Forbid **External Actions**
 * Agent thinks, doesn't act
-* Think assistants, advisors
+* Whenever output is enough
 
 </div>
 </div>
@@ -199,7 +200,10 @@ Pick a leg to remove.
 
 **Sensitive Data**
 
-* Memory namespace `/actor/{actorId}/` — one slice per user
+* Memory namespace
+  - `memoryStrategyId`
+  - `actorId`
+  - `sessionId`
 * IAM condition `bedrock-agentcore:namespace` blocks cross-user retrieval
 * AgentCore Identity OBO token carries `actorId` on every call
 
@@ -240,10 +244,12 @@ Pick a leg to remove.
 
 # Make Things Better
 
+![bg right:28% 85%](images/venn-trifecta.svg)
+
 * **Catalogue every agent** you run: you can't secure what you can't see.
 * **Map the legs** each agent carries, erring on the side of caution.
-* **Name the leg you removed** for each agent: if you can't name it, you haven't removed it.
-* **Enforce removal outside agent code** using policies, gateways, and identity.
+* **Name the leg you removed** for each agent: if you can't name it, is it gone?
+* **Enforce removal outside agent code** using Policy, Gateway, and Identity.
 * **Decompose** multi-leg agents into focused, single-purpose sub-agents.
 
 ---
