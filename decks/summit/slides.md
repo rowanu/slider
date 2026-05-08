@@ -8,7 +8,7 @@ footer: ""
 <!-- _class: title-dark -->
 <!-- _paginate: skip -->
 
-# Securing Amazon Bedrock AgentCore
+# DEV205 Securing Amazon Bedrock AgentCore
 Rowan Udell, AWS Security Hero
 <span class="date">AWS Summit Sydney 2026</span>
 
