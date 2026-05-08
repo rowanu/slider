@@ -277,9 +277,23 @@ marp-render name ext: (copy-images name)
 # Usage: just slides-pdf my-talk
 slides-pdf name: (marp-render name "pdf")
 
-# Build a deck → PPTX (renders diagrams first)
+# Build a deck → PPTX with click-to-reveal bullets (renders diagrams first)
 # Usage: just slides-pptx my-talk
+# Mark slides for reveal with: <!-- reveal: on -->  (use '* ' bullets)
 slides-pptx name: (marp-render name "pptx")
+    #!/usr/bin/env bash
+    set -euo pipefail
+    md="{{decks_dir}}/{{name}}/slides.md"
+    pptx="{{output_dir}}/{{name}}/slides.pptx"
+    css=$(find {{decks_dir}}/{{name}} -maxdepth 1 -name '*.css' | head -1)
+    browser="{{browser}}"
+    if [ -z "$browser" ] && [ -x "{{brave_path}}" ]; then
+        browser="{{brave_path}}"
+    fi
+    args=("$md" "$pptx")
+    [ -n "$css" ]     && args+=(--theme "$css")
+    [ -n "$browser" ] && args+=(--browser "$browser")
+    python3 scripts/pptx-bullets.py "${args[@]}"
 
 # Watch a deck (live reload — open .output/slides.html in browser)
 # Usage: just watch my-talk

@@ -22,6 +22,8 @@ Treat them like software.
 
 ---
 
+<!-- reveal: on -->
+
 # What Makes Agents Unusual Software?
 
 <div class="columns">
@@ -67,6 +69,8 @@ Simon Willison, 2025
 
 ---
 
+<!-- reveal: on -->
+
 # A Dangerous Combination
 
 ![bg left:50% 100%](images/venn-trifecta.svg)
@@ -94,6 +98,8 @@ It has access to **financial records**, processes **documents** from users, and 
 Any concerns?
 
 ---
+
+<!-- reveal: on -->
 
 # All Three Legs
 
@@ -137,6 +143,8 @@ is still your best friend.
 
 ---
 
+<!-- reveal: on -->
+
 # The Fundamentals Haven't Changed
 
 * **Least privilege** - don't give agents permissions they don't need
@@ -154,6 +162,8 @@ is still your best friend.
 The trifecta is only lethal with **all three**.
 
 ---
+
+<!-- reveal: on -->
 
 # Three Patterns
 
@@ -192,6 +202,8 @@ Pick a leg to remove
 
 
 ---
+
+<!-- reveal: on -->
 
 # Back to the Tax Assistant
 
@@ -241,6 +253,8 @@ Pick a leg to remove
 # What To Do Tomorrow
 
 ---
+
+<!-- reveal: on -->
 
 # Make Things Better
 
