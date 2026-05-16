@@ -1,0 +1,44 @@
+direction: right
+
+goal: "Goal" {
+  shape: oval
+  style.fill: "#f0f4ff"
+  style.stroke: "#1836b2"
+  style.font-color: "#1836b2"
+  style.bold: true
+}
+
+plan: "Plan" {
+  style.fill: "#f0f4ff"
+  style.stroke: "#1836b2"
+  style.border-radius: 6
+}
+
+act: "Act" {
+  style.fill: "#fff4ed"
+  style.stroke: "#ff914d"
+  style.border-radius: 6
+}
+
+observe: "Observe" {
+  style.fill: "#fff4ed"
+  style.stroke: "#ff914d"
+  style.border-radius: 6
+}
+
+done: "Done" {
+  shape: oval
+  style.fill: "#f0fff4"
+  style.stroke: "#3a7d44"
+  style.font-color: "#3a7d44"
+  style.bold: true
+}
+
+goal -> plan: "start"
+plan -> act: "choose tool"
+act -> observe: "run tool"
+observe -> plan: "not done yet" {
+  style.stroke-dash: 4
+  style.stroke: "#1836b2"
+}
+observe -> done: "goal met"

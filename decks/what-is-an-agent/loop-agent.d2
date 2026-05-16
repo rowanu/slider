@@ -1,0 +1,52 @@
+direction: right
+
+llm_human: "Human" {
+  style.fill: "#fff4ed"
+  style.stroke: "#ff914d"
+  style.stroke-width: 2
+  style.border-radius: 8
+}
+
+llm_call: "LLM Call" {
+  style.fill: "#e8eeff"
+  style.stroke: "#1836b2"
+  style.stroke-width: 3
+  style.border-radius: 8
+}
+
+env: "Environment" {
+  style.fill: "#fff4ed"
+  style.stroke: "#ff914d"
+  style.stroke-width: 2
+  style.border-radius: 8
+}
+
+stop: "Stop" {
+  style.fill: "#f0f0f0"
+  style.stroke: "#aaaaaa"
+  style.stroke-width: 2
+  style.border-radius: 8
+}
+
+llm_human <-> llm_call {
+  style.stroke-dash: 4
+  style.stroke: "#1836b2"
+}
+
+llm_call -> env: "ACTION" {
+  style.stroke: "#1836b2"
+  style.stroke-width: 2
+  style.font-color: "#1836b2"
+  style.italic: true
+}
+env -> llm_call: "FEEDBACK" {
+  style.stroke: "#ff914d"
+  style.stroke-width: 2
+  style.font-color: "#ff914d"
+  style.italic: true
+}
+
+llm_call -> stop {
+  style.stroke-dash: 4
+  style.stroke: "#aaaaaa"
+}
