@@ -45,9 +45,7 @@ out: "Out" {
 in -> router
 router -> llm1
 router -> llm2
-router -> llm3 {
-  style.stroke-dash: 4
-}
+router -> llm3
 llm1 -> out
 llm2 -> out
 llm3 -> out

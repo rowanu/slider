@@ -9,28 +9,38 @@ paginate: true
 # What is an agent?
 
 Rowan Udell
+Independent Security Consultant | AWS Security Hero
 
 ---
-
-<!-- reveal: on -->
 
 ## Is it an agent?
 
 **Thermostat**
-* Has a goal. Takes fixed actions. Checks results.
-* **Not** an agent -- actions are fixed, no adaptive decision
+* Has a goal
+* Takes fixed actions
+* Checks results
+* **Not** an agent: actions are fixed, no adaptive decision
+
+---
+
+## Is it an agent?
 
 **Chatbot**
-* Responds to input. Takes no actions. Doesn't observe results.
-* **Not** an agent -- no loop, no feedback, just in and out
+* Responds to input
+* Takes no actions
+* Doesn't observe results
+* **Not** an agent: no loop, no feedback, just in and out
 
-**Claude Code**
-* Has a goal. Takes actions. Observes results. Makes a decision.
-* It's an agent -- full loop: goal, act, observe, decide
+---
+
+## Is it an agent?
 
 **OpenClaw**
-* Has a goal. Takes actions (shell, browser, calendar). Observes results. Decides what to do next.
-* It's an agent -- same loop, your whole computer as the environment
+* Has a goal
+* Takes actions (browser, calendar, etc)
+* Observes results
+* Decides what to do next
+* **Agent**: same loop, your whole computer as the environment
 
 ---
 
@@ -43,31 +53,44 @@ Rowan Udell
 
 ---
 
-## Not an Agent: It's a Chatbot
+## It's software.
+
+_...just not like other software_
+
+**Traditional software:** Same input, same output, every time
+
+**An agent:** Same input, different path, different result
+
+* Not a bug: it's how reasoning works
+* The model decides the path, not the code
+
+---
+
+## Not an agent: it's a chatbot
 
 Input in. One LLM call. Output out.
 
 ![diagram w:700](images/loop-prompt.svg)
 
+*e.g. ChatGPT: you ask, it answers.*
+
 ---
 
-## Not an Agent: It's a Workflow
+## Not an agent: it's a workflow
 
 Orchestrate multiple LLM calls: route, branch, combine results.
 
 ![diagram w:700](images/loop-workflow.svg)
 
-**Example:** A support email arrives. LLM 1 classifies it. LLM 2 drafts a reply using the right template. LLM 3 checks tone. The code controls the flow -- the model never decides what happens next.
+*e.g. Support email: classify, draft, check tone. Code controls the flow.*
 
 ---
 
-## It's an Agent
+## It's an agent
 
 Act on the environment. Observe feedback. Decide what to do next. Repeat until done.
 
 ![diagram w:700](images/loop-agent.svg)
-
-Also known as **ReAct** (Reason + Act).
 
 ---
 
@@ -75,11 +98,11 @@ Also known as **ReAct** (Reason + Act).
 
 A thermostat picks from a fixed list. A reasoning model **reasons from evidence**.
 
-* Reads the goal, every prior action, every result so far
+* Reads the goal, every prior action, every result, and the available tools
 * Thinks: what worked? what failed? what tool fits next?
-* Decides -- then acts
+* Decides: act (with which tool, which inputs), or stop
 
-**Reasoning models** (Claude, o1, Gemini Thinking) make this step visible: you can watch the model plan before it acts. Same loop -- better reasoning means better decisions at every step.
+**Reasoning models** (Claude, o1, Gemini Thinking) make this step visible: you can watch the model plan before it acts. Same loop: better reasoning means better decisions at every step.
 
 ---
 
@@ -91,25 +114,31 @@ Every loop needs a way to **stop**
 <div>
 
 **Vague**
-- "Make the code better"
+- "Plan my trip"
+- "Write a better email"
 - "Research the topic"
 
 </div>
 <div>
 
 **Concrete**
-- "All tests pass, no lint errors"
-- "Summarise in 3 bullet points"
+* "Book cheapest return flight, under $600"
+* "Rewrite to be direct, under 100 words"
+* "Summarise in 3 bullet points"
 
 </div>
 </div>
 
 ---
 
-## The model is the decider
+## The harness is the real engineering
 
-* Reads the goal, the results so far, and the available tools
-* Decides: **which tool**, with **which inputs**, or **stop**
+![diagram w:800](images/harness.svg)
+
+* Runs the loop (the plumbing that calls the model, handles tool calls, feeds results back)
+* Manages errors, context, memory, retries
+* Tells the model what tools exist (the model only knows what the harness exposes)
+* A demo agent is just the loop: an afternoon's work. A production agent is mostly harness.
 
 ---
 
@@ -125,12 +154,7 @@ The model names the tool and inputs. The harness runs it and returns the result.
 { "result": "Confirmed. Table for 2 at 7pm Saturday. Ref #4821." }
 ```
 
-<!-- reveal: on -->
-
-* A tool is any function the model can call: search the web, book a table, edit a file, call an API
-* The model chooses; the harness executes and returns the result
-* **MCP** (Model Context Protocol) is a standard for describing and connecting tools -- it's why any app can now offer itself as a tool for any agent
-* No tools: chatbot. Right tools: real work.
+* Common tools: search the web, book a table, edit a file, write code, send an email
 
 ---
 
@@ -138,41 +162,35 @@ The model names the tool and inputs. The harness runs it and returns the result.
 
 # Demo
 
-Take a suggestion from the floor.
-
 ---
 
-## The harness is the real engineering
+<!-- _class: title -->
 
-![diagram w:800](images/harness.svg)
-
-* Runs the loop -- the plumbing that calls the model, routes tool calls, feeds results back
-* Manages errors, context length, memory, retries
-* Tells the model what tools exist -- the model only knows what the harness exposes
-* A demo agent is just the loop -- an afternoon's work. A production agent is mostly harness.
+# Security is an issue
 
 ---
 
 ## The Lethal Trifecta
 
+_Simon Willison, 2025_
+
 ![bg right:45% 90%](images/venn-trifecta.svg)
 
-- **Untrusted content** -- prompt injection: an attacker hides instructions inside content the agent reads, hijacking what it does next
-- **Sensitive data** (exfiltration risk)
-- **External actions** (real-world impact)
+The model can't be trusted
 
-The model can't be trusted 🫤
+* **Untrusted content**: Prompt injection
+* **Sensitive data**: Exfiltration risk
+* **External actions**: Real-world impact
 
 ---
 
-## A Shared Mental Model
+## A shared mental model
 
-Now that you agree on what an agent is...
+Now you agree on what an agent is...
 
 - How do you trust it?
 - How do you hold it accountable?
-- How do you know when NOT to let an agent do it?
 
-Questions? Happy to chat. I help teams move agents from prototype to production.
+Questions? Or connect on LinkedIn
 
 ![bg right:35% 80%](images/real-linkedin-qr.png)
