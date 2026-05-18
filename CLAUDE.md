@@ -43,6 +43,7 @@ just clean                              # delete output/ directory
 
 - `decks/<name>/` — one directory per presentation, containing:
   - `slides.md` — MARP slide deck (Markdown with YAML frontmatter)
+  - `AUDIENCE.md` — (optional) audience, event context, and tone notes for the deck. Read this before editing slides.
   - `*.d2` — D2 diagram source files for this deck
   - `images/` — (optional) static images + rendered diagram SVGs. When this dir exists, `build-diagrams` renders SVGs here instead of `output/`.
   - `theme.css` — deck-specific MARP theme (created by `new-deck`, switchable with `just theme`)
