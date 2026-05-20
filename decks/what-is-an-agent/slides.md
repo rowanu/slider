@@ -9,7 +9,20 @@ paginate: true
 # What is an agent?
 
 Rowan Udell
-Independent Security Consultant | AWS Security Hero
+Independent Cloud Security Consultant
+
+---
+
+## It's software
+
+_...just not like other software_
+
+**Traditional software** _(deterministic)_: Same input, same output, every time
+
+**An agent** _(non-deterministic)_: Same input, different path, different result
+
+* Not a bug: it's how reasoning works
+* The model decides the path, not the code
 
 ---
 
@@ -53,19 +66,6 @@ Independent Security Consultant | AWS Security Hero
 
 ---
 
-## It's software.
-
-_...just not like other software_
-
-**Traditional software** _(deterministic)_: Same input, same output, every time
-
-**An agent** _(non-deterministic)_: Same input, different path, different result
-
-* Not a bug: it's how reasoning works
-* The model decides the path, not the code
-
----
-
 ## Not an agent: it's a chatbot
 
 Input in. One LLM call. Output out.
@@ -73,16 +73,6 @@ Input in. One LLM call. Output out.
 ![diagram w:700](images/loop-prompt.svg)
 
 *e.g. ChatGPT: you ask, it answers.*
-
----
-
-## Not an agent: it's a workflow
-
-Orchestrate multiple LLM calls: route, branch, combine results.
-
-![diagram w:700](images/loop-workflow.svg)
-
-*e.g. Support email: classify, draft, check tone. Code controls the flow.*
 
 ---
 
@@ -94,15 +84,31 @@ Act on the environment. Observe feedback. Decide what to do next. Repeat until d
 
 ---
 
-## The reasoning step
+## The model is the brain
 
-A thermostat picks from a fixed list. A reasoning model **reasons from evidence**.
+The model reads the situation, reasons through it, and decides what to do next.
 
-* Reads the goal, every prior action, every result, and the available tools
-* Thinks: what worked? what failed? what tool fits next?
-* Decides: act (with which tool, which inputs), or stop
+* Reads: the goal, every prior action, every result, available tools
+* Thinks: what worked? what failed? what fits next?
+* Decides: act, or stop
 
-**Reasoning models** (Claude, o1, Gemini Thinking) make this step visible: you can watch the model plan before it acts. Same loop: better reasoning means better decisions at every step.
+**Claude**, **o1/o3**, **Gemini Thinking** -- you can watch these models plan before they act
+
+---
+
+## Tools are the hands
+
+The model names the tool and inputs. The loop runs it and returns the result.
+
+```json
+// Model outputs a structured tool call:
+{ "tool": "book_restaurant", "name": "Gino's", "date": "Saturday", "time": "7pm", "party": 2 }
+
+// Loop runs it. Model receives:
+{ "result": "Confirmed. Table for 2 at 7pm Saturday. Ref #4821." }
+```
+
+* Common tools: search the web, book a table, edit a file, write code, send an email
 
 ---
 
@@ -131,36 +137,22 @@ Every loop needs a way to **stop**
 
 ---
 
-## The harness is the real engineering
-
-![diagram w:800](images/harness.svg)
-
-* Runs the loop (the plumbing that calls the model, handles tool calls, feeds results back)
-* Manages errors, context, memory, retries
-* Tells the model what tools exist (the model only knows what the harness exposes)
-* A demo agent is just the loop: an afternoon's work. A production agent is mostly harness.
-
----
-
-## Tools are the hands
-
-The model names the tool and inputs. The harness runs it and returns the result.
-
-```json
-// Model outputs a structured tool call:
-{ "tool": "book_restaurant", "name": "Gino's", "date": "Saturday", "time": "7pm", "party": 2 }
-
-// Harness runs it. Model receives:
-{ "result": "Confirmed. Table for 2 at 7pm Saturday. Ref #4821." }
-```
-
-* Common tools: search the web, book a table, edit a file, write code, send an email
-
----
-
 <!-- _class: title -->
 
 # Demo
+
+[terminal](https://share.descript.com/view/KKlAiqYg1pc)
+
+---
+
+## The plumbing is the hard part
+
+![diagram w:800](images/harness.svg)
+
+* What you just saw is the loop -- one model call, one tool, repeat until done
+* Production adds: errors, context, memory, retries
+* Controls what the model can see and do
+* That demo: an afternoon. Production: months of plumbing.
 
 ---
 
@@ -176,13 +168,11 @@ _Simon Willison, 2025_
 
 ![bg right:45% 90%](images/venn-trifecta.svg)
 
-Dangerous when all three combine:
+- **Inputs** it reads
+- **Data** it can access
+- **Tools** it can use
 
-* **Inputs**: reads emails, pages, documents - content attackers can influence
-* **Data access**: sees your files, calendar, credentials
-* **Tools**: books, sends, edits, deletes - real actions with real consequences
-
-Any one alone is manageable. All three together: an attacker who hijacks the agent gets everything.
+All three together: dangerous.
 
 ---
 
