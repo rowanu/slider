@@ -15,32 +15,32 @@ Independent Security Consultant | AWS Security Hero
 
 ## Is it an agent?
 
-**Thermostat**
-* Has a goal
-* Takes fixed actions
-* Checks results
-* **Not** an agent: actions are fixed, no adaptive decision
-
----
-
-## Is it an agent?
-
 **Chatbot**
 * Responds to input
-* Takes no actions
-* Doesn't observe results
-* **Not** an agent: no loop, no feedback, just in and out
+* Takes no external actions
+* Observes no results
+* **Not** an agent: no loop - question in, answer out
 
 ---
 
 ## Is it an agent?
 
-**OpenClaw**
-* Has a goal
-* Takes actions (browser, calendar, etc)
+**Thermostat**
+* Has a goal (maintain temperature)
+* Takes action: heat on or off - one rule, always the same
+* Observes results (reads the temperature back)
+* **Not** an agent: one rule, not reasoning - it can't decide, it just triggers
+
+---
+
+## Is it an agent?
+
+**OpenClaw** _(open-source agent that controls your computer)_
+* Has a goal (whatever you give it)
+* Takes actions: browser, calendar, files
 * Observes results
 * Decides what to do next
-* **Agent**: same loop, your whole computer as the environment
+* **Agent**: goal, action, observe, decide - all four
 
 ---
 
@@ -57,9 +57,9 @@ Independent Security Consultant | AWS Security Hero
 
 _...just not like other software_
 
-**Traditional software:** Same input, same output, every time
+**Traditional software** _(deterministic)_: Same input, same output, every time
 
-**An agent:** Same input, different path, different result
+**An agent** _(non-deterministic)_: Same input, different path, different result
 
 * Not a bug: it's how reasoning works
 * The model decides the path, not the code
@@ -90,7 +90,7 @@ Orchestrate multiple LLM calls: route, branch, combine results.
 
 Act on the environment. Observe feedback. Decide what to do next. Repeat until done.
 
-![diagram w:700](images/loop-agent.svg)
+![diagram w:700](images/loop-agent-fixed.svg)
 
 ---
 
@@ -176,11 +176,13 @@ _Simon Willison, 2025_
 
 ![bg right:45% 90%](images/venn-trifecta.svg)
 
-The model can't be trusted
+Dangerous when all three combine:
 
-* **Untrusted content**: Prompt injection
-* **Sensitive data**: Exfiltration risk
-* **External actions**: Real-world impact
+* **Inputs**: reads emails, pages, documents - content attackers can influence
+* **Data access**: sees your files, calendar, credentials
+* **Tools**: books, sends, edits, deletes - real actions with real consequences
+
+Any one alone is manageable. All three together: an attacker who hijacks the agent gets everything.
 
 ---
 
