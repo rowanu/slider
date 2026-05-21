@@ -9,7 +9,7 @@ paginate: true
 # What is an agent?
 
 Rowan Udell
-Independent Cloud Security Consultant
+Cloud Security Consultant
 
 ---
 
@@ -48,7 +48,7 @@ _...just not like other software_
 
 ## Is it an agent?
 
-**OpenClaw** _(open-source agent that controls your computer)_
+**OpenClaw**
 * Has a goal (whatever you give it)
 * Takes actions: browser, calendar, files
 * Observes results
@@ -91,8 +91,6 @@ The model reads the situation, reasons through it, and decides what to do next.
 * Reads: the goal, every prior action, every result, available tools
 * Thinks: what worked? what failed? what fits next?
 * Decides: act, or stop
-
-**Claude**, **o1/o3**, **Gemini Thinking** -- you can watch these models plan before they act
 
 ---
 
@@ -149,10 +147,11 @@ Every loop needs a way to **stop**
 
 ![diagram w:800](images/harness.svg)
 
-* What you just saw is the loop -- one model call, one tool, repeat until done
-* Production adds: errors, context, memory, retries
+What you just saw is the loop: one model call, one tool, repeat until done
+
 * Controls what the model can see and do
-* That demo: an afternoon. Production: months of plumbing.
+* Production adds: errors, context, memory, retries
+* That demo: an afternoon. Production: weeks of plumbing.
 
 ---
 
@@ -168,9 +167,9 @@ _Simon Willison, 2025_
 
 ![bg right:45% 90%](images/venn-trifecta.svg)
 
-- **Inputs** it reads
+- **Inputs** it receives 
 - **Data** it can access
-- **Tools** it can use
+- **Tools** it can use to make changes
 
 All three together: dangerous.
 
@@ -181,6 +180,7 @@ All three together: dangerous.
 Now you agree on what an agent is...
 
 - How do you trust it?
+- What is it allowed to do?
 - How do you hold it accountable?
 
 Questions? Or connect on LinkedIn
