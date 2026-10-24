@@ -93,6 +93,11 @@ section.title p {
   margin-bottom: 8px;
 }
 
+/* Closing slide: longer lines, so smaller secondary text */
+section.closing p {
+  font-size: 44px;
+}
+
 /* Stats slide: last paragraph is the small source line */
 section.stats p:last-of-type {
   margin-top: 16px;

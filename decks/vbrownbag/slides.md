@@ -160,7 +160,7 @@ Rant prompts
 
 ---
 
-<!-- _class: statement -->
+<!-- _class: statement closing -->
 
 # Follow me on LinkedIn
 
