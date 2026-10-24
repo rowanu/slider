@@ -39,7 +39,7 @@ just icons lambda
 just icons "api gateway"
 
 # Start a new deck
-just new-deck my-talk
+just new-deck 202611-my-talk   # convention: YYYYMM[DD]-<slug>
 # edit decks/my-talk/slides.md
 
 # Add a diagram to a deck

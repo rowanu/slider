@@ -1,5 +1,5 @@
 ---
-deck: what-is-an-agent
+deck: 202605-what-is-an-agent
 ---
 
 # Deck Context

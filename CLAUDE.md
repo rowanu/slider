@@ -41,7 +41,7 @@ just clean                              # delete output/ directory
 
 **Pipeline flow:** D2 files → SVG diagrams → referenced in MARP Markdown → HTML/PDF slides.
 
-- `decks/<name>/` — one directory per presentation, containing:
+- `decks/<name>/` — one directory per presentation, named `YYYYMM-<slug>` or `YYYYMMDD-<slug>` (presentation date; omit for non-talk decks like `example`). Containing:
   - `slides.md` — MARP slide deck (Markdown with YAML frontmatter)
   - `AUDIENCE.md` — (optional) audience, event context, and tone notes for the deck. Read this before editing slides.
   - `*.d2` — D2 diagram source files for this deck
@@ -99,11 +99,11 @@ Use `just icons <keyword>` to find paste-ready icon paths for `.d2` files.
 ## MARP Slide Conventions
 
 - **Diagram image paths** depend on where SVGs live:
-  - Decks with `images/` dir (e.g. summit): `![w:900](images/<name>.svg)` — relative to deck
+  - Decks with `images/` dir (e.g. 202605-summit): `![w:900](images/<name>.svg)` — relative to deck
   - Decks without `images/` dir: `![diagram w:900](../../output/<deck>/<name>.svg)`
 - The `diagram` alt text triggers auto-centering CSS in the default themes. Use `w:700` for diagrams needing more whitespace.
 - `--allow-local-files` is passed automatically by justfile recipes
 - `just slides` auto-builds all diagrams before rendering slides
 - Slide classes via `<!-- _class: <name> -->` — default themes provide `title`; custom deck CSS (like summit's) can define additional classes (`divider`, `title-dark`, etc.)
 - Default theme styling: `h1`/`h2` are blue (`#1836b2`), `strong` is orange (`#ff914d`), `h2` has an orange bottom border. Dark theme uses blue `#6ea8fe` instead.
-- Decks can use fully custom CSS (see `decks/summit/aws-summit-sydney.css`) — set the theme name in both the CSS `/* @theme name */` comment and slides frontmatter `theme: name`
+- Decks can use fully custom CSS (see `decks/202605-summit/aws-summit-sydney.css`) — set the theme name in both the CSS `/* @theme name */` comment and slides frontmatter `theme: name`
