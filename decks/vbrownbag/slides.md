@@ -1,0 +1,175 @@
+---
+marp: true
+theme: podcast
+size: 16:9
+paginate: false
+---
+
+<!-- _class: statement title -->
+
+# The "S" in "Generative AI" is for "Security"
+
+Rowan Udell, AWS Security Hero
+
+vBrownBag
+
+<!--
+Open on the joke: there is no S in Generative AI.
+-->
+
+---
+
+# The Lethal Trifecta
+
+Simon Willison, 2025
+
+![bg left:50% 100%](images/venn-trifecta.svg)
+
+* One or two? Manageable.
+* All three?
+
+<!--
+The legs: sensitive data, untrusted content, external actions.
+-->
+
+---
+
+<!-- _class: image -->
+
+![bg left:50% 100%](images/venn-trifecta.svg)
+![w:450](images/maverick.jpg)
+
+<!--
+Maverick gag from the Summit talk.
+-->
+
+---
+
+# 2026 Greatest Hits
+
+* **PocketOS:** agent on a staging task deletes prod in 10 seconds
+* **AgentCore:** default roles with account-wide wildcards
+* **Codex:** a branch name steals your GitHub token
+
+<!--
+PocketOS (25 April 2026)
+A Cursor agent on a routine staging task hit a credential mismatch and did not stop to ask. It searched the codebase, found an API token in an unrelated file, and used it. The token was meant for domain management via the Railway CLI but reportedly carried blanket authority across the whole account. Production database and the volume-level backups in the same blast radius were gone in under 10 seconds.
+Source: https://thenewstack.io/ai-agents-credential-crisis/ (The New Stack, 6 May 2026)
+
+AgentCore default roles (Unit 42, 8 April 2026)
+The starter toolkit creates the execution role for you. The default role uses wildcards across the account, including memory and runtime invocation, so one agent can read and poison another agent's memory and trigger other agents.
+Be fair, Chris will know the AWS side: AWS updated the docs to say the defaults are for development and testing only. Confirm that wording in the Unit 42 post before saying it. Dev defaults that make it to prod is the rant.
+Source: https://unit42.paloaltonetworks.com/exploit-of-aws-agentcore-iam-god-mode/
+
+Codex (30 March 2026, patched)
+Unsanitized branch names allowed command injection and theft of GitHub OAuth tokens. OpenAI patched it after researchers showed it working. One headline claims a semicolon in the branch name was enough.
+Source: https://oecd.ai/en/incidents/2026-03-30-23f5 (OECD AI Incidents Monitor)
+Headline: https://www.devops.com/a-semicolon-in-a-branch-name-was-all-it-took-to-steal-an-ai-agents-github-token
+-->
+
+---
+
+<!-- _class: stats -->
+
+# Cloud Security Alliance
+
+100 production agents assessed
+
+* **98%** have all three legs
+* **11%** pass a baseline security bar
+* **83%** of claimed defenses are unverified
+* **76%** of blast radius variance is explained by tool execution
+
+Source: CSA, The AI Agent Lethal Trifecta, June 2026
+
+<!--
+98%: carry all three legs at once.
+11%: pass a baseline security bar. The other 89% are capable enough to cause harm and not defended enough to prevent it.
+83%: defenses claimed by vendors or operators with no independent verification.
+76%: tool execution explains 76% of the variance in blast radius across agents.
+
+Spare numbers: coding agents rank 2nd on capability and 8th on defense. Computer-use agents average zero on output guardrails. 37% of agents score well on audit logging and badly on stopping harm.
+
+Caveat: the CSA note summarizes a third-party assessment (AI Risk Quadrant Q2 2026), reported by Help Net Security on 3 June 2026.
+
+Separate survey, secondhand, attribute if used: 97% of organizations with an AI-related incident lacked proper AI access controls, and 63% had no AI governance policy (AIUC-1 Consortium research, via the CSA note).
+
+Source: https://labs.cloudsecurityalliance.org/research/csa-research-note-ai-agent-lethal-trifecta-capability-securi/
+-->
+
+---
+
+<!-- _class: statement -->
+
+# Guardrails that are 95% effective
+are not reliable enough.
+
+<!--
+Tie back to the CSA numbers: 83% of claimed defenses are unverified, and logging after the theft prevents nothing.
+-->
+
+---
+
+<!-- _class: statement -->
+
+# Agents are software.
+Treat them like software.
+
+<!--
+Old-school security still works: least privilege, defense in depth, audit everything, get identity right.
+-->
+
+---
+
+# Break a Leg
+
+The trifecta is only lethal with all three.
+
+* **Scoped data:** remove the sensitive data leg
+* **Curated input:** remove the untrusted content leg
+* **Read-only:** remove the external actions leg
+
+<!--
+From the Summit talk. CSA calls the multi-agent version decomposition: a reader agent with no actions, an action agent with no untrusted input.
+Likely pushback from Chris: if 98% of agents have all three legs, is the trifecta useful? Answer: it is the checklist. Name the leg you removed for each agent, and enforce the removal outside the agent.
+-->
+
+---
+
+# Less privilege, not least.
+
+* One role per agent
+* Short-lived credentials
+* Acts as the user, with no admin service account behind it
+
+<!--
+Your take on "less privilege, not least" goes here. Painting metaphor from the IAM book fits.
+
+Rant prompts
+- Guardrails shape what an agent says. The role decides what it can do.
+- PocketOS: a token meant for domain management carried authority over everything.
+- AgentCore: starter-toolkit wildcards, dev defaults reaching prod.
+- Zenity, via The Register: one prompt triggered SSRF to fetch the workload role's credentials. An analyst compared the pattern to Capital One in 2019 (SSRF, stolen role credentials, overprivileged role). AWS says Zenity misrepresents documented behavior, so present it as research.
+  https://www.theregister.com/a/5302436
+  https://www.csoonline.com/article/4232054/awss-repeated-problems-with-ai-agent-controls-illustrates-the-autonomous-agent-dilemma.html
+- Nobody has the inventory: AI coding agents are invisible to IAM, CMDB and asset inventory, and only 21.9% of teams have put agent OAuth credentials into a privileged access management platform (Gravitee survey, via VentureBeat).
+  https://venturebeat.com/security/six-exploits-broke-ai-coding-agents-iam-never-saw-them
+- CrowdStrike CTO at RSAC 2026: an agent should never carry more privilege than the human behind it.
+- CSA: tool execution explains 76% of blast radius variance.
+-->
+
+---
+
+<!-- _class: statement -->
+
+# Follow me on LinkedIn
+
+Happy to talk more.
+
+I help teams move agents from prototype to production.
+
+![bg right:40% 80%](images/linkedin-qr.png)
+
+<!--
+Soft sell. Leave them with a question: could you list every identity your agents hold?
+-->
