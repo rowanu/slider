@@ -174,4 +174,13 @@ Rant prompts
   https://venturebeat.com/security/six-exploits-broke-ai-coding-agents-iam-never-saw-them
 - CrowdStrike CTO at RSAC 2026: an agent should never carry more privilege than the human behind it.
 - CSA: tool execution explains 76% of blast radius variance.
+
+Leave them with a question: could you list every identity your agents hold?
 -->
+
+---
+
+<!-- _class: image -->
+<!-- _footer: "" -->
+
+![w:480](images/linkedin-qr.png)
