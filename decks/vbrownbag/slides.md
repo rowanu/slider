@@ -121,7 +121,7 @@ Source: https://labs.cloudsecurityalliance.org/research/csa-research-note-ai-age
 * **Secrets:** anything in the prompt can be elicited
 * **Instructions:** followed most of the time, not every time
 * **Guardrails:** 95% effective means 1 in 20 gets through
-* **Permissions:** the one control the model can't talk its way around
+* **Permissions:** the one control the model can't bypass
 
 <!--
 Tie back to the CSA numbers: 83% of claimed defenses are unverified, and logging after the theft prevents nothing.
@@ -173,8 +173,10 @@ Rant prompts
 <!-- _class: image -->
 <!-- _footer: "" -->
 
+<style scoped>h2 { text-align: center; }</style>
+
 ## Could you list every identity your agents hold?
 
-![w:400](images/linkedin-qr.png)
+![w:340](images/linkedin-qr.png)
 
 Slides: slider.rowanudell.com/vbrownbag/slides.html
