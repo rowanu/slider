@@ -90,15 +90,20 @@ Maverick gag from the Summit talk.
 * **98%** have all three legs
 * **11%** pass a baseline security bar
 * **83%** of claimed defenses are unverified
-* **76%** of blast radius variance is explained by tool execution
+* **76%** of blast radius driven by tools
 
 Source: CSA, The AI Agent Lethal Trifecta, June 2026
 
 <!--
-98%: carry all three legs at once.
-11%: pass a baseline security bar. The other 89% are capable enough to cause harm and not defended enough to prevent it.
-83%: defenses claimed by vendors or operators with no independent verification.
-76%: tool execution explains 76% of the variance in blast radius across agents.
+The assessment scored 100 agents running in production on two axes: capability (what they can reach and do) and defense (what stops them doing harm).
+
+98% have all three legs: almost every agent has sensitive data access, reads untrusted content, and can take external actions at the same time. The trifecta is not an edge case, it is the default shape of a useful agent.
+
+11% pass a baseline security bar: only 11 of 100 met the minimum defensive controls. The other 89% are capable enough to cause harm and not defended enough to prevent it.
+
+83% of claimed defenses are unverified: most protections vendors or operators say they have (guardrails, filters, approvals) had no independent evidence they work. Claimed is not the same as tested.
+
+76% of blast radius driven by tools: statistically, tool execution explains 76% of the variance in how much damage an agent could do. Not the model, not the prompt: what the agent is allowed to call. This is the setup for the least privilege section.
 
 Spare numbers: coding agents rank 2nd on capability and 8th on defense. Computer-use agents average zero on output guardrails. 37% of agents score well on audit logging and badly on stopping harm.
 
