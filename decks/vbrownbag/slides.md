@@ -3,6 +3,7 @@ marp: true
 theme: podcast
 size: 16:9
 paginate: false
+footer: linkedin.com/in/rowanu
 ---
 
 <!-- _class: statement title -->
@@ -172,21 +173,4 @@ Rant prompts
   https://venturebeat.com/security/six-exploits-broke-ai-coding-agents-iam-never-saw-them
 - CrowdStrike CTO at RSAC 2026: an agent should never carry more privilege than the human behind it.
 - CSA: tool execution explains 76% of blast radius variance.
--->
-
----
-
-<!-- _class: statement closing -->
-
-# Follow me on LinkedIn
-
-Happy to talk more.
-
-I help teams move agents\
-from prototype to production.
-
-![bg right:40% 80%](images/linkedin-qr.png)
-
-<!--
-Soft sell. Leave them with a question: could you list every identity your agents hold?
 -->

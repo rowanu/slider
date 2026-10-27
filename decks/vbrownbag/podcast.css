@@ -93,13 +93,16 @@ section.title p {
   margin-bottom: 8px;
 }
 
-/* Closing slide: shares the width with the QR code, so smaller text */
-section.statement.closing h1 {
-  font-size: 72px;
-}
-
-section.closing p {
-  font-size: 30px;
+/* Footer: subtle LinkedIn handle on every slide */
+footer {
+  position: absolute;
+  left: 80px;
+  right: 80px;
+  bottom: 24px;
+  font-size: 20px;
+  color: var(--muted);
+  opacity: 0.6;
+  text-align: right;
 }
 
 /* Stats slide: last paragraph is the small source line */
