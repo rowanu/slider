@@ -103,7 +103,7 @@ The assessment scored 100 agents running in production on two axes: capability (
 
 83% of claimed defenses are unverified: most protections vendors or operators say they have (guardrails, filters, approvals) had no independent evidence they work. Claimed is not the same as tested.
 
-76% of blast radius driven by tools: statistically, tool execution explains 76% of the variance in how much damage an agent could do. Not the model, not the prompt: what the agent is allowed to call. This is the setup for the least privilege section.
+76% of blast radius driven by tools: statistically, tool execution explains 76% of the variance in how much damage an agent could do. Not the model, not the prompt: what the agent is allowed to call. This is the setup for Break a Leg: remove legs with IAM.
 
 Spare numbers: coding agents rank 2nd on capability and 8th on defense. Computer-use agents average zero on output guardrails. 37% of agents score well on audit logging and badly on stopping harm.
 
@@ -121,9 +121,11 @@ Source: https://labs.cloudsecurityalliance.org/research/csa-research-note-ai-age
 * **Secrets:** anything in the prompt can be elicited
 * **Instructions:** followed most of the time, not every time
 * **Guardrails:** 95% effective means 1 in 20 gets through
+* **Permissions:** the one control the model can't talk its way around
 
 <!--
 Tie back to the CSA numbers: 83% of claimed defenses are unverified, and logging after the theft prevents nothing.
+Guardrails shape what an agent says. The role decides what it can do.
 -->
 
 ---
@@ -141,27 +143,17 @@ Old-school security still works: least privilege, defense in depth, audit everyt
 
 # Break a Leg
 
-The trifecta is only lethal with all three.
+Remove a leg with IAM, not with a prompt.
 
-* **Scoped data:** the agent only sees the caller's own records
+* **Scoped data:** acts as the caller, sees only their records
 * **Curated input:** no open web, no inbound email, no random uploads
-* **Read-only:** the agent drafts, and a human or a system sends it
+* **Read-only:** the role can't write; a human or a system sends it
 
 <!--
 From the Summit talk. CSA calls the multi-agent version decomposition: a reader agent with no actions, an action agent with no untrusted input.
 Likely pushback: if 98% of agents have all three legs, is the trifecta useful? Answer: it is the checklist. Name the leg you removed for each agent, and enforce the removal outside the agent.
--->
 
----
-
-# Less privilege, not least.
-
-* One role per agent
-* Short-lived credentials
-* Acts as the user, with no admin service account behind it
-
-<!--
-Your take on "less privilege, not least" goes here. Painting metaphor from the IAM book fits.
+Less privilege, not least: one role per agent, short-lived credentials, acts as the user with no admin service account behind it. Painting metaphor from the IAM book fits.
 
 Rant prompts
 - Guardrails shape what an agent says. The role decides what it can do.
@@ -174,8 +166,6 @@ Rant prompts
   https://venturebeat.com/security/six-exploits-broke-ai-coding-agents-iam-never-saw-them
 - CrowdStrike CTO at RSAC 2026: an agent should never carry more privilege than the human behind it.
 - CSA: tool execution explains 76% of blast radius variance.
-
-Leave them with a question: could you list every identity your agents hold?
 -->
 
 ---
@@ -183,4 +173,8 @@ Leave them with a question: could you list every identity your agents hold?
 <!-- _class: image -->
 <!-- _footer: "" -->
 
-![w:480](images/linkedin-qr.png)
+## Could you list every identity your agents hold?
+
+![w:400](images/linkedin-qr.png)
+
+Slides: slider.rowanudell.com/vbrownbag/slides.html
