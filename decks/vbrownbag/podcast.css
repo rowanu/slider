@@ -109,3 +109,26 @@ section.stats p:last-of-type {
 section.image {
   align-items: center;
 }
+
+/* Title slide: long title, so a smaller heading than other statements */
+section.statement.title h1 {
+  font-size: 72px;
+  margin-bottom: 24px;
+}
+
+section.title p {
+  font-size: 36px;
+}
+
+/* Split slide: text shares the slide with a half-width image */
+section.split h1 {
+  font-size: 56px;
+}
+
+section.split p {
+  font-size: 32px;
+}
+
+section.split li {
+  font-size: 32px;
+}

@@ -19,6 +19,8 @@ Open on the joke: there is no S in Generative AI.
 
 ---
 
+<!-- _class: split -->
+
 # The Lethal Trifecta
 
 Simon Willison, 2025
@@ -41,30 +43,6 @@ The legs: sensitive data, untrusted content, external actions.
 
 <!--
 Maverick gag from the Summit talk.
--->
-
----
-
-# 2026 Greatest Hits
-
-* **PocketOS:** agent on a staging task deletes prod in 10 seconds
-* **AgentCore:** default roles with account-wide wildcards
-* **Codex:** a branch name steals your GitHub token
-
-<!--
-PocketOS (25 April 2026)
-A Cursor agent on a routine staging task hit a credential mismatch and did not stop to ask. It searched the codebase, found an API token in an unrelated file, and used it. The token was meant for domain management via the Railway CLI but reportedly carried blanket authority across the whole account. Production database and the volume-level backups in the same blast radius were gone in under 10 seconds.
-Source: https://thenewstack.io/ai-agents-credential-crisis/ (The New Stack, 6 May 2026)
-
-AgentCore default roles (Unit 42, 8 April 2026)
-The starter toolkit creates the execution role for you. The default role uses wildcards across the account, including memory and runtime invocation, so one agent can read and poison another agent's memory and trigger other agents.
-Be fair, Chris will know the AWS side: AWS updated the docs to say the defaults are for development and testing only. Confirm that wording in the Unit 42 post before saying it. Dev defaults that make it to prod is the rant.
-Source: https://unit42.paloaltonetworks.com/exploit-of-aws-agentcore-iam-god-mode/
-
-Codex (30 March 2026, patched)
-Unsanitized branch names allowed command injection and theft of GitHub OAuth tokens. OpenAI patched it after researchers showed it working. One headline claims a semicolon in the branch name was enough.
-Source: https://oecd.ai/en/incidents/2026-03-30-23f5 (OECD AI Incidents Monitor)
-Headline: https://www.devops.com/a-semicolon-in-a-branch-name-was-all-it-took-to-steal-an-ai-agents-github-token
 -->
 
 ---
@@ -95,6 +73,30 @@ Caveat: the CSA note summarizes a third-party assessment (AI Risk Quadrant Q2 20
 Separate survey, secondhand, attribute if used: 97% of organizations with an AI-related incident lacked proper AI access controls, and 63% had no AI governance policy (AIUC-1 Consortium research, via the CSA note).
 
 Source: https://labs.cloudsecurityalliance.org/research/csa-research-note-ai-agent-lethal-trifecta-capability-securi/
+-->
+
+---
+
+# 2026 Greatest Hits
+
+* **PocketOS:** agent on a staging task deletes prod in 10 seconds
+* **AgentCore:** default roles with account-wide wildcards
+* **Codex:** a branch name steals your GitHub token
+
+<!--
+PocketOS (25 April 2026)
+A Cursor agent on a routine staging task hit a credential mismatch and did not stop to ask. It searched the codebase, found an API token in an unrelated file, and used it. The token was meant for domain management via the Railway CLI but reportedly carried blanket authority across the whole account. Production database and the volume-level backups in the same blast radius were gone in under 10 seconds.
+Source: https://thenewstack.io/ai-agents-credential-crisis/ (The New Stack, 6 May 2026)
+
+AgentCore default roles (Unit 42, 8 April 2026)
+The starter toolkit creates the execution role for you. The default role uses wildcards across the account, including memory and runtime invocation, so one agent can read and poison another agent's memory and trigger other agents.
+Be fair, Chris will know the AWS side: AWS updated the docs to say the defaults are for development and testing only. Confirm that wording in the Unit 42 post before saying it. Dev defaults that make it to prod is the rant.
+Source: https://unit42.paloaltonetworks.com/exploit-of-aws-agentcore-iam-god-mode/
+
+Codex (30 March 2026, patched)
+Unsanitized branch names allowed command injection and theft of GitHub OAuth tokens. OpenAI patched it after researchers showed it working. One headline claims a semicolon in the branch name was enough.
+Source: https://oecd.ai/en/incidents/2026-03-30-23f5 (OECD AI Incidents Monitor)
+Headline: https://www.devops.com/a-semicolon-in-a-branch-name-was-all-it-took-to-steal-an-ai-agents-github-token
 -->
 
 ---
