@@ -19,8 +19,6 @@ Open on the joke: there is no S in Generative AI.
 
 ---
 
-<!-- _class: compact -->
-
 # 2026 Greatest Hits
 
 * **PocketOS:** agent deletes prod in 10 seconds
@@ -116,8 +114,6 @@ Source: https://labs.cloudsecurityalliance.org/research/csa-research-note-ai-age
 
 ---
 
-<!-- _class: compact -->
-
 # You can't trust the context
 
 * **Secrets:** anything in the prompt can be elicited
@@ -186,7 +182,8 @@ Rant prompts
 
 Happy to talk more.
 
-I help teams move agents from prototype to production.
+I help teams move agents\
+from prototype to production.
 
 ![bg right:40% 80%](images/linkedin-qr.png)
 

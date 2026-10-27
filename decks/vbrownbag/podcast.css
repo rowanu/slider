@@ -20,7 +20,7 @@ section {
   background: var(--bg);
   color: var(--fg);
   font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 44px;
+  font-size: 38px;
   line-height: 1.3;
   display: flex;
   flex-direction: column;
@@ -54,7 +54,7 @@ ul {
 
 li {
   margin: 0 0 22px;
-  font-size: 50px;
+  font-size: 40px;
   line-height: 1.2;
   color: var(--fg);
 }
@@ -81,7 +81,7 @@ section.statement h1 {
 }
 
 section.statement p {
-  font-size: 60px;
+  font-size: 52px;
   font-weight: 600;
   color: var(--fg);
 }
@@ -93,9 +93,13 @@ section.title p {
   margin-bottom: 8px;
 }
 
-/* Closing slide: longer lines, so smaller secondary text */
+/* Closing slide: shares the width with the QR code, so smaller text */
+section.statement.closing h1 {
+  font-size: 72px;
+}
+
 section.closing p {
-  font-size: 44px;
+  font-size: 30px;
 }
 
 /* Stats slide: last paragraph is the small source line */
@@ -131,9 +135,4 @@ section.split p {
 
 section.split li {
   font-size: 32px;
-}
-
-/* Compact list slide: smaller bullets so each fits on one line */
-section.compact li {
-  font-size: 40px;
 }
