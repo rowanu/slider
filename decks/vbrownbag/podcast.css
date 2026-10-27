@@ -132,3 +132,8 @@ section.split p {
 section.split li {
   font-size: 32px;
 }
+
+/* Compact list slide: smaller bullets so each fits on one line */
+section.compact li {
+  font-size: 40px;
+}
