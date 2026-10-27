@@ -34,7 +34,7 @@ Source: https://thenewstack.io/ai-agents-credential-crisis/ (The New Stack, 6 Ma
 
 AgentCore default roles (Unit 42, 8 April 2026)
 The starter toolkit creates the execution role for you. The default role uses wildcards across the account, including memory and runtime invocation, so one agent can read and poison another agent's memory and trigger other agents.
-Be fair, Chris will know the AWS side: AWS updated the docs to say the defaults are for development and testing only. Confirm that wording in the Unit 42 post before saying it. Dev defaults that make it to prod is the rant.
+Be fair to AWS: AWS updated the docs to say the defaults are for development and testing only. Confirm that wording in the Unit 42 post before saying it. Dev defaults that make it to prod is the rant.
 Source: https://unit42.paloaltonetworks.com/exploit-of-aws-agentcore-iam-god-mode/
 
 Codex (30 March 2026, patched)
@@ -143,13 +143,13 @@ Old-school security still works: least privilege, defense in depth, audit everyt
 
 The trifecta is only lethal with all three.
 
-* **Scoped data:** remove the sensitive data leg
-* **Curated input:** remove the untrusted content leg
-* **Read-only:** remove the external actions leg
+* **Scoped data:** the agent only sees the caller's own records
+* **Curated input:** no open web, no inbound email, no random uploads
+* **Read-only:** the agent drafts, and a human or a system sends it
 
 <!--
 From the Summit talk. CSA calls the multi-agent version decomposition: a reader agent with no actions, an action agent with no untrusted input.
-Likely pushback from Chris: if 98% of agents have all three legs, is the trifecta useful? Answer: it is the checklist. Name the leg you removed for each agent, and enforce the removal outside the agent.
+Likely pushback: if 98% of agents have all three legs, is the trifecta useful? Answer: it is the checklist. Name the leg you removed for each agent, and enforce the removal outside the agent.
 -->
 
 ---
