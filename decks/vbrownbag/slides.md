@@ -116,10 +116,13 @@ Source: https://labs.cloudsecurityalliance.org/research/csa-research-note-ai-age
 
 ---
 
-<!-- _class: statement -->
+<!-- _class: compact -->
 
-# Guardrails that are 95% effective
-are not reliable enough.
+# You can't trust the context
+
+* **Secrets:** anything in the prompt can be elicited
+* **Instructions:** followed most of the time, not every time
+* **Guardrails:** 95% effective means 1 in 20 gets through
 
 <!--
 Tie back to the CSA numbers: 83% of claimed defenses are unverified, and logging after the theft prevents nothing.
