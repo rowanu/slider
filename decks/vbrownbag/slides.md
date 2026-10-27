@@ -70,6 +70,7 @@ The legs: sensitive data, untrusted content, external actions.
 ---
 
 <!-- _class: image -->
+<!-- _footer: "" -->
 
 ![bg left:50% 100%](images/venn-trifecta.svg)
 ![w:450](images/maverick.jpg)
