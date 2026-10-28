@@ -8,7 +8,7 @@ footer: linkedin.com/in/rowanu
 
 <!-- _class: statement title -->
 
-# The "S" in "Generative AI" is for "Security"
+# The "S" in "Generative AI"<br>is for "Security"
 
 Rowan Udell, AWS Security Hero
 
