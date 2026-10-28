@@ -175,7 +175,7 @@ Rant prompts
 
 <style scoped>h2 { text-align: center; }</style>
 
-## Could you list every identity your agents hold?
+## What's the worst thing your agent is allowed to do?
 
 ![w:340](images/linkedin-qr.png)
 
